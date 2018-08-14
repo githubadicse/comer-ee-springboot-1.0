@@ -1,0 +1,168 @@
+package com.adicse.comercial.controller;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.adicse.comercial.model.Motivoingreso;
+import com.adicse.comercial.service.MotivoingresoService;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@RestController
+@RequestMapping("/res/motivoingreso")
+public class MotivoingresoController {
+	
+	@Autowired
+	private MotivoingresoService motivoingresoService;
+	
+	
+	@RequestMapping("/pagination")
+	@ResponseBody
+	public  Map<String,Object>  pagination(
+			@RequestParam("pagenumber") Integer pagenumber,
+			@RequestParam("rows") Integer rows,
+			@RequestParam("sortdireccion") String sortdireccion,
+			@RequestParam("sortcolumn") String sortcolumn,
+			@RequestParam("filters")  Object filter			
+			){
+		
+		Map<String,Object> response = new HashMap<String, Object>();
+
+		Page<Motivoingreso> page = motivoingresoService.pagination(pagenumber, rows, sortdireccion, sortcolumn, filter);
+		
+		List<Motivoingreso> lst = page.getContent() ;
+		
+
+		response.put("data", lst);
+		response.put("totalCount", page.getTotalElements());
+		response.put("success", true);				
+		
+		return response;
+		
+		
+	}
+	
+	@RequestMapping("/save")
+	@ResponseBody	
+	public Map<String,Object> save(@RequestBody String sMotivoIngreso){
+		Map<String,Object> response = new HashMap<String, Object>();
+		
+
+		ObjectMapper om = new ObjectMapper();
+		om.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+		Motivoingreso motivoIngreso = null;
+		try {
+			motivoIngreso = om.readValue(sMotivoIngreso, Motivoingreso.class);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			response.put("success", false);
+			response.put("msg", e.getMessage());
+			return response;						
+			//e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			response.put("success", false);
+			response.put("msg", e.getMessage());
+			return response;						
+			//e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			response.put("success", false);
+			response.put("msg", e.getMessage());
+			return response;			
+			//e.printStackTrace();
+		}		
+		
+		try {
+			
+			motivoIngreso = motivoingresoService.grabar(motivoIngreso);
+			//Integer idmotivoIngreso = motivoIngreso.getIdmotivoingreso();
+			//Map<String,Object> obj = new HashMap<>();
+			
+
+			response.put("success", true);
+			response.put("msg", "Registro grabado");
+		} catch (JDBCException e) {
+			System.out.println("error 1 :" + e.getMessage());
+			SQLException cause = (SQLException) e.getCause();
+			// evaluate cause and find out what was the problem
+			System.out.println("error 2 :" + cause.getMessage());
+			response.put("success", false);
+			response.put("msg",  cause.getMessage());
+		} catch (HibernateException ex) {
+			System.out.println("error 3 :" + ex.getMessage());
+		}		
+		
+		
+		return response;		
+
+		
+	}
+	
+	@RequestMapping("/delete")
+	@ResponseBody	
+	public  Map<String,Object> delete(@RequestParam("id") Integer id){
+		Map<String,Object> response = new HashMap<String, Object>();
+		try {
+			
+			motivoingresoService.deletebyid(id);
+			//Map<String,Object> obj = new HashMap<>();
+			
+
+			response.put("success", true);
+			response.put("msg", "Registro Eliminado");
+		} catch (JDBCException e) {
+			System.out.println("error 1 :" + e.getMessage());
+			SQLException cause = (SQLException) e.getCause();
+			// evaluate cause and find out what was the problem
+			System.out.println("error 2 :" + cause.getMessage());
+			response.put("success", false);
+			response.put("msg",  cause.getMessage());
+		} catch (HibernateException ex) {
+			System.out.println("error 3 :" + ex.getMessage());
+		}				
+		return response;
+	}
+	
+	@RequestMapping("/getall")
+	@ResponseBody	
+	public Map<String,Object> getall(){
+		
+		Map<String,Object> response = new HashMap<String, Object>();
+		List<Motivoingreso> lst = motivoingresoService.getall();
+		response.put("data", lst);
+		
+		return response;		
+		
+	}
+	
+	@RequestMapping("/findbyid")
+	@ResponseBody	
+	public Map<String,Object> findbyid(@RequestParam("id") Integer id){
+		
+		Map<String,Object> response = new HashMap<String, Object>();
+		Optional<Motivoingreso> marca = motivoingresoService.findbyid(id);
+		
+		
+		
+		response.put("data", marca);
+		return response;				
+	}		
+
+}
