@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.adicse.comercial.model.Chofer;
 import com.adicse.comercial.model.PeriodoLectivo;
 //import com.adicse.comercial.configsecurity.JwtUtil;
 import com.adicse.comercial.model.Usuario;
@@ -32,12 +34,13 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
 
 
 	@Autowired
 	private PeriodoLectivoService periodoLectivoService;
 
-	@RequestMapping("pagination")
+	@RequestMapping("/pagination")
 	@ResponseBody
 	public Map<String, Object> pagination(@RequestParam("pagenumber") Integer pagenumber,
 			@RequestParam("rows") Integer rows, @RequestParam("sortdireccion") String sortdireccion,
@@ -182,19 +185,30 @@ public class UsuarioController {
 
 	}
 
-//	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
-//	public List<Usuario> getall() {
+	@RequestMapping(value="/getall", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Usuario> getall() {
 //		Map<String, Object> response = new HashMap<String, Object>();
-//
-//		List<Usuario> lst = usuarioService.getall();
+
+		List<Usuario> lst = usuarioService.getall();
 //		response.put("data", lst);
-//		return lst;
-//	}
-	
-	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Usuario> getAll(){
-		return usuarioService.getall(); 
+		return lst;
 	}
 
+	@RequestMapping("/delete/{id}")
+	@ResponseBody
+	public void delete(@PathVariable Integer id) {	
+		
+		usuarioService.deletebyid(id);
+	}
+	
+
+	
+	@RequestMapping("/edit")
+	@ResponseBody
+	public Usuario getEdit(@RequestParam("id") Integer id) {
+		return usuarioService.findbyid(id).get();
+	}
+	
 
 }
