@@ -25,15 +25,15 @@ import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module.Feature;
 // extends SpringBootServletInitializer implements WebApplicationInitializer
 public class ComercialApplication {
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Bean
-	public FilterRegistrationBean jwtFilter() {
-		final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-		registrationBean.setFilter(new JwtFilter());
-		registrationBean.addUrlPatterns("/res/*");
-		System.out.println("REGISTRANDO .................................................");
-		return registrationBean;
-	}
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@Bean
+//	public FilterRegistrationBean jwtFilter() {
+//		final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+//		registrationBean.setFilter(new JwtFilter());
+//		registrationBean.addUrlPatterns("/res/*");
+//		System.out.println("REGISTRANDO .................................................");
+//		return registrationBean;
+//	}
 
 	@Bean
 	@Primary
