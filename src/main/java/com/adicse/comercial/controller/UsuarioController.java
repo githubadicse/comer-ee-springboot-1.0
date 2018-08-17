@@ -195,12 +195,12 @@ public class UsuarioController {
 		return lst;
 	}
 
-	@RequestMapping("/delete/{id}")
-	@ResponseBody
-	public void delete(@PathVariable Integer id) {	
-		
-		usuarioService.deletebyid(id);
-	}
+//	@RequestMapping("/delete/{id}")
+//	@ResponseBody
+//	public void delete(@PathVariable Integer id) {	
+//		
+//		usuarioService.deletebyid(id);
+//	}
 	
 
 	
