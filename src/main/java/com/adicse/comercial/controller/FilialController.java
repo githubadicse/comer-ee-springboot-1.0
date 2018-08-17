@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.adicse.comercial.model.Filial;
 import com.adicse.comercial.service.FilialService;
-
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 @RestController
 @RequestMapping("/res/filial")
 public class FilialController {
@@ -32,9 +33,15 @@ public class FilialController {
 //		
 //	}
 	
-	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Filial> getAll(){
-		return filialService.getall(); 
+	@RequestMapping(value="/getall", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Filial> getall() {
+//		Map<String, Object> response = new HashMap<String, Object>();
+
+		
+		List<Filial> lst = filialService.getall();
+//		response.put("data", lst);
+		return lst;
 	}
 
 }

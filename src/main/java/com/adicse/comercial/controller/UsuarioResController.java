@@ -18,24 +18,33 @@ import javax.servlet.ServletException;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.adicse.comercial.model.Empleado;
 import com.adicse.comercial.model.Filepath;
+import com.adicse.comercial.model.GuiaRemision001;
+import com.adicse.comercial.model.GuiaRemision002;
 import com.adicse.comercial.model.Puntoventa;
 import com.adicse.comercial.model.Usuario;
 import com.adicse.comercial.model.Usuarioempleado;
+import com.adicse.comercial.model.Vehiculo;
 import com.adicse.comercial.service.FilepathService;
 import com.adicse.comercial.service.PuntoventaService;
 import com.adicse.comercial.service.UsuarioEmpleadoService;
 import com.adicse.comercial.service.UsuarioService;
+import com.adicse.comercial.viewResolver.PdfGuiaRemision;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -81,97 +90,41 @@ public class UsuarioResController {
 
 	@RequestMapping("/save")
 	@ResponseBody
-	public Map<String, Object> save(@RequestBody String sUsuario) {
-		Map<String, Object> response = new HashMap<String, Object>();
-
-		ObjectMapper om = new ObjectMapper();
-		om.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-		Usuario usuario = null;
-		try {
-			usuario = om.readValue(sUsuario, Usuario.class);
-
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			response.put("success", false);
-			response.put("msg", e.getMessage());
-			return response;
-			// e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			response.put("success", false);
-			response.put("msg", e.getMessage());
-			return response;
-			// e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			response.put("success", false);
-			response.put("msg", e.getMessage());
-			return response;
-			// e.printStackTrace();
-		}
-
-		try {
-			Integer idusuario = usuario.getIdusuario();
-
-			try {
-				usuarioEmpleadoService.deleteUsuarioEmpleadoByIdusuario(idusuario);
-			} catch (Exception ex) {
-				response.put("success", false);
-				response.put("msg", ex.getMessage());
-				return response;
-			}
-			
-//			if(usuario.getUsuarioempleados() != null){
-//				for (Usuarioempleado row : usuario.getUsuarioempleados()) {
-//					row.setUsuario(usuario);
-//				}		
-//			}
-
-
-			usuario = usuarioService.grabar(usuario);
-			if(usuario.getUsuarioempleados() != null){
-				for (Usuarioempleado usuarioEmpleado : usuario.getUsuarioempleados()) {
-					usuarioEmpleado.setUsuario(null);
-				}	
-			}
-
-
-			response.put("success", true);
-			response.put("msg", "Registro grabado");
-			response.put("data", usuario);
-		} catch (JDBCException e) {
-			System.out.println("error 1 :" + e.getMessage());
-			SQLException cause = (SQLException) e.getCause();
-			// evaluate cause and find out what was the problem
-			System.out.println("error 2 :" + cause.getMessage());
-			response.put("success", false);
-			response.put("msg", cause.getMessage());
-		} catch (HibernateException ex) {
-			System.out.println("error 3 :" + ex.getMessage());
-		}
-
-		return response;
-
+	public Usuario postCreate(@RequestBody Usuario usuario) {
+//		usuario.setIdusuario(0);
+		return usuarioService.grabar(usuario);
 	}
 	
-	@RequestMapping("/delete")
+	@RequestMapping("/delete/{id}")
 	@ResponseBody
-	public Map<String, Object> delete(@RequestParam("id") Integer idusuario) {
-		Map<String, Object> response = new HashMap<>();
-
-		try{
-			usuarioService.deletebyid(idusuario);
-			response.put("msg","REGISTRO ELIMINADO");
-			response.put("success", true);
-		}catch(Exception ex){
-			response.put("msg",ex.getMessage());
-			response.put("success", false);
-		}
-	
+	public void delete(@PathVariable Integer id) {	
 		
-		return response;
+		usuarioService.deletebyid(id);
+	}
+	
+	@RequestMapping("/edit/{id}")
+	@ResponseBody
+	public Usuario getEdit(@RequestParam("id") Integer id) {
+		return usuarioService.findbyid(id).get();
 	}
 
+	
+
+	
+	@RequestMapping("/update")	
+	public Usuario putUdate(@RequestBody Usuario entidad) {		
+		Usuario usuarioUpdate = usuarioService.findbyid(entidad.getIdusuario()).get();
+			
+		BeanUtils.copyProperties(entidad, usuarioUpdate);		
+		return usuarioService.grabar(usuarioUpdate);
+	}
+	
+	
+
+	
+
+	
+	
 	@RequestMapping("/findbyid")
 	@ResponseBody
 	public Map<String, Object> findbyid(@RequestParam("id") Integer idusuario) {
@@ -453,5 +406,46 @@ public class UsuarioResController {
 		response.put("msg", true);
 		return response;
 	}
+	
+	
+	@RequestMapping(value="/getall", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Usuario> getall() {
+//		Map<String, Object> response = new HashMap<String, Object>();
+
+		List<Usuario> lst = usuarioService.getall();
+//		response.put("data", lst);
+		return lst;
+	}
+	
+	
+	
+	
+//	@RequestMapping("/getallporfilial")
+//	@ResponseBody
+//	public ModelAndView getGuiaRemisionPorItem(
+//			@RequestParam("idfilial") String idFilial
+//			){
+//		
+//		List<Usuario> lstUsuario = usuarioService.getGuiaRemisionPorItemAndAnnoNumeroEntrega(idItem, anno, numeroEntrega);
+//		
+//		for(GuiaRemision001 guiaRemision001: lstGuiaRemision001) {
+//			for(GuiaRemision002 guiaRemision002: guiaRemision001.getGuiaRemision002s()) {
+//				guiaRemision002.setGuiaRemision001(null);
+//			}
+//		}
+//		
+//		Map<String,Object> model = new HashMap<>();
+//		
+//		model.put("data", lstGuiaRemision001);
+//		
+//		ModelAndView mv = new ModelAndView(new PdfGuiaRemision(),model);
+//		
+//		return mv;	
+//		
+//		
+//		
+//		
+//	}
 
 }

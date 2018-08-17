@@ -14,8 +14,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.adicse.comercial.dao.IGuiaRemision001Dao;
 import com.adicse.comercial.dao.IUsuarioDao;
 import com.adicse.comercial.especification.UsuarioSpecification;
+import com.adicse.comercial.model.GuiaRemision001;
 import com.adicse.comercial.model.Usuario;
 import com.adicse.comercial.model.Usuarioempleado;
 import com.adicse.comercial.shared.CustomFilterSpec;
@@ -27,12 +29,16 @@ public class UsuarioService implements IAdicseService<Usuario, Integer> {
 	
 	@Autowired
 	private IUsuarioDao iUsuarioDao;
+
 	
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
 			Object filter, Object paramsExtra) {
 		return null;
 	}
+//	public List<Usuario> getUsuarioPorFilial(String idItem){
+//		return  iUsuarioDao.getUsuarioPorFilial(idItem);
+//	}
 
 	@Override
 	public Page<Usuario> pagination(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
