@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.adicse.comercial.dao.ICodigobarraDao;
 import com.adicse.comercial.dao.IProductoDao;
 import com.adicse.comercial.especification.ProductoSpecification;
 import com.adicse.comercial.model.Producto;
@@ -26,6 +27,9 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 	
 	@Autowired
 	private IProductoDao iProductoDao;
+	
+	@Autowired
+	private ICodigobarraDao iCodigobarraDao;	
 	
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
@@ -76,6 +80,9 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 		return lista;
 	}
 
+	public void deleteNumeradorByIdTipoDocumento(Integer id) {
+		iCodigobarraDao.deleteCodigoBarraByCodigoProducto(id);
+	}
 	
 	@Override
 	public List<Producto> getall() {
@@ -130,6 +137,10 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 	public Optional<Producto> findbyid(Integer id) {
 		// TODO Auto-generated method stub
 		return iProductoDao.findById(id);
+	}
+	
+	public Producto findById(Integer id) {
+		return iProductoDao.findById(id).get();
 	}
 
 

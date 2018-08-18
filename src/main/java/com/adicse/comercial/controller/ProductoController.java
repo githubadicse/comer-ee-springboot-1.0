@@ -6,7 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,11 +15,10 @@ import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,16 +29,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.adicse.comercial.model.Codigobarra;
 import com.adicse.comercial.model.Filepath;
+
 import com.adicse.comercial.model.Producto;
-import com.adicse.comercial.service.CodigobarraService;
 import com.adicse.comercial.service.FilepathService;
 import com.adicse.comercial.service.ProductoService;
 import com.adicse.comercial.utilitarios.Idunico;
 import com.adicse.comercial.viewResolver.PdfListaProductos;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @RestController
 @RequestMapping("/res/producto")
@@ -47,9 +43,6 @@ public class ProductoController {
 
 	@Autowired
 	private ProductoService productoService;
-
-	@Autowired
-	private CodigobarraService codigobarraService;
 
 	@Autowired
 	private FilepathService filepathService;
@@ -84,83 +77,48 @@ public class ProductoController {
 	
 	@RequestMapping("/update")
 	@ResponseBody
-	public Producto putUdate(@RequestBody Producto producto) {
+	public Producto putUdate(@RequestBody Producto entidad) {		
+		Producto productoUpdate = productoService.findbyid(entidad.getIdproducto() ).get();
 		
-		Producto productoUpdate = productoService.findbyid(producto.getIdproducto() ).get();
+		// elimina en perfilesdetalle por idperfil si existe		
+		productoService.deleteNumeradorByIdTipoDocumento(entidad.getIdproducto());
 		
-		BeanUtils.copyProperties(producto, productoUpdate);
+		// colocamos el id al detalle		
+		for(Codigobarra row: entidad.getCodigobarras()) {			
+			row.setProducto(entidad);			
+			row.setIdcodigobarra(new Idunico().getIdunico());			
+		}
 		
-		return productoService.grabar(productoUpdate);
+		BeanUtils.copyProperties(entidad, productoUpdate);
+		
+		// evita recursividad
+		Producto entidadRes = productoService.grabar(productoUpdate);
+		for (Codigobarra rowpd: entidadRes.getCodigobarras()) {
+			rowpd.setProducto(null);
+		}
+		
+		return entidadRes;
+	}
+	
+	@RequestMapping(value="/save", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Producto save( @RequestBody Producto entidad ) {
+		
+		// colocamos el id al detalle		
+		for(Codigobarra row: entidad.getCodigobarras()) {			
+			row.setProducto(entidad);			
+			row.setIdcodigobarra(new Idunico().getIdunico());			
+		}
+								
+		// evita recursividad
+		Producto entidadRes = productoService.grabar(entidad);
+		for (Codigobarra rowpd: entidadRes.getCodigobarras()) {
+			rowpd.setProducto(null);
+		}
+		
+		return entidadRes;
 	}
 
-	@RequestMapping("/save")
-	@ResponseBody
-	public Map<String, Object> save(@RequestBody String sProducto) {
-		Map<String, Object> response = new HashMap<String, Object>();
-		System.out.println("Grabando ingreso almacen ....");
-		ObjectMapper om = new ObjectMapper();
-		om.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-		Producto producto = null;
-		
-		try {
-			producto = om.readValue(sProducto, Producto.class);
-			codigobarraService.deleteAllByCodigoproducto(producto.getIdproducto());
-			// actualizamos el detalle de codigo de barras
-			Integer i = 0;
-			for (Codigobarra row : producto.getCodigobarras()) {
-				
-				String id = new Idunico().getIdunico();
-				row.setIdcodigobarra(id);
-				row.setProducto(producto);
-				i++;
-			}
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			response.put("success", false);
-			response.put("msg", e.getMessage());
-			return response;
-			// e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			response.put("success", false);
-			response.put("msg", e.getMessage());
-			e.printStackTrace();
-			return response;
-			// e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			response.put("success", false);
-			response.put("msg", e.getMessage());
-			return response;
-			// e.printStackTrace();
-		}
-
-		try {
-
-			
-			producto = productoService.grabar(producto);
-			Integer idproducto = producto.getIdproducto();
-		
-
-			response.put("success", true);
-			response.put("msg", "Registro grabado");
-			response.put("idproducto", idproducto);
-		} catch (JDBCException e) {
-			System.out.println("error 1 :" + e.getMessage());
-			SQLException cause = (SQLException) e.getCause();
-			// evaluate cause and find out what was the problem
-			System.out.println("error 2 :" + cause.getMessage());
-			response.put("success", false);
-			response.put("msg", cause.getMessage());
-		} catch (HibernateException ex) {
-			System.out.println("error 3 :" + ex.getMessage());
-		}
-
-		return response;
-
-	}
-
-	@RequestMapping("/getall")
+	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<Producto> getAll() {
 		List<Producto> lst = productoService.getall();
@@ -168,16 +126,27 @@ public class ProductoController {
 		return lst;
 	}
 
+//	@RequestMapping("/edit")
+//	@ResponseBody
+//	public Producto getEdit(@RequestParam("id") Integer idproducto) {
+//
+//		Producto producto = productoService.findbyid(idproducto).get();
+//
+//		for (Codigobarra cb : producto.getCodigobarras()) {
+//			cb.setProducto(null);
+//		}
+//
+//		return producto;
+//	}
+	
 	@RequestMapping("/edit")
 	@ResponseBody
-	public Producto getEdit(@RequestParam("id") Integer idproducto) {
-
-		Producto producto = productoService.findbyid(idproducto).get();
-
-		for (Codigobarra cb : producto.getCodigobarras()) {
-			cb.setProducto(null);
+	public Producto getEdit(@RequestParam("id") Integer id) {
+		Producto producto = productoService.findById(id);
+		
+		for (Codigobarra rowPD: producto.getCodigobarras()) {
+			rowPD.setProducto(null);
 		}
-
 		return producto;
 	}
 
