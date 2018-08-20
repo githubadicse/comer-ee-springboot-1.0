@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.adicse.comercial.model.Chofer;
 import com.adicse.comercial.model.PeriodoLectivo;
 //import com.adicse.comercial.configsecurity.JwtUtil;
 import com.adicse.comercial.model.Usuario;
@@ -32,12 +34,11 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-
-
+	
 	@Autowired
 	private PeriodoLectivoService periodoLectivoService;
 
-	@RequestMapping("pagination")
+	@RequestMapping("/pagination")
 	@ResponseBody
 	public Map<String, Object> pagination(@RequestParam("pagenumber") Integer pagenumber,
 			@RequestParam("rows") Integer rows, @RequestParam("sortdireccion") String sortdireccion,
@@ -64,51 +65,6 @@ public class UsuarioController {
 		System.out.println("Ingreso a login....");
 
 		Map<String, Object> response = new HashMap<>();
-		
-//	    String remoteAddr = "";
-//	    remoteAddr = request.getRemoteAddr();
-//        if (request != null) {
-//            remoteAddr = request.getHeader("X-FORWARDED-FOR");
-//            if (remoteAddr == null || "".equals(remoteAddr)) {
-//                remoteAddr = request.getRemoteAddr();
-//            }
-//        }
-        
-//        String ip = request.getHeader("X-Forwarded-For");  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("Proxy-Client-IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("WL-Proxy-Client-IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_X_FORWARDED_FOR");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_X_FORWARDED");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_X_CLUSTER_CLIENT_IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_CLIENT_IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_FORWARDED_FOR");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_FORWARDED");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_VIA");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("REMOTE_ADDR");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getRemoteAddr();  
-//        }  
-//        System.out.println("IP : " + ip);
 
 		String sreturn = "hola";
 		Boolean status = true;
@@ -165,8 +121,6 @@ public class UsuarioController {
 					//.setExpiration(expirationTime)
 					.signWith(SignatureAlgorithm.HS256, "secretkey").compact();
 
-			
-			
 			// String tk = JwtUtil.addAuthentication(res, login);
 			
 			PeriodoLectivo pl = periodoLectivoService.findbyid(1).get() ;
@@ -182,19 +136,22 @@ public class UsuarioController {
 
 	}
 
-//	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
-//	public List<Usuario> getall() {
+	@RequestMapping(value="/getall", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Usuario> getall() {
 //		Map<String, Object> response = new HashMap<String, Object>();
-//
-//		List<Usuario> lst = usuarioService.getall();
+
+		List<Usuario> lst = usuarioService.getall();
 //		response.put("data", lst);
-//		return lst;
-//	}
-	
-	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Usuario> getAll(){
-		return usuarioService.getall(); 
+		return lst;
 	}
 
+	
+	@RequestMapping("/edit")
+	@ResponseBody
+	public Usuario getEdit(@RequestParam("id") Integer id) {
+		return usuarioService.findbyid(id).get();
+	}
+	
 
 }

@@ -19,7 +19,7 @@ import com.adicse.comercial.model.Perfil;
 import com.adicse.comercial.model.Perfilesdetalle;
 import com.adicse.comercial.service.PerfilService;
 import com.adicse.comercial.utilitarios.Idunico;
-
+import org.springframework.web.bind.annotation.RequestMethod;
 @RestController
 @RequestMapping("/res/perfil")
 public class PerfilController {
@@ -112,9 +112,16 @@ public class PerfilController {
 				
 	}		
 		
-	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Perfil> getAll(){
-		return perfilService.getall(); 
+	@RequestMapping(value="/getall", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Perfil> getall() {
+//		Map<String, Object> response = new HashMap<String, Object>();
+
+		
+		List<Perfil> lst = perfilService.getall();
+//		response.put("data", lst);
+		return lst;
 	}
+	
 	
 }
