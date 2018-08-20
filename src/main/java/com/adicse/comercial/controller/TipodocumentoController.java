@@ -55,10 +55,12 @@ public class TipodocumentoController {
 	public Tipodocumento save( @RequestBody Tipodocumento entidad ) {
 		
 		// colocamos el id al detalle
-		for(Numerador row: entidad.getNumeradors()) {		
+		Integer idCount=0;
+		for(Numerador row: entidad.getNumeradors()) {			
 			row.setTipodocumento(entidad);
 			if (row.getIdNumerador() == 0) {
-				row.setIdNumerador(tipodocumentoService.getIdNumerador());
+				row.setIdNumerador(tipodocumentoService.getIdNumerador()+idCount);
+				idCount++; // para no repetir el mismo id si son varios registros
 			}
 		}
 				
@@ -66,7 +68,7 @@ public class TipodocumentoController {
 		Integer idEntidad = entidad.getIdTipoDocumento(); 
 		if ( idEntidad != 0 ) {
 			tipodocumentoService.deleteNumeradorByIdTipoDocumento(idEntidad);
-		}		
+		}
 				
 		// evita recursividad
 		Tipodocumento entidadRes = tipodocumentoService.grabar(entidad);
