@@ -41,8 +41,13 @@ public class PerfilController {
 			row.setIdsysperfilesdetalle(new Idunico().getIdunico());			
 		}
 				
+		Perfil perfil = perfilService.grabar(entidad);
 		
-		return perfilService.grabar(entidad);
+		for(Perfilesdetalle row: perfil.getPerfilesdetalles() ) {
+			row.setPerfil(null);
+		}
+		
+		return perfil;
 	}
 	
 	@RequestMapping("/update")	

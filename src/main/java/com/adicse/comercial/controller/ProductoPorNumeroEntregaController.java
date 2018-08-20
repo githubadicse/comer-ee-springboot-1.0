@@ -25,8 +25,6 @@ public class ProductoPorNumeroEntregaController {
 	@Autowired
 	private ProductoPorNumeroEntregaService productoPorNumeroEntregaService;
 
-	@Autowired
-	private CatalogoProductoQaliwarmaService catalogoProductoQaliwarmaService;
 
 	@Autowired
 	private ProductoPresentacionService productoPresentacionService;

@@ -1,6 +1,5 @@
 package com.adicse.comercial.service;
 import static com.adicse.comercial.specification.SpecificationBuilder.selectFrom;
-import com.adicse.comercial.specification.Filter;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.adicse.comercial.dao.IPerfilesdetalleDao;
 import com.adicse.comercial.model.Perfilesdetalle;
+import com.adicse.comercial.specification.Filter;
 import com.adicse.comercial.utilitarios.Idunico;
 
 @Service
@@ -99,6 +99,11 @@ public class PerfilesdetalleService implements IAdicseService<Perfilesdetalle, I
 	public Optional<Perfilesdetalle> EntityForSpecificatios(Perfilesdetalle entidad, Object filter) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public List<Perfilesdetalle> getPerfildetalleByIdPerfil( Integer idperfil){
+		return iPerfilesdetalleDao.getPerfildetalleByIdPerfil(idperfil);
+		
 	}
 
 }

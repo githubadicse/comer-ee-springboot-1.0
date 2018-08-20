@@ -17,10 +17,7 @@ public class Perfilesdetalle implements Serializable {
 	@Id
 	private String idsysperfilesdetalle;
 
-	//bi-directional many-to-one association to Menu
-	@ManyToOne
-	@JoinColumn(name="idmenu")
-	private Menu menu;
+	private String idmenu;
 
 	//bi-directional many-to-one association to Perfil
 	@ManyToOne
@@ -42,12 +39,12 @@ public class Perfilesdetalle implements Serializable {
 		this.idsysperfilesdetalle = idsysperfilesdetalle;
 	}
 
-	public Menu getMenu() {
-		return this.menu;
+	public String getIdmenu() {
+		return this.idmenu;
 	}
 
-	public void setMenu(Menu menu) {
-		this.menu = menu;
+	public void setIdmenu(String idmenu) {
+		this.idmenu = idmenu;
 	}
 
 	public Perfil getPerfil() {

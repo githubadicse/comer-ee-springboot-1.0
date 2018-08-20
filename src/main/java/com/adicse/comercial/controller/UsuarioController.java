@@ -174,7 +174,7 @@ public class UsuarioController {
 			response.put("token", s);
 			response.put("sucess", true);
 			response.put("msg", sreturn);
-			
+			response.put("idusuario", usuario.getIdusuario().toString());
 			response.put("anno", pl.getAnno());
 			response.put("numeroEntrega", pl.getNumeroEntrega());
 		}

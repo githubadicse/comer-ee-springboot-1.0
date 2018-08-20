@@ -1,5 +1,7 @@
 package com.adicse.comercial.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,4 +19,7 @@ JpaSpecificationExecutor<Perfilesdetalle>
 	@Modifying
 	@Query("delete From Perfilesdetalle c where c.perfil.idperfil = :id")
 	void deletePerfilDetalleByIdPerfil(@Param("id") Integer id);
+	
+	@Query("select p from Perfilesdetalle p where p.perfil.idperfil = :idperfil")
+	List<Perfilesdetalle> getPerfildetalleByIdPerfil(@Param("idperfil") Integer idperfil);
 }

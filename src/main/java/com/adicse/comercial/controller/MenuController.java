@@ -5,15 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adicse.comercial.clases.TreeMain;
-
 import com.adicse.comercial.model.Menu;
-import com.adicse.comercial.model.Perfil;
 import com.adicse.comercial.service.MenuService;
 
 @RestController
@@ -36,9 +33,17 @@ public class MenuController {
 		//System.out.println(sMenu);
 		response.put("data", object);
 		
-		
 		return response;
 		
 	}
 	
+	@RequestMapping(value = "/getallList")
+	@ResponseBody
+	public List<Menu> getAllList(){
+		
+		List<Menu> lstMenu = menuService.getall();
+		
+		return lstMenu;
+		
+	}	
 }

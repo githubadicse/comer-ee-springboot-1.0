@@ -2,7 +2,6 @@ package com.adicse.comercial.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
 
 /**
@@ -23,15 +22,17 @@ public class Menu implements Serializable {
 
 	private Integer leaf;
 
+	private String name;
+
 	private String obs;
 
 	private Integer orden;
 
 	private String routerlink;
 
-	//bi-directional many-to-one association to Perfilesdetalle
-	@OneToMany(mappedBy="menu")
-	private List<Perfilesdetalle> perfilesdetalles;
+	private String state;
+
+	private String type;
 
 	public Menu() {
 	}
@@ -68,6 +69,14 @@ public class Menu implements Serializable {
 		this.leaf = leaf;
 	}
 
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getObs() {
 		return this.obs;
 	}
@@ -92,26 +101,20 @@ public class Menu implements Serializable {
 		this.routerlink = routerlink;
 	}
 
-	public List<Perfilesdetalle> getPerfilesdetalles() {
-		return this.perfilesdetalles;
+	public String getState() {
+		return this.state;
 	}
 
-	public void setPerfilesdetalles(List<Perfilesdetalle> perfilesdetalles) {
-		this.perfilesdetalles = perfilesdetalles;
+	public void setState(String state) {
+		this.state = state;
 	}
 
-	public Perfilesdetalle addPerfilesdetalle(Perfilesdetalle perfilesdetalle) {
-		getPerfilesdetalles().add(perfilesdetalle);
-		perfilesdetalle.setMenu(this);
-
-		return perfilesdetalle;
+	public String getType() {
+		return this.type;
 	}
 
-	public Perfilesdetalle removePerfilesdetalle(Perfilesdetalle perfilesdetalle) {
-		getPerfilesdetalles().remove(perfilesdetalle);
-		perfilesdetalle.setMenu(null);
-
-		return perfilesdetalle;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

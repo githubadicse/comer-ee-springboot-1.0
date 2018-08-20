@@ -27,7 +27,7 @@ public class Usuario implements Serializable {
 
 	private String nomusuario;
 
-	private Integer status;
+	private Boolean status;
 
 	//bi-directional many-to-one association to Rol
 	@OneToMany(mappedBy="usuario")
@@ -98,11 +98,11 @@ public class Usuario implements Serializable {
 		this.nomusuario = nomusuario;
 	}
 
-	public Integer getStatus() {
+	public Boolean getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 
