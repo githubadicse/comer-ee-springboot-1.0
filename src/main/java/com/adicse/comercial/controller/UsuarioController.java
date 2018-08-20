@@ -35,8 +35,6 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-
-
 	@Autowired
 	private PeriodoLectivoService periodoLectivoService;
 
@@ -67,51 +65,6 @@ public class UsuarioController {
 		System.out.println("Ingreso a login....");
 
 		Map<String, Object> response = new HashMap<>();
-		
-//	    String remoteAddr = "";
-//	    remoteAddr = request.getRemoteAddr();
-//        if (request != null) {
-//            remoteAddr = request.getHeader("X-FORWARDED-FOR");
-//            if (remoteAddr == null || "".equals(remoteAddr)) {
-//                remoteAddr = request.getRemoteAddr();
-//            }
-//        }
-        
-//        String ip = request.getHeader("X-Forwarded-For");  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("Proxy-Client-IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("WL-Proxy-Client-IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_X_FORWARDED_FOR");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_X_FORWARDED");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_X_CLUSTER_CLIENT_IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_CLIENT_IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_FORWARDED_FOR");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_FORWARDED");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_VIA");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("REMOTE_ADDR");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getRemoteAddr();  
-//        }  
-//        System.out.println("IP : " + ip);
 
 		String sreturn = "hola";
 		Boolean status = true;
@@ -168,8 +121,6 @@ public class UsuarioController {
 					//.setExpiration(expirationTime)
 					.signWith(SignatureAlgorithm.HS256, "secretkey").compact();
 
-			
-			
 			// String tk = JwtUtil.addAuthentication(res, login);
 			
 			PeriodoLectivo pl = periodoLectivoService.findbyid(1).get() ;
@@ -194,14 +145,6 @@ public class UsuarioController {
 //		response.put("data", lst);
 		return lst;
 	}
-
-//	@RequestMapping("/delete/{id}")
-//	@ResponseBody
-//	public void delete(@PathVariable Integer id) {	
-//		
-//		usuarioService.deletebyid(id);
-//	}
-	
 
 	
 	@RequestMapping("/edit")

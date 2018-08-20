@@ -1,5 +1,4 @@
 package com.adicse.comercial.model;
-
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -17,7 +16,7 @@ public class Usuario implements Serializable {
 	@Id
 	private Integer idusuario;
 
-	private Integer activo;
+	private Boolean activo;
 
 	private String clave;
 
@@ -58,11 +57,11 @@ public class Usuario implements Serializable {
 		this.idusuario = idusuario;
 	}
 
-	public Integer getActivo() {
+	public Boolean getActivo() {
 		return this.activo;
 	}
 
-	public void setActivo(Integer activo) {
+	public void setActivo(Boolean activo) {
 		this.activo = activo;
 	}
 
