@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.adicse.comercial.model.ProductoPorNumeroEntrega;
 import com.adicse.comercial.model.Usuario;
 import com.adicse.comercial.model.Vehiculo;
 import com.adicse.comercial.service.UsuarioService;
@@ -96,4 +98,6 @@ public class UsuarioResController {
 	public List<Usuario> getallchinito(@RequestBody Filter filter){
 		return usuarioService.lstUsuario(filter);
 	}
+	
+
 }
