@@ -24,6 +24,7 @@ import com.adicse.comercial.specification.Filter;
 @RequestMapping("/res/usuario")
 public class UsuarioResController {
 
+
 	
 	//cambios
 	@Autowired
@@ -51,7 +52,6 @@ public class UsuarioResController {
 		response.put("data", lst);
 		response.put("totalCount", page.getTotalElements());
 		response.put("success", true);
-		
 		return response;
 				
 	}	
@@ -94,6 +94,7 @@ public class UsuarioResController {
 		return usuarioService.getall();
 	}
 	
+
 	
 	@RequestMapping(value="/getFindByIdFilial/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -101,5 +102,12 @@ public class UsuarioResController {
 		return null;//usuarioService.findByIdFilial(id);	
 	}
 	
+
+	@RequestMapping("/getall2")
+	@ResponseBody
+	public List<Usuario> getallchinito(@RequestBody Filter filter){
+		//return usuarioService.lstUsuario(filter);
+		return null;
+	}
 
 }

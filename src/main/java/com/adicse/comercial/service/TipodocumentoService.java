@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.adicse.comercial.dao.INumeradorDao;
 import com.adicse.comercial.dao.ITipodocumentoDao;
 import com.adicse.comercial.especification.TipodocumentoSpecification;
 import com.adicse.comercial.model.Tipodocumento;
@@ -24,6 +25,9 @@ public class TipodocumentoService implements IAdicseService<Tipodocumento, Integ
 	
 	@Autowired
 	private ITipodocumentoDao iTipodocumentoDao;
+	
+	@Autowired
+	private INumeradorDao iNumeradorDao;
 	
 	
 	@Override
@@ -86,8 +90,20 @@ public class TipodocumentoService implements IAdicseService<Tipodocumento, Integ
 
 	@Override
 	public Tipodocumento grabar(Tipodocumento entidad) {
-		// TODO Auto-generated method stub
-		return null;
+		if ( entidad.getIdTipoDocumento() == 0 ) { 
+			Integer IdMax = iTipodocumentoDao.getMax() == null ? 1 : iTipodocumentoDao.getMax() + 1 ; 
+			entidad.setIdTipoDocumento(IdMax);
+		}
+		
+		return iTipodocumentoDao.save(entidad);
+	}
+	
+	public void deleteNumeradorByIdTipoDocumento(Integer id) {
+		iNumeradorDao.deleteNumeradorByIdTipoDocumento(id);
+	}
+	
+	public Integer getIdNumerador() {
+		return iNumeradorDao.getMax() == null ? 1 : iNumeradorDao.getMax() + 1;
 	}
 
 	@Override
@@ -113,6 +129,10 @@ public class TipodocumentoService implements IAdicseService<Tipodocumento, Integ
 	public Optional<Tipodocumento> findbyid(Integer id) {
 		// TODO Auto-generated method stub
 		return iTipodocumentoDao.findById(id);
+	}
+	
+	public Tipodocumento findById(Integer id) {
+		return iTipodocumentoDao.findById(id).get();
 	}
 
 	@Override
