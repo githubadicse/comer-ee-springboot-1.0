@@ -25,7 +25,7 @@ import com.adicse.comercial.specification.Filter;
 public class UsuarioResController {
 
 	
-	
+	//cambios
 	@Autowired
 	private UsuarioService usuarioService;
 	
