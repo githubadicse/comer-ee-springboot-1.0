@@ -1,5 +1,4 @@
 package com.adicse.comercial.model;
-
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -27,7 +26,7 @@ public class Usuario implements Serializable {
 
 	private String nomusuario;
 
-	private Boolean status;
+	private Integer status;
 
 	//bi-directional many-to-one association to Rol
 	@OneToMany(mappedBy="usuario")
@@ -98,11 +97,11 @@ public class Usuario implements Serializable {
 		this.nomusuario = nomusuario;
 	}
 
-	public Boolean getStatus() {
+	public Integer getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
