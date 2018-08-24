@@ -18,6 +18,8 @@ import com.adicse.comercial.dao.ITipodocumentoDao;
 import com.adicse.comercial.especification.TipodocumentoSpecification;
 import com.adicse.comercial.model.Tipodocumento;
 import com.adicse.comercial.shared.CustomFilterSpec;
+import com.adicse.comercial.specification.Filter;
+import static com.adicse.comercial.specification.SpecificationBuilder.selectFrom;
 
 @Service
 @Transactional
@@ -86,6 +88,10 @@ public class TipodocumentoService implements IAdicseService<Tipodocumento, Integ
 	public List<Tipodocumento> getallbyid(List<?> lst) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public List<Tipodocumento> findByFilter(Filter filter){
+		return selectFrom(iTipodocumentoDao).where(filter).findAll(); 
 	}
 
 	@Override

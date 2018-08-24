@@ -1,5 +1,6 @@
 package com.adicse.comercial.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -10,7 +11,7 @@ import com.adicse.comercial.model.Tipodocumento;
 public interface ITipodocumentoDao 
 extends CrudRepository<Tipodocumento, Integer>,
 PagingAndSortingRepository<Tipodocumento, Integer>, 
-JpaSpecificationExecutor<Tipodocumento>
+JpaSpecificationExecutor<Tipodocumento>, JpaRepository<Tipodocumento, Integer>
 {
 	
 	@Query("SELECT max(p.idTipoDocumento) FROM Tipodocumento p")
