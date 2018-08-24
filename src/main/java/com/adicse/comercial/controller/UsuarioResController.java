@@ -23,6 +23,8 @@ import com.adicse.comercial.specification.Filter;
 @RestController
 @RequestMapping("/res/usuario")
 public class UsuarioResController {
+
+	
 	
 	@Autowired
 	private UsuarioService usuarioService;
