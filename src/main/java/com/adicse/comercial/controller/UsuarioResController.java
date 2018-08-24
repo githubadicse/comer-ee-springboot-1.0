@@ -99,5 +99,11 @@ public class UsuarioResController {
 		return usuarioService.lstUsuario(filter);
 	}
 	
+	@RequestMapping(value="/getFindByIdFilial/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Usuario> getFindByIdFilial(@PathVariable Integer id) {		
+		return usuarioService.findByIdFilial(id);	
+	}
+	
 
 }
