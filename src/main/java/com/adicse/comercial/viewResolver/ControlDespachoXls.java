@@ -89,6 +89,10 @@ public class ControlDespachoXls extends AbstractXlsxView {
 			
 			for(GuiaRemision001 guiaRemision001 : lstGuiasPorItem) {
 				System.out.println("Item : " + itemEntrega.getDscitem() + "  Guias Total : " + sizeLst + " Procesando : " + cnt );
+				if(itemEntrega.getDscitem().equals("MORALES")) {
+					System.out.println("Morales");
+				}
+				//MORALES  Guias Total : 46 Procesando : 1
 				cnt++;
 
 				// escribimos el titulo
@@ -139,12 +143,15 @@ public class ControlDespachoXls extends AbstractXlsxView {
 		Date fechaVencimiento = new Date();
 		//ProductoPorNumeroEntrega productoPorNumeroEntrega = guiaRemision002.getVolumenConvertidoEnvace().getRequerimientoVolumen002Producto().getProductoPorNumeroEntrega();
 		CatalogoMarca catalogoMarca = guiaRemision002.getVolumenConvertidoEnvace().getCatalogoMarca();
-		for(CatalogoLote catalogoLote:catalogoMarca.getCatalogoLotes()) {
+
+		if(catalogoMarca!=null) {
+		for(CatalogoLote catalogoLote:catalogoMarca.getCatalogoLotes() ) {
 			String nLote = catalogoLote.getNumeroLote();
 			if(numeroLote.equals(nLote)) {
 				fechaVencimiento = catalogoLote.getFechaVencimiento();
 				break;
 			}
+		}
 		}
 		
 		
