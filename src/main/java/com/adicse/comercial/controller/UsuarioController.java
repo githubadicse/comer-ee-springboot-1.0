@@ -134,6 +134,7 @@ public class UsuarioController {
 			response.put("token", "");
 			response.put("sucess", false);
 			response.put("msg", sreturn);
+			
 		}
 
 		String pwd = usuario.getClave();
@@ -177,6 +178,7 @@ public class UsuarioController {
 			response.put("idusuario", usuario.getIdusuario().toString());
 			response.put("anno", pl.getAnno());
 			response.put("numeroEntrega", pl.getNumeroEntrega());
+			response.put("filial", usuario.getFilial().getIdfilial() );
 		}
 		return response;
 
