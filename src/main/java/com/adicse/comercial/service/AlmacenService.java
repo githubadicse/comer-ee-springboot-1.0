@@ -131,6 +131,10 @@ public class AlmacenService implements IAdicseService<Almacen, Integer> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public List<Almacen> getAlmacensByIdFilial(Integer idfilial ){
+		return iAlmacenDao.getAlmacensByIdFilial(idfilial);
+	}
 
 	
 
