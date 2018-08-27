@@ -27,8 +27,6 @@ public class Usuario implements Serializable {
 
 	private String nomusuario;
 
-
-
 	//bi-directional many-to-one association to Rol
 	@OneToMany(mappedBy="usuario")
 	private List<Rol> rols;
@@ -97,8 +95,6 @@ public class Usuario implements Serializable {
 	public void setNomusuario(String nomusuario) {
 		this.nomusuario = nomusuario;
 	}
-
-
 
 	public List<Rol> getRols() {
 		return this.rols;

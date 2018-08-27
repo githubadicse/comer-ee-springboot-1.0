@@ -21,6 +21,11 @@ public class Almacen implements Serializable {
 
 	private String dscalmacen;
 
+	//bi-directional many-to-one association to Filial
+	@ManyToOne
+	@JoinColumn(name="idfilial")
+	private Filial filial;
+
 	//bi-directional many-to-one association to Cierremensual
 	@OneToMany(mappedBy="almacen")
 	private List<Cierremensual> cierremensuals;
@@ -78,6 +83,14 @@ public class Almacen implements Serializable {
 
 	public void setDscalmacen(String dscalmacen) {
 		this.dscalmacen = dscalmacen;
+	}
+
+	public Filial getFilial() {
+		return this.filial;
+	}
+
+	public void setFilial(Filial filial) {
+		this.filial = filial;
 	}
 
 	public List<Cierremensual> getCierremensuals() {
