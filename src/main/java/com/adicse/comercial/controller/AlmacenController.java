@@ -87,6 +87,11 @@ public class AlmacenController {
 		return almacenService.getall();
 	}
 
+	@RequestMapping("/getAlmacensByIdFilial")
+	@ResponseBody
+	public List<Almacen> getAlmacensByIdFilial(@RequestParam("idfilial") Integer idfilial){
+		return almacenService.getAlmacensByIdFilial(idfilial);
+	}
 }
 
 
