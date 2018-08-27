@@ -32,9 +32,8 @@ import com.adicse.comercial.model.ItemEntrega;
 
 public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 
-
 	public static Integer nRow;
-	public static CellStyle styleTimeNewRoman,styleFormatNumero3;
+	public static CellStyle styleTimeNewRoman, styleFormatNumero3;
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 	@Override
@@ -56,7 +55,6 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 		@SuppressWarnings("unused")
 		Cell cellRes;
 
-		
 		DataFormat format = workbook.createDataFormat();
 
 		Font font = workbook.createFont();
@@ -69,7 +67,6 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 
 		styleTimeNewRoman = workbook.createCellStyle();
 		styleTimeNewRoman.setFont(font);
-		
 
 		nRow = 3;
 		Integer cnt = 1;
@@ -78,47 +75,46 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 			nRow = 3;
 			// creamos la hoja con el nombre del item
 			sheet = workbook.createSheet(itemEntrega.getDscitem());
-			//definimos los anchos de las columnas para la hoja
+			// definimos los anchos de las columnas para la hoja
 			this.setWithColumns(sheet);
 			// filtramos las guias que son para este item y numero de entrega
 			List<GuiaRemision001> lstGuiasPorItem = this.guiasByItemAndNumeroEntrega(itemEntrega, numeroEntrega,
 					lstGuiaRemision);
-			
+
 			Integer sizeLst = lstGuiasPorItem.size();
 			cnt = 1;
-			
-			for(GuiaRemision001 guiaRemision001 : lstGuiasPorItem) {
-				System.out.println("Item : " + itemEntrega.getDscitem() + "  Guias Total : " + sizeLst + " Procesando : " + cnt );
+
+			for (GuiaRemision001 guiaRemision001 : lstGuiasPorItem) {
+				System.out.println(
+						"Item : " + itemEntrega.getDscitem() + "  Guias Total : " + sizeLst + " Procesando : " + cnt);
 				cnt++;
 
 				// escribimos el titulo
 				this.titulo(workbook, sheet);
 				nRow++;
 
-				//definimos el tiulo para la tabla
-				this.header(workbook, sheet);		
+				// definimos el tiulo para la tabla
+				this.header(workbook, sheet);
 				nRow = nRow + 4;
 				List<GuiaRemision002> lstGuiaRemision002 = guiaRemision001.getGuiaRemision002s();
-				
-				lstGuiaRemision002.sort((p1,p2)-> p1.getProductoGrupo().compareTo(p2.getProductoGrupo()) );
-				
-				for(GuiaRemision002 guiaRemision002 : lstGuiaRemision002 ) {
-					this.fillDataGuia(guiaRemision002, sheet,  itemEntrega);
+
+				lstGuiaRemision002.sort((p1, p2) -> p1.getProductoGrupo().compareTo(p2.getProductoGrupo()));
+
+				for (GuiaRemision002 guiaRemision002 : lstGuiaRemision002) {
+					this.fillDataGuia(guiaRemision002, sheet, itemEntrega);
 				}
 				nRow = nRow + 2;
 
 			}
-	
 
 		}
 		System.out.println("FIN DE PROCESO ....");
 
 	}
-	
+
 	@SuppressWarnings("unused")
-	public void fillDataGuia(GuiaRemision002 guiaRemision002, Sheet sheet,  ItemEntrega itemEntrega) {
-		
-		
+	public void fillDataGuia(GuiaRemision002 guiaRemision002, Sheet sheet, ItemEntrega itemEntrega) {
+
 		Row row = sheet.createRow(nRow);
 		Cell cellFecha = row.createCell(1);
 		Cell cellItem = row.createCell(2);
@@ -127,8 +123,8 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 		Cell cellLote = row.createCell(5);
 		Cell cellMarca = row.createCell(6);
 		Cell cellFechaVencimiento = row.createCell(7);
-		
-		//Cell cellTransporte = row.createCell(8);
+
+		// Cell cellTransporte = row.createCell(8);
 		Cell cellNroPlaca = row.createCell(8);
 		Cell cellNroBrevete = row.createCell(9);
 		Cell cellNroGuia = row.createCell(10);
@@ -136,50 +132,58 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 		Cell cellCodigoModular = row.createCell(12);
 		Cell cellNroUsuario = row.createCell(13);
 		Cell cellDireccionIe = row.createCell(14);
-		
+
 		String numeroLote = guiaRemision002.getNumeroLote();
 		Date fechaVencimiento = new Date();
-		//ProductoPorNumeroEntrega productoPorNumeroEntrega = guiaRemision002.getVolumenConvertidoEnvace().getRequerimientoVolumen002Producto().getProductoPorNumeroEntrega();
+		// ProductoPorNumeroEntrega productoPorNumeroEntrega =
+		// guiaRemision002.getVolumenConvertidoEnvace().getRequerimientoVolumen002Producto().getProductoPorNumeroEntrega();
 		CatalogoMarca catalogoMarca = guiaRemision002.getVolumenConvertidoEnvace().getCatalogoMarca();
-		for(CatalogoLote catalogoLote:catalogoMarca.getCatalogoLotes()) {
-			String nLote = catalogoLote.getNumeroLote();
-			if(numeroLote.equals(nLote)) {
-				fechaVencimiento = catalogoLote.getFechaVencimiento();
-				break;
+
+		if (catalogoMarca != null) {
+			for (CatalogoLote catalogoLote : catalogoMarca.getCatalogoLotes()) {
+				String nLote = catalogoLote.getNumeroLote();
+				if (numeroLote.equals(nLote)) {
+					fechaVencimiento = catalogoLote.getFechaVencimiento();
+					break;
+				}
 			}
+
 		}
-		
-		
-		//----------------------------producto presentacion ----------------------------------//
+
+		// ----------------------------producto presentacion
+		// ----------------------------------//
 		String sEnvase = guiaRemision002.getEnvase();
-		
+
 		Double factorVolumenPresentacion = guiaRemision002.getFactor().doubleValue();
-		
+
 		String sUnidadMedidaAbr = guiaRemision002.getUnidadMedidaTrabajo();
-	
-		String sPresentacion = WordUtils.capitalize(sEnvase.toLowerCase())+" X "+ factorVolumenPresentacion.toString() + " "+sUnidadMedidaAbr;
-		
-		cellFecha.setCellValue( dateFormat.format( guiaRemision002.getGuiaRemision001().getFechaEmision() ) );
-		cellItem.setCellValue( itemEntrega.getDscitem() );
+
+		String sPresentacion = WordUtils.capitalize(sEnvase.toLowerCase()) + " X "
+				+ factorVolumenPresentacion.toString() + " " + sUnidadMedidaAbr;
+
+		cellFecha.setCellValue(dateFormat.format(guiaRemision002.getGuiaRemision001().getFechaEmision()));
+		cellItem.setCellValue(itemEntrega.getDscitem());
 		cellCantidad.setCellValue(guiaRemision002.getCantidad());
-		
-		cellProducto.setCellValue(guiaRemision002.getProductoSeleccionado() + " " + sPresentacion );
+
+		cellProducto.setCellValue(guiaRemision002.getProductoSeleccionado() + " " + sPresentacion);
 		cellLote.setCellValue(guiaRemision002.getNumeroLote());
 		cellMarca.setCellValue(guiaRemision002.getMarca());
-		
-		cellFechaVencimiento.setCellValue( dateFormat.format(fechaVencimiento));
-		
+
+		cellFechaVencimiento.setCellValue(dateFormat.format(fechaVencimiento));
+
 		cellNroPlaca.setCellValue(guiaRemision002.getGuiaRemision001().getVehiculo().getNumeroPlaca());
 		cellNroBrevete.setCellValue(guiaRemision002.getGuiaRemision001().getChofer().getNumeroBrevete());
-		
+
 		cellNroGuia.setCellValue(guiaRemision002.getGuiaRemision001().getNumeroFisico());
-		cellNombreIe.setCellValue(guiaRemision002.getGuiaRemision001().getRequerimientoVolumen001().getCodigomodularIinstitucionEducativa().getNombreInstitucionEducativa());
-		cellCodigoModular.setCellValue(guiaRemision002.getGuiaRemision001().getRequerimientoVolumen001().getCodigomodularIinstitucionEducativa().getCodigoModular());
-		cellNroUsuario.setCellValue(guiaRemision002.getGuiaRemision001().getRequerimientoVolumen001().getNumeroUsuarios());
-		cellDireccionIe.setCellValue(guiaRemision002.getGuiaRemision001().getRequerimientoVolumen001().getCodigomodularIinstitucionEducativa().getDireccionInstitucionEducativa());
-		
-		
-		
+		cellNombreIe.setCellValue(guiaRemision002.getGuiaRemision001().getRequerimientoVolumen001()
+				.getCodigomodularIinstitucionEducativa().getNombreInstitucionEducativa());
+		cellCodigoModular.setCellValue(guiaRemision002.getGuiaRemision001().getRequerimientoVolumen001()
+				.getCodigomodularIinstitucionEducativa().getCodigoModular());
+		cellNroUsuario
+				.setCellValue(guiaRemision002.getGuiaRemision001().getRequerimientoVolumen001().getNumeroUsuarios());
+		cellDireccionIe.setCellValue(guiaRemision002.getGuiaRemision001().getRequerimientoVolumen001()
+				.getCodigomodularIinstitucionEducativa().getDireccionInstitucionEducativa());
+
 		cellFecha.setCellStyle(styleTimeNewRoman);
 		cellProducto.setCellStyle(styleTimeNewRoman);
 		cellMarca.setCellStyle(styleTimeNewRoman);
@@ -194,10 +198,10 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 		cellNombreIe.setCellStyle(styleTimeNewRoman);
 		cellNroUsuario.setCellStyle(styleTimeNewRoman);
 		cellDireccionIe.setCellStyle(styleTimeNewRoman);
-		
+
 		nRow++;
 	}
-	
+
 	public Date getFechaVencimientoLote() {
 		return null;
 	}
@@ -208,16 +212,15 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 		Integer len = lstGuiaRemision.size();
 		for (int i = 0; i < len; i++) {
 
-			GuiaRemision001 guiaRemision001Aux = lstGuiaRemision.get(i) .getGuiaRemision001();
+			GuiaRemision001 guiaRemision001Aux = lstGuiaRemision.get(i).getGuiaRemision001();
 			ItemEntrega itemEntregaAux = lstGuiaRemision.get(i).getItemEntrega();
 
-			if (itemEntregaAux.equals(itemEntrega) && guiaRemision001Aux.getRequerimientoVolumen001().getEntregaPorItem()
-					.getNumeroEntrega().getNumeroEntregaValor().equals(numeroEntrega)) {
+			if (itemEntregaAux.equals(itemEntrega) && guiaRemision001Aux.getRequerimientoVolumen001()
+					.getEntregaPorItem().getNumeroEntrega().getNumeroEntregaValor().equals(numeroEntrega)) {
 				lstAux.add(guiaRemision001Aux);
 			}
-			
+
 		}
-	
 
 		return lstAux;
 	}
@@ -271,17 +274,16 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 
 		CellStyle style = workbook.createCellStyle();
 		style.setFont(font);
-		
+
 		style.setVerticalAlignment(VerticalAlignment.CENTER);
 		style.setAlignment(HorizontalAlignment.CENTER);
 		style.setWrapText(true);
-		
-		style.setBorderBottom(BorderStyle.THIN );
+
+		style.setBorderBottom(BorderStyle.THIN);
 		style.setBorderTop(BorderStyle.THIN);
 		style.setBorderLeft(BorderStyle.THIN);
 		style.setBorderRight(BorderStyle.THIN);
 
-		
 		sheet.addMergedRegion(new CellRangeAddress(nRow, nRow + 3, 1, 1));
 		sheet.addMergedRegion(new CellRangeAddress(nRow, nRow + 3, 2, 2));
 		sheet.addMergedRegion(new CellRangeAddress(nRow, nRow + 3, 3, 3));
@@ -289,51 +291,43 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 		sheet.addMergedRegion(new CellRangeAddress(nRow, nRow + 3, 5, 5));
 		sheet.addMergedRegion(new CellRangeAddress(nRow, nRow + 3, 6, 6));
 		sheet.addMergedRegion(new CellRangeAddress(nRow, nRow + 3, 7, 7));
-		
+
 		sheet.addMergedRegion(new CellRangeAddress(nRow, nRow + 1, 8, 9));
 		sheet.addMergedRegion(new CellRangeAddress(nRow, nRow + 1, 10, 14));
-		
-		//Sub header
-		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3 , 8, 8));
-		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3 , 9, 9));
-		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3 , 10, 10));
-		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3 , 11, 11));
-		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3 , 12, 12));
-		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3 , 13, 13));
-		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3 , 14, 14));
-		
-		Row rowHeader = sheet.createRow(nRow);  //row1
-		Row row2 = sheet.createRow(nRow + 1);   //row 2
-		Row rowSubHeader = sheet.createRow(nRow+2);  //row3
-		Row row4 = sheet.createRow(nRow+3); //row4
-		
+
+		// Sub header
+		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3, 8, 8));
+		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3, 9, 9));
+		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3, 10, 10));
+		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3, 11, 11));
+		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3, 12, 12));
+		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3, 13, 13));
+		sheet.addMergedRegion(new CellRangeAddress(nRow + 2, nRow + 3, 14, 14));
+
+		Row rowHeader = sheet.createRow(nRow); // row1
+		Row row2 = sheet.createRow(nRow + 1); // row 2
+		Row rowSubHeader = sheet.createRow(nRow + 2); // row3
+		Row row4 = sheet.createRow(nRow + 3); // row4
+
 		Cell cellHeader = rowHeader.createCell(1);
-	
-		
-		
+
 		Cell cellBorder = null;
 		for (int i = 1; i < 15; i++) {
 			cellBorder = rowHeader.createCell(i);
 			cellBorder.setCellStyle(style);
-			
+
 			cellBorder = row2.createCell(i);
 			cellBorder.setCellStyle(style);
-			
+
 			cellBorder = rowSubHeader.createCell(i);
 			cellBorder.setCellStyle(style);
-			
+
 			cellBorder = row4.createCell(i);
 			cellBorder.setCellStyle(style);
 		}
 
-
-		
-		
-		
 		cellHeader.setCellValue("FECHA");
 		cellHeader.setCellStyle(style);
-		
-	
 
 		cellHeader = rowHeader.createCell(2);
 		cellHeader.setCellValue("ITEM");
@@ -346,67 +340,63 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 		cellHeader = rowHeader.createCell(4);
 		cellHeader.setCellValue("PRODUCTO");
 		cellHeader.setCellStyle(style);
-		
+
 		cellHeader = rowHeader.createCell(5);
 		cellHeader.setCellValue("LOTE");
 		cellHeader.setCellStyle(style);
-		
+
 		cellHeader = rowHeader.createCell(6);
 		cellHeader.setCellValue("MARCA/PRESENTACION");
 		cellHeader.setCellStyle(style);
-		
+
 		cellHeader = rowHeader.createCell(7);
 		cellHeader.setCellValue("FECHA VCMTO");
 		cellHeader.setCellStyle(style);
-		
+
 		cellHeader = rowHeader.createCell(8);
 		cellHeader.setCellValue("TRANSPORTISTA");
 		cellHeader.setCellStyle(style);
-		
 
 		cellHeader = rowSubHeader.createCell(8);
 		cellHeader.setCellValue("TRANS. N° PLACA");
 		cellHeader.setCellStyle(style);
-		
+
 		cellHeader = rowSubHeader.createCell(9);
 		cellHeader.setCellValue("TRANS. N° BREVETE");
-		cellHeader.setCellStyle(style);		
-		
+		cellHeader.setCellStyle(style);
+
 //		cellHeader = row4.createCell(11);
 //		cellHeader.setCellStyle(style);
-		
-		//-----------------PROVINCIA-----------------------
+
+		// -----------------PROVINCIA-----------------------
 		cellHeader = rowHeader.createCell(10);
 		cellHeader.setCellValue("LUGAR DESTINO");
 		cellHeader.setCellStyle(style);
-	
-		
-		//-------------------------------
-		
-		//-----------------DISTRITO----------------------------
+
+		// -------------------------------
+
+		// -----------------DISTRITO----------------------------
 		cellHeader = rowSubHeader.createCell(10);
 		cellHeader.setCellValue("NRO GUIA REMISION");
 		cellHeader.setCellStyle(style);
-		
-	
-		//-----------------------------------
-		
+
+		// -----------------------------------
+
 		cellHeader = rowSubHeader.createCell(11);
 		cellHeader.setCellValue("NOMBRE IE");
 		cellHeader.setCellStyle(style);
-	
+
 		cellHeader = rowSubHeader.createCell(12);
 		cellHeader.setCellValue("CODIGO MODULAR");
 		cellHeader.setCellStyle(style);
-	
+
 		cellHeader = rowSubHeader.createCell(13);
 		cellHeader.setCellValue("NUMERO USUARIOS.");
 		cellHeader.setCellStyle(style);
-	
-		
+
 		cellHeader = rowSubHeader.createCell(14);
 		cellHeader.setCellValue("DIRECCION DE LA II.EE.");
-		cellHeader.setCellStyle(style);	
+		cellHeader.setCellStyle(style);
 
 		nRow = nRow + 1;
 	}
@@ -429,7 +419,5 @@ public class ExcelPlanRastreabilidad extends AbstractXlsxView {
 		sheet.setColumnWidth(13, (int) (sheet.getColumnWidth(13) * 1.5));
 		sheet.setColumnWidth(14, (int) (sheet.getColumnWidth(14) * 4));
 	}
-
-
 
 }
