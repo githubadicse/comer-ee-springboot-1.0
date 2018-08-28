@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,16 +83,9 @@ public class CategoriaController {
 	
 
 	
-	@RequestMapping("/getall")
-	@ResponseBody	
-	public Map<String,Object> getall(){
-		
-		Map<String,Object> response = new HashMap<String, Object>();
-		
-		
-		
-		return response;		
-		
+	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Categoria> getAll(){
+		return categoriaService.getall(); 
 	}
 	
 

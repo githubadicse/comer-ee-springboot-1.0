@@ -20,6 +20,7 @@ import org.hibernate.JDBCException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,9 +32,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.adicse.comercial.model.Codigobarra;
 import com.adicse.comercial.model.Filepath;
 import com.adicse.comercial.model.Producto;
+
 import com.adicse.comercial.service.CodigobarraService;
 import com.adicse.comercial.service.FilepathService;
 import com.adicse.comercial.service.ProductoService;
+import com.adicse.comercial.specification.ConvertObjectToFormatJson;
+import com.adicse.comercial.specification.Filter;
 import com.adicse.comercial.utilitarios.Idunico;
 import com.adicse.comercial.viewResolver.PdfListaProductos;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -53,6 +57,9 @@ public class ProductoController {
 
 	@Autowired
 	private FilepathService filepathService;
+	
+	@Autowired
+	private ConvertObjectToFormatJson convertObjectToFormatJson;
 
 	@RequestMapping("/pagination")
 	@ResponseBody
@@ -88,9 +95,23 @@ public class ProductoController {
 		
 		Producto productoUpdate = productoService.findbyid(producto.getIdproducto() ).get();
 		
+		codigobarraService.deleteAllByCodigoproducto(producto.getIdproducto());
+		
+		// colocamos el id al detalle		
+		for(Codigobarra row: producto.getCodigobarras()) {			
+			row.setProducto(producto);			
+			row.setIdcodigobarra(new Idunico().getIdunico());			
+		}
+		
 		BeanUtils.copyProperties(producto, productoUpdate);
 		
-		return productoService.grabar(productoUpdate);
+		// evita recursividad
+		Producto entidadRes = productoService.grabar(productoUpdate);
+		for (Codigobarra rowpd: entidadRes.getCodigobarras()) {
+			rowpd.setProducto(null);
+		}
+		
+		return entidadRes;
 	}
 
 	@RequestMapping("/save")
@@ -166,6 +187,14 @@ public class ProductoController {
 		List<Producto> lst = productoService.getall();
 		
 		return lst;
+	}
+	
+	@RequestMapping(value="/getByFilter", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Producto> getByFilter(@RequestBody Object f) {		
+		Filter filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(f);
+		List<Producto> tipoDocumentos = productoService.findByFilter(filter);
+		
+		return tipoDocumentos;
 	}
 
 	@RequestMapping("/edit")
