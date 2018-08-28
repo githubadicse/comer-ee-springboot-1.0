@@ -1,5 +1,7 @@
 package com.adicse.comercial.service;
 
+import static com.adicse.comercial.specification.SpecificationBuilder.selectFrom;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,7 @@ import com.adicse.comercial.especification.ProductoSpecification;
 import com.adicse.comercial.model.Producto;
 import com.adicse.comercial.model.Unidadmedida;
 import com.adicse.comercial.shared.CustomFilterSpec;
+import com.adicse.comercial.specification.Filter;
 
 @Service
 @Transactional
@@ -87,6 +90,10 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 	public List<Producto> getallbyid(List<?> lst) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public List<Producto> findByFilter(Filter filter){
+		return selectFrom(iProductoDao).where(filter).findAll(); 
 	}
 
 	@Override

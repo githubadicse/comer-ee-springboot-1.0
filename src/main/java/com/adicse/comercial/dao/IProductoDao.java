@@ -2,6 +2,7 @@ package com.adicse.comercial.dao;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -11,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 import com.adicse.comercial.model.Producto;
 
 public interface IProductoDao extends CrudRepository<Producto, Integer>, PagingAndSortingRepository<Producto, Integer>,
-		JpaSpecificationExecutor<Producto>
+		JpaSpecificationExecutor<Producto>, JpaRepository<Producto, Integer>
 
 {
 
