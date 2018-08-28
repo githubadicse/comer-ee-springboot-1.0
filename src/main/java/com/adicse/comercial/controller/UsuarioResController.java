@@ -24,9 +24,6 @@ import com.adicse.comercial.specification.Filter;
 @RequestMapping("/res/usuario")
 public class UsuarioResController {
 
-
-	
-	//cambios
 	@Autowired
 	private UsuarioService usuarioService;
 	
@@ -37,7 +34,7 @@ public class UsuarioResController {
 			@RequestParam("rows") Integer rows,
 			@RequestParam("sortdireccion") String sortdireccion,
 			@RequestParam("sortcolumn") String sortcolumn,
-			@RequestParam("filters")  Object filters		
+			@RequestParam("filters")  Object filters	
 			){
 	
 		Map<String,Object> response = new HashMap<String, Object>();
@@ -95,19 +92,11 @@ public class UsuarioResController {
 	}
 	
 
-	
-	@RequestMapping(value="/getFindByIdFilial/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public List<Usuario> getFindByIdFilial(@PathVariable Integer id) {		
-		return null;//usuarioService.findByIdFilial(id);	
-	}
-	
-
 	@RequestMapping("/getall2")
 	@ResponseBody
 	public List<Usuario> getallchinito(@RequestBody Filter filter){
-		//return usuarioService.lstUsuario(filter);
-		return null;
+		return usuarioService.lstUsuario(filter);
 	}
+	
 
 }
