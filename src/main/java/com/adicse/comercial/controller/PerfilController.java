@@ -67,6 +67,7 @@ public class PerfilController {
 		for (Perfilesdetalle rowPD: perfil.getPerfilesdetalles()) {
 			rowPD.setPerfil(null);
 		}
+		
 		return perfil;
 	}
 	

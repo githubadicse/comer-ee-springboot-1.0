@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.adicse.comercial.model.Numerador;
 import com.adicse.comercial.model.Tipodocumento;
 import com.adicse.comercial.service.TipodocumentoService;
+import com.adicse.comercial.specification.ConvertObjectToFormatJson;
+import com.adicse.comercial.specification.Filter;
 
 @RestController
 @RequestMapping("/res/tipodocumento")
@@ -24,6 +26,9 @@ public class TipodocumentoController {
 	
 	@Autowired
 	private TipodocumentoService tipodocumentoService;
+	
+	@Autowired
+	private ConvertObjectToFormatJson convertObjectToFormatJson;
 	
 	@RequestMapping("/pagination")
 	@ResponseBody
@@ -55,10 +60,12 @@ public class TipodocumentoController {
 	public Tipodocumento save( @RequestBody Tipodocumento entidad ) {
 		
 		// colocamos el id al detalle
+		Integer idCount = 0; // si son varios para que no repita el mismo id
 		for(Numerador row: entidad.getNumeradors()) {		
 			row.setTipodocumento(entidad);
 			if (row.getIdNumerador() == 0) {
-				row.setIdNumerador(tipodocumentoService.getIdNumerador());
+				row.setIdNumerador(tipodocumentoService.getIdNumerador() + idCount);
+				idCount++;
 			}
 		}
 				
@@ -110,6 +117,21 @@ public class TipodocumentoController {
 		
 		response.put("data", Tipodocumento);
 		return response;				
-	}		
+	}
+	
+	//@PostMapping("/getByFilter")
+	@RequestMapping(value="/getByFilter", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Tipodocumento> getByFilter(@RequestBody Object f) {		
+		Filter filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(f);
+		List<Tipodocumento> tipoDocumentos = tipodocumentoService.findByFilter(filter);
+		
+		for (Tipodocumento rowDoc: tipoDocumentos) {
+			for (Numerador rowPD: rowDoc.getNumeradors()) {
+				rowPD.setTipodocumento(null);
+			}
+		}		
+		
+		return tipoDocumentos;
+	}
 
 }
