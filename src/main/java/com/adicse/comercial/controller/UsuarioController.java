@@ -65,51 +65,6 @@ public class UsuarioController {
 
 		Map<String, Object> response = new HashMap<>();
 		
-//	    String remoteAddr = "";
-//	    remoteAddr = request.getRemoteAddr();
-//        if (request != null) {
-//            remoteAddr = request.getHeader("X-FORWARDED-FOR");
-//            if (remoteAddr == null || "".equals(remoteAddr)) {
-//                remoteAddr = request.getRemoteAddr();
-//            }
-//        }
-        
-//        String ip = request.getHeader("X-Forwarded-For");  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("Proxy-Client-IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("WL-Proxy-Client-IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_X_FORWARDED_FOR");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_X_FORWARDED");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_X_CLUSTER_CLIENT_IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_CLIENT_IP");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_FORWARDED_FOR");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_FORWARDED");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("HTTP_VIA");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getHeader("REMOTE_ADDR");  
-//        }  
-//        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {  
-//            ip = request.getRemoteAddr();  
-//        }  
-//        System.out.println("IP : " + ip);
-
 		String sreturn = "hola";
 		Boolean status = true;
 		if (json.get("username") == null || json.get("password") == null) {
@@ -159,6 +114,9 @@ public class UsuarioController {
 			Long expireLon = expirationTime.getTime();
 			claims.put("role", "admin");
 			claims.put("role_ventas", "admin");
+			claims.put("idusuario", usuario.getIdusuario());
+			claims.put("idfilial", usuario.getFilial().getIdfilial());
+			
 			String s = Jwts.builder().setSubject(login)
 				
 					.setClaims(claims)
