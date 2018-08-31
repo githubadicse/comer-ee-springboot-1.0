@@ -181,7 +181,8 @@ public class ProductoController {
 
 	}
 
-	@RequestMapping("/getall")
+	
+	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<Producto> getAll() {
 		List<Producto> lst = productoService.getall();
@@ -192,9 +193,14 @@ public class ProductoController {
 	@RequestMapping(value="/getByFilter", produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<Producto> getByFilter(@RequestBody Object f) {		
 		Filter filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(f);
-		List<Producto> tipoDocumentos = productoService.findByFilter(filter);
-		
-		return tipoDocumentos;
+		List<Producto> productos = productoService.findByFilter(filter);
+				
+		return productos;
+	}
+	
+	@RequestMapping(value="/getProductoByCodigoBarras", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Producto getProductoByCodigoBarras(@RequestParam("codigo") String codigo) {
+		return productoService.getProductoByCodigoBarras(codigo);
 	}
 
 	@RequestMapping("/edit")

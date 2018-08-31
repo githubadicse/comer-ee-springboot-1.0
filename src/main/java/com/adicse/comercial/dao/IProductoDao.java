@@ -25,5 +25,8 @@ public interface IProductoDao extends CrudRepository<Producto, Integer>, PagingA
 	List<Producto> findByDscproductoContainingIgnoreCaseOrderByDscproducto(String dscproducto);
 	
 	//Producto findByCatalogoProductoQaliwarmaEquals(CatalogoProductoQaliwarma catalogo);
+	
+	@Query("Select p FROM Producto p inner join p.codigobarras c on c.producto.idproducto = p.idproducto where c.codigo = :codigobarras")
+	Producto getProductoByCodigoBarras(@Param("codigobarras") String codigobarras);
 
 }
