@@ -150,6 +150,10 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 		return iProductoDao.getProductoByIdProducto(idproducto);
 	}
 	
+	public Producto getProductoByCodigoBarras(String idproducto){
+		return iProductoDao.getProductoByCodigoBarras(idproducto);
+	}
+	
 	public List<Producto> findByDscproductoContainingIgnoreCaseOrderByDscproducto(String dscproducto){
 		return iProductoDao.findByDscproductoContainingIgnoreCaseOrderByDscproducto(dscproducto);
 	}

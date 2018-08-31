@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,8 @@ import com.adicse.comercial.model.Lineacredito;
 import com.adicse.comercial.model.Proveedorcliente;
 import com.adicse.comercial.model.Proveedorclientedireccion;
 import com.adicse.comercial.service.ProveedorclienteService;
+import com.adicse.comercial.specification.ConvertObjectToFormatJson;
+import com.adicse.comercial.specification.Filter;
 import com.adicse.comercial.utilitarios.Idunico;
 
 @RestController
@@ -27,6 +30,9 @@ public class ProveedorclienteController {
 	
 	@Autowired
 	private ProveedorclienteService proveedorclienteService;
+	
+	@Autowired
+	private ConvertObjectToFormatJson convertObjectToFormatJson;
 	
 	
 	@RequestMapping("/filterGlobal")
@@ -144,11 +150,33 @@ public class ProveedorclienteController {
 		 return response;
 	}
 	
-	@RequestMapping("/getall")
+	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<Proveedorcliente> getall(){
 		return proveedorclienteService.getall();
 	}
+	
+	@RequestMapping(value="/getByFilter", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Proveedorcliente> getByFilter(@RequestBody Object f) {		
+		Filter filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(f);
+		List<Proveedorcliente> lst = proveedorclienteService.findByFilter(filter);
+		
+		for(Proveedorcliente pc:lst) {
+			
+			for(Proveedorclientedireccion pcd:pc.getProveedorclientedireccions()) {
+				pcd.setProveedorcliente(null);
+			}
+		}
+		
+		return lst;
+	}
+	
+	
+//	@RequestMapping(value="/getFindByDocumento", produces=MediaType.APPLICATION_JSON_VALUE)
+//	public Proveedorcliente getPorveedorClienteByDNI(@RequestParam("iddocumento") Integer iddocumento, @RequestParam("numdocumento") String numdocumento) {
+//		return proveedorclienteService.getFindByDocumento(iddocumento, numdocumento);
+//	}
+	
 	
 
 }
