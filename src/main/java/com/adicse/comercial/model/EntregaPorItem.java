@@ -1,10 +1,10 @@
 package com.adicse.comercial.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
 
 /**
  * The persistent class for the entrega_por_item database table.
@@ -23,12 +23,10 @@ public class EntregaPorItem implements Serializable {
 	private Boolean cerrado;
 
 	@Temporal(TemporalType.DATE)
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Column(name="fin_atencion")
 	private Date finAtencion;
 
 	@Temporal(TemporalType.DATE)
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Column(name="inicio_atencion")
 	private Date inicioAtencion;
 

@@ -1,12 +1,12 @@
 package com.adicse.comercial.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
+
 
 /**
  * The persistent class for the ing001 database table.
@@ -23,7 +23,6 @@ public class Ing001 implements Serializable {
 	private Integer condicionrelacioncompra;
 
 	@Temporal(TemporalType.DATE)
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	private Date fecha;
 
 	private Timestamp fechahorasys;
@@ -79,7 +78,7 @@ public class Ing001 implements Serializable {
 	private Traslado traslado;
 
 	//bi-directional many-to-one association to Ing002
-	@OneToMany(mappedBy="ing001", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="ing001")
 	private List<Ing002> ing002s;
 
 	public Ing001() {

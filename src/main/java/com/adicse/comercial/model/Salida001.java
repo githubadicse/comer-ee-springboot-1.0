@@ -1,12 +1,12 @@
 package com.adicse.comercial.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
+
 
 /**
  * The persistent class for the salida001 database table.
@@ -23,7 +23,6 @@ public class Salida001 implements Serializable {
 	private Integer condicionrelacionventa;
 
 	@Temporal(TemporalType.DATE)
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	private Date fecha;
 
 	private Timestamp fechahorasys;
@@ -70,7 +69,7 @@ public class Salida001 implements Serializable {
 	private Ven001 ven001;
 
 	//bi-directional many-to-one association to Salida002
-	@OneToMany(mappedBy="salida001", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="salida001")
 	private List<Salida002> salida002s;
 
 	public Salida001() {

@@ -18,15 +18,28 @@ public class Empleado implements Serializable {
 	@Id
 	private Integer idempleado;
 
+	private Boolean activo;
+
 	private String direccion;
 
 	private String dni;
 
 	private String email;
 
+	@Column(name="fecha_registro_systema")
+	private Timestamp fechaRegistroSystema;
+
+	@Column(name="fecha_registro_systema_modifica")
+	private Timestamp fechaRegistroSystemaModifica;
+
 	private Timestamp fechaingreso;
 
 	private Timestamp fechanacimiento;
+
+	private Integer idusuario;
+
+	@Column(name="idusuario_modifica")
+	private Integer idusuarioModifica;
 
 	private String nomempleado;
 
@@ -35,6 +48,11 @@ public class Empleado implements Serializable {
 	//bi-directional many-to-one association to Aperturapuntoventa
 	@OneToMany(mappedBy="empleado")
 	private List<Aperturapuntoventa> aperturapuntoventas;
+
+	//bi-directional many-to-one association to Filial
+	@ManyToOne
+	@JoinColumn(name="id_filial")
+	private Filial filial;
 
 	//bi-directional many-to-one association to Ing001
 	@OneToMany(mappedBy="empleado")
@@ -45,7 +63,7 @@ public class Empleado implements Serializable {
 	private List<Salida001> salida001s;
 
 	//bi-directional many-to-one association to Usuarioempleado
-	@OneToMany(mappedBy="empleado", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="empleado")
 	private List<Usuarioempleado> usuarioempleados;
 
 	public Empleado() {
@@ -57,6 +75,14 @@ public class Empleado implements Serializable {
 
 	public void setIdempleado(Integer idempleado) {
 		this.idempleado = idempleado;
+	}
+
+	public Boolean getActivo() {
+		return this.activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
 	}
 
 	public String getDireccion() {
@@ -83,6 +109,22 @@ public class Empleado implements Serializable {
 		this.email = email;
 	}
 
+	public Timestamp getFechaRegistroSystema() {
+		return this.fechaRegistroSystema;
+	}
+
+	public void setFechaRegistroSystema(Timestamp fechaRegistroSystema) {
+		this.fechaRegistroSystema = fechaRegistroSystema;
+	}
+
+	public Timestamp getFechaRegistroSystemaModifica() {
+		return this.fechaRegistroSystemaModifica;
+	}
+
+	public void setFechaRegistroSystemaModifica(Timestamp fechaRegistroSystemaModifica) {
+		this.fechaRegistroSystemaModifica = fechaRegistroSystemaModifica;
+	}
+
 	public Timestamp getFechaingreso() {
 		return this.fechaingreso;
 	}
@@ -97,6 +139,22 @@ public class Empleado implements Serializable {
 
 	public void setFechanacimiento(Timestamp fechanacimiento) {
 		this.fechanacimiento = fechanacimiento;
+	}
+
+	public Integer getIdusuario() {
+		return this.idusuario;
+	}
+
+	public void setIdusuario(Integer idusuario) {
+		this.idusuario = idusuario;
+	}
+
+	public Integer getIdusuarioModifica() {
+		return this.idusuarioModifica;
+	}
+
+	public void setIdusuarioModifica(Integer idusuarioModifica) {
+		this.idusuarioModifica = idusuarioModifica;
 	}
 
 	public String getNomempleado() {
@@ -135,6 +193,14 @@ public class Empleado implements Serializable {
 		aperturapuntoventa.setEmpleado(null);
 
 		return aperturapuntoventa;
+	}
+
+	public Filial getFilial() {
+		return this.filial;
+	}
+
+	public void setFilial(Filial filial) {
+		this.filial = filial;
 	}
 
 	public List<Ing001> getIng001s() {
