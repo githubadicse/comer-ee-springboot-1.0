@@ -32,7 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.adicse.comercial.model.Codigobarra;
 import com.adicse.comercial.model.Filepath;
 import com.adicse.comercial.model.Producto;
-
+import com.adicse.comercial.model.Stockactual;
 import com.adicse.comercial.service.CodigobarraService;
 import com.adicse.comercial.service.FilepathService;
 import com.adicse.comercial.service.ProductoService;
@@ -66,13 +66,41 @@ public class ProductoController {
 	public Map<String, Object> pagination(@RequestParam("pagenumber") Integer pagenumber,
 			@RequestParam("rows") Integer rows, @RequestParam("sortdireccion") String sortdireccion,
 			@RequestParam("sortcolumn") String sortcolumn, @RequestParam("filters") Object filter) {
-
+				
 		System.out.println("pagenumber :" + pagenumber);
 		System.out.println("rows :" + rows);
+		
 		Page<Producto> page = productoService.pagination(pagenumber, rows, sortdireccion, sortcolumn, filter);
 
 		List<Producto> lst = page.getContent();
 		
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		response.put("data", lst);
+		response.put("totalCount", page.getTotalElements());
+		response.put("success", true);
+		return response;
+	}
+	
+	@RequestMapping("/paginationbuscar")
+	@ResponseBody
+	public Map<String, Object> paginationbuscar(@RequestParam("pagenumber") Integer pagenumber,
+			@RequestParam("rows") Integer rows, @RequestParam("sortdireccion") String sortdireccion,
+			@RequestParam("sortcolumn") String sortcolumn, @RequestParam("filters") Object filter) {
+				
+		System.out.println("pagenumber :" + pagenumber);
+		System.out.println("rows :" + rows);
+		
+		Page<Producto> page = productoService.pagination(pagenumber, rows, sortdireccion, sortcolumn, filter);
+
+		List<Producto> lst = page.getContent();
+		
+		for (Producto p: lst) {
+			for (Stockactual rowStock: p.getStockactuals()) {
+				rowStock.setProducto(null);
+			}
+		}
 
 		Map<String, Object> response = new HashMap<String, Object>();
 
