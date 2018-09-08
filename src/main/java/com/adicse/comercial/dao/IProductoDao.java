@@ -31,4 +31,5 @@ public interface IProductoDao extends CrudRepository<Producto, Integer>, PagingA
 	
 	@Query("Select p From Producto p inner join p.stockactuals s on s.producto.idproducto = p.idproducto")
 	List<Producto> findProductoAndStock();
+	
 }

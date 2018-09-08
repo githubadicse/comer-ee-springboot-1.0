@@ -230,7 +230,7 @@ public class ProductoController {
 	public Producto getProductoByCodigoBarras(@RequestParam("codigo") String codigo) {
 		return productoService.getProductoByCodigoBarras(codigo);
 	}
-
+	
 	@RequestMapping("/edit")
 	@ResponseBody
 	public Producto getEdit(@RequestParam("id") Integer idproducto) {
