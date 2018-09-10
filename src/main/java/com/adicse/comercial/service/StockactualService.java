@@ -44,6 +44,11 @@ public class StockactualService implements IAdicseService<Stockactual, Integer> 
 		return selectFrom(iStockactualDao).where(_filter).findPage(pageable);
 
 	}
+	
+	public List<Stockactual> findByParametro(String parametro, Integer idalmacen){
+		Pageable pageable =  PageRequest.of(0, 4);
+		return iStockactualDao.findByParametro(parametro, idalmacen, pageable);
+	}
 
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,

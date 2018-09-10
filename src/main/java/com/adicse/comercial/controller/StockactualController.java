@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.adicse.comercial.model.Codigobarra;
 import com.adicse.comercial.model.Stockactual;
 import com.adicse.comercial.service.StockactualService;
 
@@ -49,6 +50,20 @@ public class StockactualController {
 	@ResponseBody
 	public List<Stockactual> getAll() {
 		return stockactualService.getall();		
+	}
+	
+	@RequestMapping(value="/getByParametro", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Stockactual>  findByParametro(@RequestParam("parametro") String parametro, @RequestParam("idalmacen") Integer idalmacen) {
+		
+		List<Stockactual> lst = stockactualService.findByParametro(parametro, idalmacen);
+		
+		for (Stockactual rowS: lst) {
+			for (Codigobarra rowP: rowS.getProducto().getCodigobarras()) {
+				rowP.setProducto(null);
+			}
+		}
+		
+		return lst;			
 	}
 	
 }
