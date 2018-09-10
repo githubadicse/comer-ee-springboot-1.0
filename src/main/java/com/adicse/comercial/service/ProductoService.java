@@ -13,14 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.adicse.comercial.dao.IProductoDao;
-import com.adicse.comercial.especification.ProductoSpecification;
 import com.adicse.comercial.model.Producto;
-import com.adicse.comercial.model.Unidadmedida;
-import com.adicse.comercial.shared.CustomFilterSpec;
+import com.adicse.comercial.specification.ConvertObjectToFormatJson;
 import com.adicse.comercial.specification.Filter;
 
 @Service
@@ -29,6 +26,9 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 	
 	@Autowired
 	private IProductoDao iProductoDao;
+	
+	@Autowired
+	private ConvertObjectToFormatJson convertObjectToFormatJson;
 	
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
@@ -43,6 +43,9 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 		// TODO Auto-generated method stub
 		Sort sort = new Sort(sortdireccion.toUpperCase() == "DESC" ? Direction.DESC : Direction.ASC, sortcolumn);
 		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
+		Filter _filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
+		
+		return selectFrom(iProductoDao).leftJoin("stockactuals").where(_filter).findPage(pageable);
 
 		/*  
 		 * instanciamos una entidad la cual servira de contenedor para realizar el filtro
@@ -50,33 +53,33 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 		 * se le debe pasar dos parametros, uno la entidad que queremos llenar con los datos 
 		 * del segundo parametro que es un objecto json que se para en la variable filter  
 		 */
-		Producto productofiltro = new Producto();
-		productofiltro.setIdproducto(null);
-		productofiltro.setDscproducto(null);
-		
-		Unidadmedida unidadmedida = new Unidadmedida();
-		productofiltro.setUnidadmedida(unidadmedida);
-		
-
-		CustomFilterSpec efs = new CustomFilterSpec();
-		try {
-			
-			productofiltro = (Producto) efs.CreateCustomFilter(productofiltro, filter);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		/* Specification nos permite agregar implicitamente los where que se pasaran al evento findAll,
-		 * Esto sucede en CrudRepository
-		 */
-		Specification<Producto> spec = new ProductoSpecification(productofiltro);
-		
-		Page<Producto> lista = iProductoDao.findAll(spec,pageable);
+//		Producto productofiltro = new Producto();
+//		productofiltro.setIdproducto(null);
+//		productofiltro.setDscproducto(null);
+//		
+//		Unidadmedida unidadmedida = new Unidadmedida();
+//		productofiltro.setUnidadmedida(unidadmedida);
+//		
+//
+//		CustomFilterSpec efs = new CustomFilterSpec();
+//		try {
+//			
+//			productofiltro = (Producto) efs.CreateCustomFilter(productofiltro, filter);
+//		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		/* Specification nos permite agregar implicitamente los where que se pasaran al evento findAll,
+//		 * Esto sucede en CrudRepository
+//		 */
+//		Specification<Producto> spec = new ProductoSpecification(productofiltro);
+//		
+//		Page<Producto> lista = iProductoDao.findAll(spec,pageable);
  
 
 		//
-		return lista;
+//		return lista;
 	}
 
 	
