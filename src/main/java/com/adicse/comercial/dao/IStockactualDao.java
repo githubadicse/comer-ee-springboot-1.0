@@ -23,8 +23,4 @@ JpaSpecificationExecutor<Stockactual>, JpaRepository<Stockactual, Integer>
 			+ "group by s.idstockactual")	
 	public List<Stockactual> findByParametro(String parametro, Integer idalmacen, Pageable pageable);
 	
-//	public List<Stockactual> findByParametro(String parametro, Integer idalmacen, PageRequest pageRequest);
-//	List<Stockactual> findByParametro(String parametro, Integer idalmacen, new PageRequest(0,10));
-//	Pageable pageable =  PageRequest.of(0, 1);
-
 }
