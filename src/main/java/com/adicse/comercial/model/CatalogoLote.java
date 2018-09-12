@@ -1,10 +1,10 @@
 package com.adicse.comercial.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
 
 /**
  * The persistent class for the catalogo_lote database table.
@@ -23,7 +23,6 @@ public class CatalogoLote implements Serializable {
 	private Integer cantidad;
 
 	@Temporal(TemporalType.DATE)
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Column(name="fecha_vencimiento")
 	private Date fechaVencimiento;
 
@@ -43,7 +42,7 @@ public class CatalogoLote implements Serializable {
 	private List<MarcaLote> marcaLotes;
 
 	//bi-directional many-to-one association to Piking
-	@OneToMany(mappedBy="catalogoLote", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="catalogoLote")
 	private List<Piking> pikings;
 
 	public CatalogoLote() {
