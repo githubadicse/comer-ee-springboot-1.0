@@ -1,10 +1,11 @@
 package com.adicse.comercial.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
-
 
 /**
  * The persistent class for the empleado database table.
@@ -32,9 +33,13 @@ public class Empleado implements Serializable {
 	@Column(name="fecha_registro_systema_modifica")
 	private Timestamp fechaRegistroSystemaModifica;
 
-	private Timestamp fechaingreso;
+	@Temporal(TemporalType.DATE)
+	@JsonFormat (pattern ="dd/MM/yyyy")
+	private Date fechaingreso;
 
-	private Timestamp fechanacimiento;
+	@Temporal(TemporalType.DATE)
+	@JsonFormat (pattern ="dd/MM/yyyy")
+	private Date fechanacimiento;
 
 	private Integer idusuario;
 
@@ -63,7 +68,7 @@ public class Empleado implements Serializable {
 	private List<Salida001> salida001s;
 
 	//bi-directional many-to-one association to Usuarioempleado
-	@OneToMany(mappedBy="empleado")
+	@OneToMany(mappedBy="empleado", cascade={CascadeType.ALL})
 	private List<Usuarioempleado> usuarioempleados;
 
 	public Empleado() {
@@ -125,19 +130,19 @@ public class Empleado implements Serializable {
 		this.fechaRegistroSystemaModifica = fechaRegistroSystemaModifica;
 	}
 
-	public Timestamp getFechaingreso() {
+	public Date getFechaingreso() {
 		return this.fechaingreso;
 	}
 
-	public void setFechaingreso(Timestamp fechaingreso) {
+	public void setFechaingreso(Date fechaingreso) {
 		this.fechaingreso = fechaingreso;
 	}
 
-	public Timestamp getFechanacimiento() {
+	public Date getFechanacimiento() {
 		return this.fechanacimiento;
 	}
 
-	public void setFechanacimiento(Timestamp fechanacimiento) {
+	public void setFechanacimiento(Date fechanacimiento) {
 		this.fechanacimiento = fechanacimiento;
 	}
 

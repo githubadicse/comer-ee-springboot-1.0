@@ -42,7 +42,7 @@ public class Usuario implements Serializable {
 	private Perfil perfil;
 
 	//bi-directional many-to-one association to Usuarioempleado
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy="usuario", cascade={CascadeType.ALL})
 	private List<Usuarioempleado> usuarioempleados;
 
 	public Usuario() {

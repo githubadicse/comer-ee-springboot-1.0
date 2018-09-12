@@ -93,7 +93,7 @@ public class Ven001 implements Serializable {
 	private Tipodocumento tipodocumento;
 
 	//bi-directional many-to-one association to Ven002
-	@OneToMany(mappedBy="ven001")
+	@OneToMany(mappedBy="ven001", cascade={CascadeType.ALL})
 	private List<Ven002> ven002s;
 
 	public Ven001() {

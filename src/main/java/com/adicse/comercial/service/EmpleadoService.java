@@ -1,5 +1,7 @@
 package com.adicse.comercial.service;
 
+import static com.adicse.comercial.specification.SpecificationBuilder.selectFrom;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -9,14 +11,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.adicse.comercial.dao.IEmpleadoDao;
-import com.adicse.comercial.especification.EmpleadoSpecification;
 import com.adicse.comercial.model.Empleado;
-import com.adicse.comercial.shared.CustomFilterSpec;
+import com.adicse.comercial.specification.ConvertObjectToFormatJson;
+import com.adicse.comercial.specification.Filter;
 
 @Service
 @Transactional
@@ -25,6 +26,8 @@ public class EmpleadoService implements IAdicseService<Empleado, Integer> {
 	@Autowired
 	private IEmpleadoDao iEmpleadoDao;
 	
+	@Autowired
+	private ConvertObjectToFormatJson convertObjectToFormatJson; 	
 	
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
@@ -35,40 +38,14 @@ public class EmpleadoService implements IAdicseService<Empleado, Integer> {
 	@Override
 	public Page<Empleado> pagination(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
 			Object filter) {
-		// TODO Auto-generated method stub
-		Sort sort = new Sort(sortdireccion.toUpperCase() == "DESC" ? Direction.DESC : Direction.ASC, sortcolumn);
+		Sort sort = new Sort(sortdireccion.toUpperCase().equals("DESC") ? Direction.DESC : Direction.ASC, sortcolumn);
 		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
+		
+		Filter f = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
 
-		/*  
-		 * instanciamos una entidad la cual servira de contenedor para realizar el filtro
-		 * este evento sera llenado dentro de una funcion que esta en CustomFilterSpec
-		 * se le debe pasar dos parametros, uno la entidad que queremos llenar con los datos 
-		 * del segundo parametro que es un objecto json que se para en la variable filter  
-		 */
-		Empleado entidad = new Empleado();
-		entidad.setIdempleado(null);
-		entidad.setNomempleado(null);
-		
-		
 
-		CustomFilterSpec efs = new CustomFilterSpec();
-		try {
-			
-			entidad = (Empleado) efs.CreateCustomFilter(entidad, filter);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		/* Specification nos permite agregar implicitamente los where que se pasaran al evento findAll,
-		 * Esto sucede en CrudRepository
-		 */
-		Specification<Empleado> spec = new EmpleadoSpecification(entidad);
-		
-		Page<Empleado> lista = iEmpleadoDao.findAll(spec,pageable);
- 
-
-		//
+		Page<Empleado> lista = selectFrom(iEmpleadoDao).where(f).findPage(pageable);
+	
 		return lista;
 	}
 
@@ -87,7 +64,10 @@ public class EmpleadoService implements IAdicseService<Empleado, Integer> {
 	@Override
 	public Empleado grabar(Empleado entidad) {
 		// TODO Auto-generated method stub
-		return null;
+		Integer id = iEmpleadoDao.getMax() == null?1:iEmpleadoDao.getMax() + 1;
+		entidad.setIdempleado(id);	
+		
+		return iEmpleadoDao.save(entidad) ;
 	}
 
 	@Override
@@ -111,7 +91,7 @@ public class EmpleadoService implements IAdicseService<Empleado, Integer> {
 	@Override
 	public Optional<Empleado> findbyid(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
+		return iEmpleadoDao.findById(id) ;
 	}
 
 	@Override
