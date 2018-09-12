@@ -47,7 +47,14 @@ public class ConvertObjectToFormatJson {
 			
 			for (Object key : obj.keySet()) {
 				propiedadObj = (JSONObject) obj.get(key.toString());
-				value = (String) propiedadObj.get("value");	
+				if(propiedadObj.get("value").getClass().getSimpleName().equals("Integer") ) {
+					value = propiedadObj.get("value").toString() ;
+				}
+				if(propiedadObj.get("value").getClass().getSimpleName().equals("String") ) {
+					value =  propiedadObj.get("value").toString();
+				}
+					
+			
 				operator = propiedadObj.get("matchMode") == null?"":(String) propiedadObj.get("matchMode");	
 				
 				switch (operator) {

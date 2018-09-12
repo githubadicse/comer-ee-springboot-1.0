@@ -1,10 +1,11 @@
 package com.adicse.comercial.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
-
 
 /**
  * The persistent class for the empleado database table.
@@ -18,15 +19,32 @@ public class Empleado implements Serializable {
 	@Id
 	private Integer idempleado;
 
+	private Boolean activo;
+
 	private String direccion;
 
 	private String dni;
 
 	private String email;
 
-	private Timestamp fechaingreso;
+	@Column(name="fecha_registro_systema")
+	private Timestamp fechaRegistroSystema;
 
-	private Timestamp fechanacimiento;
+	@Column(name="fecha_registro_systema_modifica")
+	private Timestamp fechaRegistroSystemaModifica;
+
+	@Temporal(TemporalType.DATE)
+	@JsonFormat (pattern ="dd/MM/yyyy")
+	private Date fechaingreso;
+
+	@Temporal(TemporalType.DATE)
+	@JsonFormat (pattern ="dd/MM/yyyy")
+	private Date fechanacimiento;
+
+	private Integer idusuario;
+
+	@Column(name="idusuario_modifica")
+	private Integer idusuarioModifica;
 
 	private String nomempleado;
 
@@ -35,6 +53,11 @@ public class Empleado implements Serializable {
 	//bi-directional many-to-one association to Aperturapuntoventa
 	@OneToMany(mappedBy="empleado")
 	private List<Aperturapuntoventa> aperturapuntoventas;
+
+	//bi-directional many-to-one association to Filial
+	@ManyToOne
+	@JoinColumn(name="id_filial")
+	private Filial filial;
 
 	//bi-directional many-to-one association to Ing001
 	@OneToMany(mappedBy="empleado")
@@ -57,6 +80,14 @@ public class Empleado implements Serializable {
 
 	public void setIdempleado(Integer idempleado) {
 		this.idempleado = idempleado;
+	}
+
+	public Boolean getActivo() {
+		return this.activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
 	}
 
 	public String getDireccion() {
@@ -83,20 +114,52 @@ public class Empleado implements Serializable {
 		this.email = email;
 	}
 
-	public Timestamp getFechaingreso() {
+	public Timestamp getFechaRegistroSystema() {
+		return this.fechaRegistroSystema;
+	}
+
+	public void setFechaRegistroSystema(Timestamp fechaRegistroSystema) {
+		this.fechaRegistroSystema = fechaRegistroSystema;
+	}
+
+	public Timestamp getFechaRegistroSystemaModifica() {
+		return this.fechaRegistroSystemaModifica;
+	}
+
+	public void setFechaRegistroSystemaModifica(Timestamp fechaRegistroSystemaModifica) {
+		this.fechaRegistroSystemaModifica = fechaRegistroSystemaModifica;
+	}
+
+	public Date getFechaingreso() {
 		return this.fechaingreso;
 	}
 
-	public void setFechaingreso(Timestamp fechaingreso) {
+	public void setFechaingreso(Date fechaingreso) {
 		this.fechaingreso = fechaingreso;
 	}
 
-	public Timestamp getFechanacimiento() {
+	public Date getFechanacimiento() {
 		return this.fechanacimiento;
 	}
 
-	public void setFechanacimiento(Timestamp fechanacimiento) {
+	public void setFechanacimiento(Date fechanacimiento) {
 		this.fechanacimiento = fechanacimiento;
+	}
+
+	public Integer getIdusuario() {
+		return this.idusuario;
+	}
+
+	public void setIdusuario(Integer idusuario) {
+		this.idusuario = idusuario;
+	}
+
+	public Integer getIdusuarioModifica() {
+		return this.idusuarioModifica;
+	}
+
+	public void setIdusuarioModifica(Integer idusuarioModifica) {
+		this.idusuarioModifica = idusuarioModifica;
 	}
 
 	public String getNomempleado() {
@@ -135,6 +198,14 @@ public class Empleado implements Serializable {
 		aperturapuntoventa.setEmpleado(null);
 
 		return aperturapuntoventa;
+	}
+
+	public Filial getFilial() {
+		return this.filial;
+	}
+
+	public void setFilial(Filial filial) {
+		this.filial = filial;
 	}
 
 	public List<Ing001> getIng001s() {
