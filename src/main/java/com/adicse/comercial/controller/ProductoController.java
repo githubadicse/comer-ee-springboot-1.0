@@ -32,7 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.adicse.comercial.model.Codigobarra;
 import com.adicse.comercial.model.Filepath;
 import com.adicse.comercial.model.Producto;
-
+import com.adicse.comercial.model.Stockactual;
 import com.adicse.comercial.service.CodigobarraService;
 import com.adicse.comercial.service.FilepathService;
 import com.adicse.comercial.service.ProductoService;
@@ -66,13 +66,41 @@ public class ProductoController {
 	public Map<String, Object> pagination(@RequestParam("pagenumber") Integer pagenumber,
 			@RequestParam("rows") Integer rows, @RequestParam("sortdireccion") String sortdireccion,
 			@RequestParam("sortcolumn") String sortcolumn, @RequestParam("filters") Object filter) {
-
+				
 		System.out.println("pagenumber :" + pagenumber);
 		System.out.println("rows :" + rows);
+		
 		Page<Producto> page = productoService.pagination(pagenumber, rows, sortdireccion, sortcolumn, filter);
 
 		List<Producto> lst = page.getContent();
 		
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		response.put("data", lst);
+		response.put("totalCount", page.getTotalElements());
+		response.put("success", true);
+		return response;
+	}
+	
+	@RequestMapping("/paginationbuscar")
+	@ResponseBody
+	public Map<String, Object> paginationbuscar(@RequestParam("pagenumber") Integer pagenumber,
+			@RequestParam("rows") Integer rows, @RequestParam("sortdireccion") String sortdireccion,
+			@RequestParam("sortcolumn") String sortcolumn, @RequestParam("filters") Object filter) {
+				
+		System.out.println("pagenumber :" + pagenumber);
+		System.out.println("rows :" + rows);
+		
+		Page<Producto> page = productoService.pagination(pagenumber, rows, sortdireccion, sortcolumn, filter);
+
+		List<Producto> lst = page.getContent();
+		
+		for (Producto p: lst) {
+			for (Stockactual rowStock: p.getStockactuals()) {
+				rowStock.setProducto(null);
+			}
+		}
 
 		Map<String, Object> response = new HashMap<String, Object>();
 
@@ -181,7 +209,8 @@ public class ProductoController {
 
 	}
 
-	@RequestMapping("/getall")
+	
+	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<Producto> getAll() {
 		List<Producto> lst = productoService.getall();
@@ -192,11 +221,16 @@ public class ProductoController {
 	@RequestMapping(value="/getByFilter", produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<Producto> getByFilter(@RequestBody Object f) {		
 		Filter filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(f);
-		List<Producto> tipoDocumentos = productoService.findByFilter(filter);
-		
-		return tipoDocumentos;
+		List<Producto> productos = productoService.findByFilter(filter);
+				
+		return productos;
 	}
-
+	
+	@RequestMapping(value="/getProductoByCodigoBarras", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Producto getProductoByCodigoBarras(@RequestParam("codigo") String codigo) {
+		return productoService.getProductoByCodigoBarras(codigo);
+	}
+	
 	@RequestMapping("/edit")
 	@ResponseBody
 	public Producto getEdit(@RequestParam("id") Integer idproducto) {

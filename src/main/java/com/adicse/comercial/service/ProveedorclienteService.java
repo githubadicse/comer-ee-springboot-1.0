@@ -1,5 +1,7 @@
 package com.adicse.comercial.service;
 
+import static com.adicse.comercial.specification.SpecificationBuilder.selectFrom;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +20,10 @@ import com.adicse.comercial.dao.IProveedorclienteDao;
 import com.adicse.comercial.dao.IProveedorclientedireccionesDao;
 import com.adicse.comercial.especification.ProveedorclienteSpecification;
 import com.adicse.comercial.model.Documentoidentificacion;
+import com.adicse.comercial.model.Producto;
 import com.adicse.comercial.model.Proveedorcliente;
 import com.adicse.comercial.shared.CustomFilterSpec;
+import com.adicse.comercial.specification.Filter;
 
 @Service
 @Transactional
@@ -146,6 +150,14 @@ public class ProveedorclienteService implements IAdicseService<Proveedorcliente,
 	public void deleteDireccionByIdProveedorCliente(Integer idproveedorcliente) {
 		iProveedorclientedireccionesDao.deleteDireccionByIdProveedorCliente(idproveedorcliente);
 	}
+	
+	public List<Proveedorcliente> findByFilter(Filter filter){
+		return selectFrom(iProveedorclienteDao).where(filter).findAll(); 
+	}
+	
+//	public Proveedorcliente getFindByDocumento(Integer iddocumento, String numdocumento){
+//		return iProveedorclientedireccionesDao.getFindByDocumento(iddocumento, numdocumento);
+//	}
 	
 	public List<Proveedorcliente> filterGlobal(@Param("dato") String dato){
 		return iProveedorclienteDao.filterGlobal(dato);
