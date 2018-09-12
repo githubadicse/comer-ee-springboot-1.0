@@ -56,9 +56,15 @@ public class UsuarioController {
 		return response;
 
 	}
+	
+	public Map<String,Object> logintJWT(@RequestBody Map<String, String> json){
+		Map<String, Object> response = new HashMap<>();
+		return response;
+		
+	}
 
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/loginx", method= RequestMethod.POST)
 	public Map<String, Object> login(@RequestBody Map<String, String> json)
 			throws ServletException {
 		System.out.println("Ingreso a login....");

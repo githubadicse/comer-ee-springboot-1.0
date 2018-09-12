@@ -23,7 +23,8 @@ public class AgregarJsonFormatDate {
 				{"CatalogoLote"},
 				{"ProductoPorNumeroEntrega"},
 				{"EntregaPorItem"}		,
-				{"RutaDistribucion"}
+				{"RutaDistribucion"},
+				{"Empleado"}
 		};
 		
 		

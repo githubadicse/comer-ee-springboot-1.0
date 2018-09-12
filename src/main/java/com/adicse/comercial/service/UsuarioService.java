@@ -1,38 +1,46 @@
 package com.adicse.comercial.service;
 import static com.adicse.comercial.specification.SpecificationBuilder.selectFrom;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.adicse.comercial.dao.IUsuarioDao;
-import com.adicse.comercial.especification.UsuarioSpecification;
 import com.adicse.comercial.model.Usuario;
 import com.adicse.comercial.model.Usuarioempleado;
-import com.adicse.comercial.shared.CustomFilterSpec;
 import com.adicse.comercial.specification.ConvertObjectToFormatJson;
 import com.adicse.comercial.specification.Filter;
 import com.adicse.comercial.utilitarios.Idunico;
 
 @Service
 @Transactional
-public class UsuarioService implements IAdicseService<Usuario, Integer> {
+public class UsuarioService implements IAdicseService<Usuario, Integer>, UserDetailsService {
 	
 	@Autowired
 	private IUsuarioDao iUsuarioDao;
 	
 	@Autowired
 	private ConvertObjectToFormatJson convertObjectToFormatJson;
+	
+	private Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 	
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
@@ -132,5 +140,23 @@ public class UsuarioService implements IAdicseService<Usuario, Integer> {
 	
 	public List<Usuario> findByIdFilial(Integer idFilial) {
 		return (List<Usuario>) iUsuarioDao.getByIdFilial(idFilial);
+	}
+	
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		if(username == null) {
+			logger.error("No Existe el usuario");
+			
+		}
+		String login = username;
+		Usuario usuario = iUsuarioDao.findAllByLogin(login);
+		
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		
+		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		UserDetails user = new User(username, usuario.getClave(), usuario.getActivo() , true, true, true, authorities);
+		return user;
 	}
 }

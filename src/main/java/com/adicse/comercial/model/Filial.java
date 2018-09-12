@@ -35,6 +35,10 @@ public class Filial implements Serializable {
 	@OneToMany(mappedBy="filial")
 	private List<Almacen> almacens;
 
+	//bi-directional many-to-one association to Empleado
+	@OneToMany(mappedBy="filial")
+	private List<Empleado> empleados;
+
 	//bi-directional many-to-one association to Usuario
 	@OneToMany(mappedBy="filial")
 	private List<Usuario> usuarios;
@@ -126,6 +130,28 @@ public class Filial implements Serializable {
 		almacen.setFilial(null);
 
 		return almacen;
+	}
+
+	public List<Empleado> getEmpleados() {
+		return this.empleados;
+	}
+
+	public void setEmpleados(List<Empleado> empleados) {
+		this.empleados = empleados;
+	}
+
+	public Empleado addEmpleado(Empleado empleado) {
+		getEmpleados().add(empleado);
+		empleado.setFilial(this);
+
+		return empleado;
+	}
+
+	public Empleado removeEmpleado(Empleado empleado) {
+		getEmpleados().remove(empleado);
+		empleado.setFilial(null);
+
+		return empleado;
 	}
 
 	public List<Usuario> getUsuarios() {
