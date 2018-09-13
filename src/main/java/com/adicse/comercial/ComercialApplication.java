@@ -45,6 +45,7 @@ public class ComercialApplication implements CommandLineRunner {
 	    //mapper.setSerializationInclusion(Include.NON_NULL);
 	    mapper.setSerializationInclusion(Include.NON_EMPTY);
 	    mapper.setDateFormat(df);
+
 	    mapper.setTimeZone(TimeZone.getTimeZone("EST"));
 	 
 	   

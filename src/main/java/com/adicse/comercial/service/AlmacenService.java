@@ -1,5 +1,7 @@
 package com.adicse.comercial.service;
 
+import static com.adicse.comercial.specification.SpecificationBuilder.selectFrom;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.adicse.comercial.dao.IAlmacenDao;
 import com.adicse.comercial.especification.AlmacenSpecification;
 import com.adicse.comercial.model.Almacen;
+import com.adicse.comercial.model.Vehiculo;
 import com.adicse.comercial.shared.CustomFilterSpec;
+import com.adicse.comercial.specification.ConvertObjectToFormatJson;
+import com.adicse.comercial.specification.Filter;
 
 @Service
 @Transactional
@@ -24,6 +29,9 @@ public class AlmacenService implements IAdicseService<Almacen, Integer> {
 	
 	@Autowired
 	private IAlmacenDao iAlmacenDao;
+	
+	@Autowired
+	private ConvertObjectToFormatJson convertObjectToFormatJson; 	
 	
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
@@ -34,41 +42,15 @@ public class AlmacenService implements IAdicseService<Almacen, Integer> {
 	@Override
 	public Page<Almacen> pagination(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
 			Object filter) {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
 		Sort sort = new Sort(sortdireccion.toUpperCase() == "DESC" ? Direction.DESC : Direction.ASC, sortcolumn);
 		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
+		
+		Filter f = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
 
-		/*  
-		 * instanciamos una entidad la cual servira de contenedor para realizar el filtro
-		 * este evento sera llenado dentro de una funcion que esta en CustomFilterSpec
-		 * se le debe pasar dos parametros, uno la entidad que queremos llenar con los datos 
-		 * del segundo parametro que es un objecto json que se para en la variable filter  
-		 */
-		Almacen entidad = new Almacen();
-		entidad.setIdalmacen(null);
-		entidad.setDscalmacen(null);
-		
-		
-
-		CustomFilterSpec efs = new CustomFilterSpec();
-		try {
-			
-			entidad = (Almacen) efs.CreateCustomFilter(entidad, filter);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		/* Specification nos permite agregar implicitamente los where que se pasaran al evento findAll,
-		 * Esto sucede en CrudRepository
-		 */
-		Specification<Almacen> spec = new AlmacenSpecification(entidad);
-		
-		Page<Almacen> lista = iAlmacenDao.findAll(spec,pageable);
+		Page<Almacen> lista = selectFrom(iAlmacenDao).where(f).findPage(pageable);
+	
  
 
-		//
 		return lista;
 	}
 

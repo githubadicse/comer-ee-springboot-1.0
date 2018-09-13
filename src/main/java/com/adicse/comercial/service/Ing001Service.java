@@ -1,5 +1,7 @@
 package com.adicse.comercial.service;
 
+import static com.adicse.comercial.specification.SpecificationBuilder.selectFrom;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,15 +20,13 @@ import com.adicse.comercial.dao.ICierremensualDao;
 import com.adicse.comercial.dao.IIng001Dao;
 import com.adicse.comercial.dao.IIng002KardexDao;
 import com.adicse.comercial.dao.IKardexDao;
-import com.adicse.comercial.especification.Ing001Specification;
-import com.adicse.comercial.model.Almacen;
 import com.adicse.comercial.model.Cierremensual;
 import com.adicse.comercial.model.Ing001;
 import com.adicse.comercial.model.Ing002;
 import com.adicse.comercial.model.Ing002kardex;
 import com.adicse.comercial.model.Kardex;
-import com.adicse.comercial.model.Proveedorcliente;
-import com.adicse.comercial.shared.CustomFilterSpec;
+import com.adicse.comercial.specification.ConvertObjectToFormatJson;
+import com.adicse.comercial.specification.Filter;
 import com.adicse.comercial.utilitarios.Idunico;
 
 @Service
@@ -52,6 +51,8 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 	@Autowired
 	private IIng002KardexDao iIng002KardexDao;
 	
+	@Autowired
+	private ConvertObjectToFormatJson convertObjectToFormatJson; 
 	
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
@@ -64,44 +65,14 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 			Object filter) {
 		// TODO Auto-generated method stub
 		Sort sort = new Sort(sortdireccion.toUpperCase() == "DESC" ? Direction.DESC : Direction.ASC, sortcolumn);
-		Pageable pageable = PageRequest.of(pagenumber, rows, sort);
-
-		/*
-		 * instanciamos una entidad la cual servira de contenedor para realizar
-		 * el filtro este evento sera llenado dentro de una funcion que esta en
-		 * CustomFilterSpec se le debe pasar dos parametros, uno la entidad que
-		 * queremos llenar con los datos del segundo parametro que es un objecto
-		 * json que se para en la variable filter
-		 */
-		Ing001 ing001filtro = new Ing001();
-		ing001filtro.setIding001(null);
-		ing001filtro.setNrodoc(null);
+		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
 		
-		
-		Almacen almacen = new Almacen();
-		ing001filtro.setAlmacen(almacen);
+		Filter f = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
 
-		Proveedorcliente proveedorcliente = new Proveedorcliente();
-		ing001filtro.setProveedorcliente(proveedorcliente);
+		Page<Ing001> lista = selectFrom(iIng001Dao).where(f).findPage(pageable);
+	
+ 
 
-		CustomFilterSpec efs = new CustomFilterSpec();
-		try {
-
-			ing001filtro = (Ing001) efs.CreateCustomFilter(ing001filtro, filter);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		/*
-		 * Specification nos permite agregar implicitamente los where que se
-		 * pasaran al evento findAll, Esto sucede en CrudRepository
-		 */
-		Specification<Ing001> spec = new Ing001Specification(ing001filtro);
-
-		Page<Ing001> lista = iIng001Dao.findAll(spec, pageable);
-
-		//
 		return lista;
 	}
 
