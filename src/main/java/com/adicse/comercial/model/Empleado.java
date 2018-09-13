@@ -1,11 +1,11 @@
 package com.adicse.comercial.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
-
 
 /**
  * The persistent class for the empleado database table.
@@ -34,9 +34,11 @@ public class Empleado implements Serializable {
 	private Timestamp fechaRegistroSystemaModifica;
 
 	@Temporal(TemporalType.DATE)
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	private Date fechaingreso;
 
 	@Temporal(TemporalType.DATE)
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	private Date fechanacimiento;
 
 	private Integer idusuario;
@@ -66,7 +68,7 @@ public class Empleado implements Serializable {
 	private List<Salida001> salida001s;
 
 	//bi-directional many-to-one association to Usuarioempleado
-	@OneToMany(mappedBy="empleado")
+	@OneToMany(mappedBy="empleado", cascade={CascadeType.ALL})
 	private List<Usuarioempleado> usuarioempleados;
 
 	public Empleado() {

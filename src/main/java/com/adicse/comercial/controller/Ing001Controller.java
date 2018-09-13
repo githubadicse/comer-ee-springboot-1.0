@@ -187,9 +187,9 @@ public class Ing001Controller {
 	public Map<String, Object> findById(@RequestParam("id") Integer id){
 		Map<String, Object> response = new HashMap<>();
 		
-		Optional<Ing001> ing001 = ing001Service.findbyid(id);
+		Ing001 ing001 = ing001Service.findbyid(id).get() ;
 		
-		for(Ing002 row : ing001.get().getIng002s()){
+		for(Ing002 row : ing001.getIng002s()){
 			row.setIng001(null);
 		}
 		
@@ -202,7 +202,7 @@ public class Ing001Controller {
 	public ModelAndView reportePdfMarca(Integer iding001
 			){
 				
-		Optional<Ing001> ing001 = ing001Service.findbyid(iding001);
+		Optional<Ing001> ing001 = ing001Service.findbyid(iding001) ;
 		
 		Map<String,Object> model = new HashMap<>();
 		
