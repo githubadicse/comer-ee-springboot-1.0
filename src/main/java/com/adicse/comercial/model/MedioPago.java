@@ -1,6 +1,5 @@
 package com.adicse.comercial.model;
 
-
 import java.io.Serializable;
 import javax.persistence.*;
 
