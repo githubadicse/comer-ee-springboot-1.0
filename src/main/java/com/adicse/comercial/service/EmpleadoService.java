@@ -93,7 +93,7 @@ public class EmpleadoService implements IAdicseService<Empleado, Integer> {
 		// TODO Auto-generated method stub
 		return iEmpleadoDao.findById(id) ;
 	}
-
+	
 	@Override
 	public Long count() {
 		// TODO Auto-generated method stub
@@ -109,7 +109,13 @@ public class EmpleadoService implements IAdicseService<Empleado, Integer> {
 	public Empleado findAllByDni(String dni){
 		return iEmpleadoDao.findAllByDni(dni);
 	}
+	
+	public List<Empleado> findByCondicionFilial(Integer condicion){
+		return iEmpleadoDao.findByCondicionFilial(condicion);
+	}
 
-
+	public List<Empleado> findByFilter(Filter filter){
+		return selectFrom(iEmpleadoDao).where(filter).findAll(); 
+	}
 
 }
