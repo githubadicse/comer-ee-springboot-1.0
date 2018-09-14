@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.adicse.comercial.model.Empleado;
 import com.adicse.comercial.model.Usuario;
+import com.adicse.comercial.model.Usuarioempleado;
 import com.adicse.comercial.service.EmpleadoService;
 import com.adicse.comercial.service.UsuarioService;
+import com.adicse.comercial.specification.ConvertObjectToFormatJson;
+import com.adicse.comercial.specification.Filter;
 
 @RestController
 @RequestMapping("/res/empleado")
@@ -32,6 +36,9 @@ public class EmpleadoController {
 	
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private ConvertObjectToFormatJson convertObjectToFormatJson;
 	
 	@RequestMapping("/pagination")
 	@ResponseBody
@@ -58,15 +65,30 @@ public class EmpleadoController {
 				
 	}		
 	
-	@RequestMapping("/getall")
+	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody	
 	public Map<String,Object> getall(){
 		Map<String,Object> response = new HashMap<>();
 		
 		List<Empleado> lst = empleadoService.getall();
-		
+						
 		response.put("data", lst);
 		return response;
+	}
+	
+	
+	@RequestMapping(value="/getByFilter", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Empleado> getByFilter(@RequestBody Object f) {		
+		Filter filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(f);
+		List<Empleado> lst = empleadoService.findByFilter(filter);
+		
+		for (Empleado em: lst) {
+			for (Usuarioempleado rowUs: em.getUsuarioempleados()) {
+				rowUs.setEmpleado(null);
+			}
+		}
+		
+		return lst;
 	}
 	
 	@RequestMapping("/edit")
@@ -134,6 +156,14 @@ public class EmpleadoController {
 		
 		response.put("data", empleado);
 		return response;
+	}
+	
+	
+	@RequestMapping(value="/findByCondicionFilial", produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Empleado> findByCondicionFilial(@RequestParam("condicion") Integer condicion) {		
+		List<Empleado> lst = empleadoService.findByCondicionFilial(condicion);		
+		return lst;
 	}
 
 }
