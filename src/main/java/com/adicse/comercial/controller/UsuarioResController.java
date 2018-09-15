@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,9 @@ public class UsuarioResController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	@RequestMapping("/pagination")
 	@ResponseBody
@@ -56,14 +60,20 @@ public class UsuarioResController {
 	@RequestMapping("/edit")
 	@ResponseBody
 	public Usuario getEdit(@RequestParam("id") Integer id) {
-		return usuarioService.findbyid(id).get();
+		Usuario usuario= usuarioService.findbyid(id).get();
+		usuario.setClave("");
+		return usuario;
+		
 	}
 	
 	@RequestMapping("/create")
 	@ResponseBody
 	public Usuario postCreate(@RequestBody Usuario usuario) {
 		usuario.setIdusuario(0);
+		String ps = passwordEncoder.encode(usuario.getClave());
+		usuario.setClave(ps);
 		return usuarioService.grabar(usuario);
+		
 	}
 	
 	@RequestMapping("/update")
@@ -73,7 +83,8 @@ public class UsuarioResController {
 		Usuario usuarioUpdate = usuarioService.findbyid(usuario.getIdusuario()).get();
 		
 		BeanUtils.copyProperties(usuario, usuarioUpdate);
-		
+		String ps = passwordEncoder.encode(usuarioUpdate.getClave());
+		usuarioUpdate.setClave(ps);
 		return usuarioService.grabar(usuarioUpdate);
 	}
 	
