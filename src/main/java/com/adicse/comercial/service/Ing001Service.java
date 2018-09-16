@@ -64,7 +64,7 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 	public Page<Ing001> pagination(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
 			Object filter) {
 		// TODO Auto-generated method stub
-		Sort sort = new Sort(sortdireccion.toUpperCase() == "DESC" ? Direction.DESC : Direction.ASC, sortcolumn);
+		Sort sort = new Sort(sortdireccion.toUpperCase().equals("DESC") ? Direction.DESC : Direction.ASC, sortcolumn);
 		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
 		
 		Filter f = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);

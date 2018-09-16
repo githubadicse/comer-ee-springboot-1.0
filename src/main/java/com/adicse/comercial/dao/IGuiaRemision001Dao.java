@@ -71,7 +71,7 @@ PagingAndSortingRepository<GuiaRemision001, Integer>, JpaSpecificationExecutor<G
 			 " epi as entregaPorItem, ha as horarioAlimentacion,  iEntrega as itemEntrega," +
 			" count(g1) as cntIe, sum(r1.numeroUsuarios) as numeroUsuarios" + 
 			" from GuiaRemision001 g1" + 
-			" inner join g1.requerimientoVolumen001 r1 on g1.requerimientoVolumen001.idRequerimientoVolumen001 = r1.idRequerimientoVolumen001" + 
+			" left join g1.requerimientoVolumen001 r1 on g1.requerimientoVolumen001.idRequerimientoVolumen001 = r1.idRequerimientoVolumen001" + 
 			" inner join r1.entregaPorItem epi on r1.entregaPorItem.idEntregaPorItem = epi.idEntregaPorItem" + 
 			" inner join epi.numeroEntrega nEntrega on nEntrega.idNumeroEntrega = epi.numeroEntrega.idNumeroEntrega" + 
 			" inner join r1.nivelEducacion ne on r1.nivelEducacion.idNivelEducacion = ne.idNivelEducacion" + 
@@ -79,8 +79,8 @@ PagingAndSortingRepository<GuiaRemision001, Integer>, JpaSpecificationExecutor<G
 			" inner join epi.itemEntrega iEntrega on iEntrega.item = epi.itemEntrega.item " +
 			" where nEntrega.numeroEntregaValor = :numeroEntrega " + 
 			" and iEntrega.item = :item and r1.flagEstado = 1" + 
-			" group by nEntrega,epi,ha,iEntrega, ne.idNivelEducacion, ha.idHorarioAlimentacion")
-	public List<GuiasResumenPorNumeroUsuarioAndItemClass> getGuiasResumenPorNumeroUsuariosAndItem(@Param("item") String item,@Param("numeroEntrega") Integer numeroEntrega);
+			" group by nEntrega.idNumeroEntrega ,epi.idEntregaPorItem ,ha.idHorarioAlimentacion,iEntrega.item, ne.idNivelEducacion")
+		public List<GuiasResumenPorNumeroUsuarioAndItemClass> getGuiasResumenPorNumeroUsuariosAndItem(@Param("item") String item,@Param("numeroEntrega") Integer numeroEntrega);
 	
 	
 	

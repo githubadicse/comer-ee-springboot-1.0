@@ -491,6 +491,7 @@ public class QaliwarmaController {
 	public List<ValorizacionEntregaClass> getGuiasResumenPorNumeroUsuarioAndItem(@RequestParam("anno") Integer anno, @RequestParam("numeroEntrega") Integer numeroEntrega){
 		
 		ValorizacionEntregaClass valorizacionEntregaClass = null;
+
 		List<ValorizacionEntregaClass> lstValorizacion = new ArrayList<ValorizacionEntregaClass>();
 		List<ItemEntrega> lstItems = itemEntregaService.getItemByAnno(anno);
 		
@@ -498,17 +499,28 @@ public class QaliwarmaController {
 		List<GuiasResumenPorNumeroUsuarioAndItemClass> lst = null;
 		for(ItemEntrega row:lstItems) {
 			String item = row.getItem();
-			valorizacionEntregaClass = new ValorizacionEntregaClass();
 			
-			lst = guiaRemision001Service.getGuiasResumenPorNumeroUsuariosAndItem(item, numeroEntrega);
-			for(GuiasResumenPorNumeroUsuarioAndItemClass g:lst) {
-				g.getEntregaPorItem().setProductoPorNumeroEntregas(null);
-				g.getItemEntrega().setEntregaPorItems(null);
-				//g.getEntregaPorItem().setNumeroEntrega(null);
-			}
-			valorizacionEntregaClass.setListaValorizacion(lst);
-			valorizacionEntregaClass.setNombreItem(lst.get(0).getItemEntrega().getDscitem());
-			lstValorizacion.add(valorizacionEntregaClass);		
+				
+				valorizacionEntregaClass = new ValorizacionEntregaClass();
+				
+				
+				lst = guiaRemision001Service.getGuiasResumenPorNumeroUsuariosAndItem(item, numeroEntrega);
+				
+				
+				for(GuiasResumenPorNumeroUsuarioAndItemClass g:lst) {
+					
+					
+					
+					g.getEntregaPorItem().setProductoPorNumeroEntregas(null);
+					g.getItemEntrega().setEntregaPorItems(null);
+					//g.getRequerimientoVolumen001().setRutaDistribucionDetalles(null);
+					//g.getEntregaPorItem().setNumeroEntrega(null);
+				}
+				valorizacionEntregaClass.setListaValorizacion(lst);
+				valorizacionEntregaClass.setNombreItem(lst.get(0).getItemEntrega().getDscitem());
+				lstValorizacion.add(valorizacionEntregaClass);						
+			
+
 		}
 		
 	
