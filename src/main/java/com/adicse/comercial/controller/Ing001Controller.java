@@ -69,9 +69,7 @@ public class Ing001Controller {
 			@RequestParam("rows") Integer rows, @RequestParam("sortdireccion") String sortdireccion,
 			@RequestParam("sortcolumn") String sortcolumn, @RequestParam("filters") Object filter) {
 
-		System.out.println("pagenumber :" + pagenumber);
-		System.out.println("rows :" + rows);
-		sortdireccion = "DESC";
+
 		Page<Ing001> page = ing001Service.pagination(pagenumber, rows, sortdireccion, sortcolumn, filter);
 
 		List<Ing001> lst = page.getContent();

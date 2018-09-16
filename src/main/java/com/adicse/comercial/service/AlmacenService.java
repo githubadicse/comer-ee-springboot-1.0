@@ -11,15 +11,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.adicse.comercial.dao.IAlmacenDao;
-import com.adicse.comercial.especification.AlmacenSpecification;
 import com.adicse.comercial.model.Almacen;
-import com.adicse.comercial.model.Vehiculo;
-import com.adicse.comercial.shared.CustomFilterSpec;
 import com.adicse.comercial.specification.ConvertObjectToFormatJson;
 import com.adicse.comercial.specification.Filter;
 
@@ -42,14 +38,12 @@ public class AlmacenService implements IAdicseService<Almacen, Integer> {
 	@Override
 	public Page<Almacen> pagination(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
 			Object filter) {
-		Sort sort = new Sort(sortdireccion.toUpperCase() == "DESC" ? Direction.DESC : Direction.ASC, sortcolumn);
+		Sort sort = new Sort(sortdireccion.toUpperCase().equals("DESC") ? Direction.DESC : Direction.ASC, sortcolumn);
 		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
 		
 		Filter f = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
 
 		Page<Almacen> lista = selectFrom(iAlmacenDao).where(f).findPage(pageable);
-	
- 
 
 		return lista;
 	}
