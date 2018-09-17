@@ -11,18 +11,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.adicse.comercial.dao.IProveedorclienteDao;
 import com.adicse.comercial.dao.IProveedorclientedireccionesDao;
-import com.adicse.comercial.especification.ProveedorclienteSpecification;
-import com.adicse.comercial.model.Documentoidentificacion;
-import com.adicse.comercial.model.Producto;
 import com.adicse.comercial.model.Proveedorcliente;
-import com.adicse.comercial.shared.CustomFilterSpec;
+
+import com.adicse.comercial.specification.ConvertObjectToFormatJson;
 import com.adicse.comercial.specification.Filter;
 
 @Service
@@ -35,6 +32,9 @@ public class ProveedorclienteService implements IAdicseService<Proveedorcliente,
 	@Autowired
 	private IProveedorclientedireccionesDao iProveedorclientedireccionesDao;
 	
+	@Autowired
+	private ConvertObjectToFormatJson convertObjectToFormatJson;
+	
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
 			Object filter, Object paramsExtra) {
@@ -45,43 +45,50 @@ public class ProveedorclienteService implements IAdicseService<Proveedorcliente,
 	public Page<Proveedorcliente> pagination(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
 			Object filter) {
 		// TODO Auto-generated method stub
+		
 		Sort sort = new Sort(sortdireccion.toUpperCase() == "DESC" ? Direction.DESC : Direction.ASC, sortcolumn);
 		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
-
-		/*  
-		 * instanciamos una entidad la cual servira de contenedor para realizar el filtro
-		 * este evento sera llenado dentro de una funcion que esta en CustomFilterSpec
-		 * se le debe pasar dos parametros, uno la entidad que queremos llenar con los datos 
-		 * del segundo parametro que es un objecto json que se para en la variable filter  
-		 */
-		Proveedorcliente Proveedorclientefiltro = new Proveedorcliente();
-		Proveedorclientefiltro.setIdproveedorcliente(null);
-		Proveedorclientefiltro.setRazonsocial(null);
-		Proveedorclientefiltro.setNrodocumento(null);
+		Filter _filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
 		
-		Documentoidentificacion documentoidentificacion = new Documentoidentificacion();
-		Proveedorclientefiltro.setDocumentoidentificacion(documentoidentificacion);
+		return selectFrom(iProveedorclienteDao).where(_filter).findPage(pageable);
 		
-
-		CustomFilterSpec efs = new CustomFilterSpec();
-		try {
-			
-			Proveedorclientefiltro = (Proveedorcliente) efs.CreateCustomFilter(Proveedorclientefiltro, filter);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		/* Specification nos permite agregar implicitamente los where que se pasaran al evento findAll,
-		 * Esto sucede en CrudRepository
-		 */
-		Specification<Proveedorcliente> spec = new ProveedorclienteSpecification(Proveedorclientefiltro);
-		
-		Page<Proveedorcliente> lista = iProveedorclienteDao.findAll(spec,pageable);
- 
-
-		//
-		return lista;
+//		Sort sort = new Sort(sortdireccion.toUpperCase() == "DESC" ? Direction.DESC : Direction.ASC, sortcolumn);
+//		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
+//
+//		/*  
+//		 * instanciamos una entidad la cual servira de contenedor para realizar el filtro
+//		 * este evento sera llenado dentro de una funcion que esta en CustomFilterSpec
+//		 * se le debe pasar dos parametros, uno la entidad que queremos llenar con los datos 
+//		 * del segundo parametro que es un objecto json que se para en la variable filter  
+//		 */
+//		Proveedorcliente Proveedorclientefiltro = new Proveedorcliente();
+//		Proveedorclientefiltro.setIdproveedorcliente(null);
+//		Proveedorclientefiltro.setRazonsocial(null);
+//		Proveedorclientefiltro.setNrodocumento(null);
+//		
+//		Documentoidentificacion documentoidentificacion = new Documentoidentificacion();
+//		Proveedorclientefiltro.setDocumentoidentificacion(documentoidentificacion);
+//		
+//
+//		CustomFilterSpec efs = new CustomFilterSpec();
+//		try {
+//			
+//			Proveedorclientefiltro = (Proveedorcliente) efs.CreateCustomFilter(Proveedorclientefiltro, filter);
+//		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		/* Specification nos permite agregar implicitamente los where que se pasaran al evento findAll,
+//		 * Esto sucede en CrudRepository
+//		 */
+//		Specification<Proveedorcliente> spec = new ProveedorclienteSpecification(Proveedorclientefiltro);
+//		
+//		Page<Proveedorcliente> lista = iProveedorclienteDao.findAll(spec,pageable);
+// 
+//
+//		//
+//		return lista;
 	}
 
 	@Override

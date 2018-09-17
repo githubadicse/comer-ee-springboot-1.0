@@ -58,10 +58,17 @@ public class ProveedorclienteController {
 			@RequestParam("sortcolumn") String sortcolumn, @RequestParam("filters") Object filter) {
 
 		System.out.println("pagenumber :" + pagenumber);
-		System.out.println("rows :" + rows);
+		System.out.println("rows aa:" + rows);
 		Page<Proveedorcliente> page = proveedorclienteService.pagination(pagenumber, rows, sortdireccion, sortcolumn, filter);
 
 		List<Proveedorcliente> lst = page.getContent();
+		
+		for(Proveedorcliente pc:lst) {
+			
+			for(Proveedorclientedireccion pcd:pc.getProveedorclientedireccions()) {
+				pcd.setProveedorcliente(null);
+			}
+		}
 
 		Map<String, Object> response = new HashMap<String, Object>();
 
