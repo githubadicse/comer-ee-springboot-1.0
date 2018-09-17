@@ -67,13 +67,13 @@ public class EmpleadoController {
 	
 	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody	
-	public Map<String,Object> getall(){
-		Map<String,Object> response = new HashMap<>();
+	public List<Empleado> getall(){
+
 		
 		List<Empleado> lst = empleadoService.getall();
 						
-		response.put("data", lst);
-		return response;
+		
+		return lst;
 	}
 	
 	
