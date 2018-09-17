@@ -130,7 +130,7 @@ public class UsuarioController {
 					//.setExpiration(expirationTime)
 					.signWith(SignatureAlgorithm.HS256, "secretkey").compact();
 
-			
+
 			
 			// String tk = JwtUtil.addAuthentication(res, login);
 			
