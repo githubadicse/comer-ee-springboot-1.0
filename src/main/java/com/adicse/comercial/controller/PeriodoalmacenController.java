@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +36,11 @@ public class PeriodoalmacenController {
 	
 	@Autowired
 	private AlmacenService almacenService;
+	
+	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Periodoalmacen> getAll(){
+		return periodoalmacenService.getall(); 
+	}
 	
 	@ResponseBody
 	@RequestMapping("/getPeriodoAlmacenByEstado")
