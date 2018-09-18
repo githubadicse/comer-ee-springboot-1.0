@@ -3,21 +3,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.http.MediaType;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.adicse.comercial.model.ProductoPorNumeroEntrega;
 import com.adicse.comercial.model.Usuario;
-import com.adicse.comercial.model.Vehiculo;
 import com.adicse.comercial.service.UsuarioService;
 import com.adicse.comercial.specification.Filter;
 @RestController
@@ -26,6 +24,9 @@ public class UsuarioResController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	@RequestMapping("/pagination")
 	@ResponseBody
@@ -56,14 +57,20 @@ public class UsuarioResController {
 	@RequestMapping("/edit")
 	@ResponseBody
 	public Usuario getEdit(@RequestParam("id") Integer id) {
-		return usuarioService.findbyid(id).get();
+		Usuario usuario= usuarioService.findbyid(id).get();
+		usuario.setClave("");
+		return usuario;
+		
 	}
 	
 	@RequestMapping("/create")
 	@ResponseBody
 	public Usuario postCreate(@RequestBody Usuario usuario) {
 		usuario.setIdusuario(0);
+		String ps = passwordEncoder.encode(usuario.getClave());
+		usuario.setClave(ps);
 		return usuarioService.grabar(usuario);
+		
 	}
 	
 	@RequestMapping("/update")
@@ -73,7 +80,8 @@ public class UsuarioResController {
 		Usuario usuarioUpdate = usuarioService.findbyid(usuario.getIdusuario()).get();
 		
 		BeanUtils.copyProperties(usuario, usuarioUpdate);
-		
+		String ps = passwordEncoder.encode(usuarioUpdate.getClave());
+		usuarioUpdate.setClave(ps);
 		return usuarioService.grabar(usuarioUpdate);
 	}
 	

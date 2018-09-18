@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.adicse.comercial.dao.IProveedorclienteDao;
 import com.adicse.comercial.dao.IProveedorclientedireccionesDao;
 import com.adicse.comercial.model.Proveedorcliente;
+
 import com.adicse.comercial.specification.ConvertObjectToFormatJson;
 import com.adicse.comercial.specification.Filter;
 
@@ -34,6 +35,7 @@ public class ProveedorclienteService implements IAdicseService<Proveedorcliente,
 	
 	@Autowired
 	private ConvertObjectToFormatJson convertObjectToFormatJson; 	
+
 	
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
@@ -44,17 +46,13 @@ public class ProveedorclienteService implements IAdicseService<Proveedorcliente,
 	@Override
 	public Page<Proveedorcliente> pagination(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
 			Object filter) {
-		
-		Sort sort = new Sort(sortdireccion.toUpperCase().equals("DESC") ? Direction.DESC : Direction.ASC, sortcolumn);
-		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
-		
-		Filter f = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
-
-
-		Page<Proveedorcliente> lista = selectFrom(iProveedorclienteDao).where(f).findPage(pageable);
 	
-		return lista;
+		Sort sort = new Sort(sortdireccion.toUpperCase() == "DESC" ? Direction.DESC : Direction.ASC, sortcolumn);
+		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
+		Filter _filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
 		
+		return selectFrom(iProveedorclienteDao).where(_filter).findPage(pageable);
+
 	}
 
 	@Override

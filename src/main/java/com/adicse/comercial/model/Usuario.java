@@ -21,6 +21,9 @@ public class Usuario implements Serializable {
 
 	private String clave;
 
+	@Column(name="cnt_cambio_clave")
+	private Integer cntCambioClave;
+
 	private String dni;
 
 	private String login;
@@ -70,6 +73,14 @@ public class Usuario implements Serializable {
 
 	public void setClave(String clave) {
 		this.clave = clave;
+	}
+
+	public Integer getCntCambioClave() {
+		return this.cntCambioClave;
+	}
+
+	public void setCntCambioClave(Integer cntCambioClave) {
+		this.cntCambioClave = cntCambioClave;
 	}
 
 	public String getDni() {
