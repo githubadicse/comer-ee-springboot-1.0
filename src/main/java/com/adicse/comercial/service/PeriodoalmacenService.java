@@ -16,6 +16,7 @@ import com.adicse.comercial.dao.IPeriodoalmacenDao;
 import com.adicse.comercial.model.Almacen;
 import com.adicse.comercial.model.Periodoalmacen;
 
+
 @Service
 @Transactional
 public class PeriodoalmacenService implements IAdicseService<Periodoalmacen, Integer> {
@@ -40,7 +41,8 @@ public class PeriodoalmacenService implements IAdicseService<Periodoalmacen, Int
 	@Override
 	public List<Periodoalmacen> getall() {
 		// TODO Auto-generated method stub
-		return null;
+		Sort mesanno = new Sort(Sort.Direction.DESC, "anno", "mes");
+		return (List<Periodoalmacen>) iPeriodoalmacenDao.findAll(mesanno);
 	}
 
 	@Override
