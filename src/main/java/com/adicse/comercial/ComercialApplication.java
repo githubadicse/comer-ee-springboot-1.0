@@ -32,7 +32,7 @@ public class ComercialApplication implements CommandLineRunner {
 	public ObjectMapper jsonMapper() {
 	
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		
+		TimeZone.setDefault(TimeZone.getTimeZone("Etc/UTC"));
 	    ObjectMapper mapper = new ObjectMapper();
 	    Hibernate5Module hm = new Hibernate5Module();
 	    //hm.configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING, false);
@@ -44,10 +44,8 @@ public class ComercialApplication implements CommandLineRunner {
 	    // This doesn't work with Hibernate4Module :-(
 	    //mapper.setSerializationInclusion(Include.NON_NULL);
 	    mapper.setSerializationInclusion(Include.NON_EMPTY);
+	    //df.setTimeZone(TimeZone.getTimeZone("UTC"));
 	    mapper.setDateFormat(df);
-
-	    mapper.setTimeZone(TimeZone.getTimeZone("EST"));
-	 
 	   
 	    return mapper;
 	}
