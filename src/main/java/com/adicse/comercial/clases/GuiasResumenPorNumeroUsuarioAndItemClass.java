@@ -8,6 +8,7 @@ import com.adicse.comercial.model.GuiaRemision001;
 import com.adicse.comercial.model.HorarioAlimentacion;
 import com.adicse.comercial.model.ItemEntrega;
 import com.adicse.comercial.model.NumeroEntrega;
+import com.adicse.comercial.model.RequerimientoVolumen001;
 
 public interface GuiasResumenPorNumeroUsuarioAndItemClass {
 	
@@ -16,6 +17,7 @@ public interface GuiasResumenPorNumeroUsuarioAndItemClass {
 	public HorarioAlimentacion getHorarioAlimentacion();
 	
 	public ItemEntrega getItemEntrega();
+	public RequerimientoVolumen001 getRequerimientoVolumen001();
 	public Integer getCntIe();
 	public BigDecimal getNumeroUsuarios();
 	public GuiaRemision001 getGuiaRemision001();

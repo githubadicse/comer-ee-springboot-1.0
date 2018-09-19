@@ -133,8 +133,5 @@ public class ProveedorclienteService implements IAdicseService<Proveedorcliente,
 	public List<Proveedorcliente> filterGlobal(@Param("dato") String dato){
 		return iProveedorclienteDao.filterGlobal(dato);
 	}
-
-
-
-
 }
+

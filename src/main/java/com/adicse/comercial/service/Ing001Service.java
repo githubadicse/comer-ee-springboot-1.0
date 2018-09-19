@@ -64,7 +64,7 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 	public Page<Ing001> pagination(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
 			Object filter) {
 		// TODO Auto-generated method stub
-		Sort sort = new Sort(sortdireccion.toUpperCase() == "DESC" ? Direction.DESC : Direction.ASC, sortcolumn);
+		Sort sort = new Sort(sortdireccion.toUpperCase().equals("DESC") ? Direction.DESC : Direction.ASC, sortcolumn);
 		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
 		
 		Filter f = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
@@ -106,23 +106,22 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 		Ing001 ing001 = iIng001Dao.save(entidad);
 		
 		//grabamos cierre de periodo y kardex
-		
-		for(Ing002 ing002 : ing001.getIng002s()){
-			
-			Cierremensual cierremensual = cierremensualService.actualizaCierremensualIng002(ing002);
-			iCierremensualDao.save(cierremensual);
-	
-			Kardex kardex = kardexService.actualizaKardexIng002(ing002);
-			iKardexDao.save(kardex);
-			
-			Ing002kardex ing002kardex = new Ing002kardex();
-			ing002kardex.setIding002kardex(new Idunico().getIdunico() );
-			ing002kardex.setIng002(ing002);
-			ing002kardex.setKardex(kardex);
-			
-			iIng002KardexDao.save(ing002kardex);
-			
-		}
+//		for(Ing002 ing002 : ing001.getIng002s()){
+//			
+//			Cierremensual cierremensual = cierremensualService.actualizaCierremensualIng002(ing002);
+//			iCierremensualDao.save(cierremensual);
+//	
+//			Kardex kardex = kardexService.actualizaKardexIng002(ing002);
+//			iKardexDao.save(kardex);
+//			
+//			Ing002kardex ing002kardex = new Ing002kardex();
+//			ing002kardex.setIding002kardex(new Idunico().getIdunico() );
+//			ing002kardex.setIng002(ing002);
+//			ing002kardex.setKardex(kardex);
+//			
+//			iIng002KardexDao.save(ing002kardex);
+//			
+//		}
 		
 		return ing001;
 	}
