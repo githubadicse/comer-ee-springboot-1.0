@@ -50,11 +50,9 @@ public class ProveedorclienteService implements IAdicseService<Proveedorcliente,
 		
 		Filter f = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
 
-
 		Page<Proveedorcliente> lista = selectFrom(iProveedorclienteDao).where(f).findPage(pageable);
 	
-		return lista;
-		
+		return lista;		
 	}
 
 	@Override
