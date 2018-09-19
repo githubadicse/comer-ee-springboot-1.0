@@ -52,10 +52,15 @@ public class StockactualController {
 		return stockactualService.getall();		
 	}
 	
-	@RequestMapping(value="/getByParametro", produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Stockactual>  findByParametro(@RequestParam("parametro") String parametro, @RequestParam("idalmacen") Integer idalmacen) {
-		
-		List<Stockactual> lst = stockactualService.findByParametro(parametro, idalmacen);
+	@RequestMapping(value="/getByParametroList", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Stockactual>  findByParametro(@RequestParam("evento") String evento, @RequestParam("parametro") String parametro, @RequestParam("idalmacen") Integer idalmacen) {
+				
+		List<Stockactual> lst;
+		if (evento.equals("findByParametro")) {		
+			lst = stockactualService.findByParametro(parametro, idalmacen);
+		} else {
+			lst = stockactualService.findByParametroSoloProducto(parametro);
+		}		
 		
 		for (Stockactual rowS: lst) {
 			for (Codigobarra rowP: rowS.getProducto().getCodigobarras()) {
@@ -63,7 +68,40 @@ public class StockactualController {
 			}
 		}
 		
-		return lst;			
+		return lst;
+	}
+	
+	@RequestMapping(value="/getByParametroPageable", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, Object>  findByParametroPageable(
+			@RequestParam("evento") String evento,
+			@RequestParam("pagenumber") Integer pagenumber,
+			@RequestParam("rows") Integer rows, 
+			@RequestParam("parametro") String parametro, 
+			@RequestParam("idalmacen") Integer idalmacen) {
+		
+		Page<Stockactual> page;
+		
+		if (evento == "findByParametro") {		
+			page = stockactualService.findByParametroPageable(pagenumber, rows,parametro, idalmacen);
+		} else {
+			page = stockactualService.findByParametroPageableSoloProducto(pagenumber, rows,parametro);
+		}	
+		
+				
+		List<Stockactual> lst = page.getContent();
+		
+		for (Stockactual rowS: lst) {
+			for (Codigobarra rowP: rowS.getProducto().getCodigobarras()) {
+				rowP.setProducto(null);
+			}
+		}
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("data", lst);
+		response.put("totalCount", page.getTotalElements());
+		response.put("success", true);
+		return response;
+			
 	}
 	
 }
