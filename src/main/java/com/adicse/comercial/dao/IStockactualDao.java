@@ -24,11 +24,11 @@ JpaSpecificationExecutor<Stockactual>, JpaRepository<Stockactual, Integer>
 	public Page<Stockactual> findByParametro(String parametro, Integer idalmacen, Pageable pageable);
 	
 	
-	// solo productos
-	@Query("Select s FROM Stockactual s inner join s.producto p "
-			+ "inner join p.codigobarras c on c.producto.idproducto = p.idproducto "
-			+ "where (lower(CONCAT(p.dscproducto, p.categoria.dsccategoria, p.marca.dscmarca, c.codigo)) LIKE lower(concat('%',?1,'%'))) "
-			+ "group by s.producto.idproducto, p.dscproducto order by p.dscproducto")	
-	public Page<Stockactual> findByParametroSoloProducto(String parametro, Pageable pageable);
+//	// solo productos
+//	@Query("Select s FROM Stockactual s inner join s.producto p "
+//			+ "inner join p.codigobarras c on c.producto.idproducto = p.idproducto "
+//			+ "where (lower(CONCAT(p.dscproducto, p.categoria.dsccategoria, p.marca.dscmarca, c.codigo)) LIKE lower(concat('%',?1,'%'))) "
+//			+ "group by s.producto.idproducto, p.dscproducto order by p.dscproducto")	
+//	public Page<Stockactual> findByParametroSoloProducto(String parametro, Pageable pageable);
 	
 }

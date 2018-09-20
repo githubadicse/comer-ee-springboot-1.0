@@ -57,17 +57,17 @@ public class StockactualService implements IAdicseService<Stockactual, Integer> 
 		return iStockactualDao.findByParametro(parametro, idalmacen, pageable);
 	}
 	
-	//para el control busca producto LISTA
-	public List<Stockactual> findByParametroSoloProducto(String parametro){
-		Pageable pageable =  PageRequest.of(0, 4);
-		return iStockactualDao.findByParametroSoloProducto(parametro, pageable).getContent();
-	}
-		
-	// para el control busca producto PAGINABLE
-	public Page<Stockactual> findByParametroPageableSoloProducto(Integer pagenumber, Integer rows, String parametro){
-		Pageable pageable =  PageRequest.of(pagenumber, rows);
-		return iStockactualDao.findByParametroSoloProducto(parametro, pageable);
-	}
+//	//para el control busca producto LISTA
+//	public List<Stockactual> findByParametroSoloProducto(String parametro){
+//		Pageable pageable =  PageRequest.of(0, 4);
+//		return iStockactualDao.findByParametroSoloProducto(parametro, pageable).getContent();
+//	}
+//		
+//	// para el control busca producto PAGINABLE
+//	public Page<Stockactual> findByParametroPageableSoloProducto(Integer pagenumber, Integer rows, String parametro){
+//		Pageable pageable =  PageRequest.of(pagenumber, rows);
+//		return iStockactualDao.findByParametroSoloProducto(parametro, pageable);
+//	}
 
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
