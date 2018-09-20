@@ -52,10 +52,10 @@ public class StockactualController {
 		return stockactualService.getall();		
 	}
 	
-	@RequestMapping(value="/getByParametro", produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/getByParametroList", produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<Stockactual>  findByParametro(@RequestParam("parametro") String parametro, @RequestParam("idalmacen") Integer idalmacen) {
-		
-		List<Stockactual> lst = stockactualService.findByParametro(parametro, idalmacen);
+				
+		List<Stockactual> lst = stockactualService.findByParametro(parametro, idalmacen);			
 		
 		for (Stockactual rowS: lst) {
 			for (Codigobarra rowP: rowS.getProducto().getCodigobarras()) {
@@ -63,7 +63,31 @@ public class StockactualController {
 			}
 		}
 		
-		return lst;			
+		return lst;
+	}
+	
+	@RequestMapping(value="/getByParametroPageable", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, Object>  findByParametroPageable(
+			@RequestParam("pagenumber") Integer pagenumber,
+			@RequestParam("rows") Integer rows, 
+			@RequestParam("parametro") String parametro, 
+			@RequestParam("idalmacen") Integer idalmacen) {
+		
+		Page<Stockactual> page = stockactualService.findByParametroPageable(pagenumber, rows,parametro, idalmacen);						
+		List<Stockactual> lst = page.getContent();
+		
+		for (Stockactual rowS: lst) {
+			for (Codigobarra rowP: rowS.getProducto().getCodigobarras()) {
+				rowP.setProducto(null);
+			}
+		}
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("data", lst);
+		response.put("totalCount", page.getTotalElements());
+		response.put("success", true);
+		return response;
+			
 	}
 	
 }

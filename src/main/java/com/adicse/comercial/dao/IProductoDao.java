@@ -2,6 +2,8 @@ package com.adicse.comercial.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -31,5 +33,14 @@ public interface IProductoDao extends CrudRepository<Producto, Integer>, PagingA
 	
 	@Query("Select p From Producto p inner join p.stockactuals s on s.producto.idproducto = p.idproducto")
 	List<Producto> findProductoAndStock();
+	
+	
+	
+	// No muestra precios ni stock, busca solo productos para ingreso y salida del almacen
+	@Query("Select p FROM Producto p "
+			+ "inner join p.codigobarras c on c.producto.idproducto = p.idproducto "
+			+ "where (lower(CONCAT(p.dscproducto, p.categoria.dsccategoria, p.marca.dscmarca, c.codigo)) LIKE lower(concat('%',?1,'%'))) "
+			+ "group by p.idproducto, p.dscproducto order by p.dscproducto")	
+	public Page<Producto> findByParametroSoloProducto(String parametro, Pageable pageable);
 	
 }
