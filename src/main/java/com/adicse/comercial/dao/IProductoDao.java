@@ -43,7 +43,8 @@ public interface IProductoDao extends CrudRepository<Producto, Integer>, PagingA
 			+ "case when(c.codigo is null) then '' else c.codigo end ,"
 			+ "case when(p.categoria.dsccategoria is null) then '' else p.categoria.dsccategoria end ,"
 			+ "case when(p.marca.dscmarca is null) then '' else p.marca.dscmarca end "
-			+ ")) LIKE lower(CONCAT('%',:parametro,'%'))" 
+			+ ")) LIKE lower(CONCAT('%',:parametro,'%'))"
+			+ " group by p.idproducto order by p.dscproducto"
 			)
 	//+ "where (lower(p.dscproducto) LIKE %:parametro% ) "
 	public Page<Producto> findByParametroSoloProducto(@Param("parametro") String parametro, Pageable pageable);
