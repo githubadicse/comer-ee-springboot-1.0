@@ -23,6 +23,9 @@ JpaSpecificationExecutor<Stockactual>, JpaRepository<Stockactual, Integer>
 			+ "group by s.idstockactual, p.dscproducto order by p.dscproducto")	
 	public Page<Stockactual> findByParametro(String parametro, Integer idalmacen, Pageable pageable);
 	
+	@Query("Select s FROM Stockactual s where s.almacen.idalmacen = ?1 and s.producto.idproducto = ?2")
+	public Stockactual getByProductoAlmacen(Integer idalmacen, Integer idproducto);
+	
 	
 //	// solo productos
 //	@Query("Select s FROM Stockactual s inner join s.producto p "
