@@ -246,7 +246,7 @@ public class ProductoController {
 	
 	
 	@RequestMapping(value="/getByParametroList", produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Producto>  findByParametro(@RequestParam("parametro") String parametro, @RequestParam("idalmacen") Integer idalmacen) {
+	public List<Producto>  findByParametro(@RequestParam("parametro") String parametro) {
 		
 		List<Producto> lst = productoService.findByParametroLista(parametro);
 		
@@ -263,8 +263,7 @@ public class ProductoController {
 	public Map<String, Object>  findByParametroPageable(
 			@RequestParam("pagenumber") Integer pagenumber,
 			@RequestParam("rows") Integer rows, 
-			@RequestParam("parametro") String parametro, 
-			@RequestParam("idalmacen") Integer idalmacen) {
+			@RequestParam("parametro") String parametro) {
 		
 		Page<Producto> page = productoService.findByParametroPageable(pagenumber, rows,parametro);
 		List<Producto> lst = page.getContent();
