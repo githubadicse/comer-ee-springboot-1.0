@@ -56,7 +56,8 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 	// para el control busca producto PAGINABLE
 	public Page<Producto> findByParametroPageable(Integer pagenumber, Integer rows, String parametro){
 		Pageable pageable =  PageRequest.of(pagenumber, rows);
-		return iProductoDao.findByParametroSoloProducto(parametro, pageable);
+		String _parametro = parametro.toLowerCase();
+		return iProductoDao.findByParametroSoloProducto(_parametro, pageable);
 	}
 
 	
@@ -82,7 +83,8 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 		if(entidad.getIdproducto() == 0){
 			entidad.setIdproducto(iProductoDao.getMax() == null?1:iProductoDao.getMax() + 1 );
 		}
-		return iProductoDao.save(entidad);
+		Producto producto = iProductoDao.save(entidad); 
+		return producto;
 	}
 
 	@Override

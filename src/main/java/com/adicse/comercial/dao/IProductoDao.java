@@ -38,9 +38,14 @@ public interface IProductoDao extends CrudRepository<Producto, Integer>, PagingA
 	
 	// No muestra precios ni stock, busca solo productos para ingreso y salida del almacen
 	@Query("Select p FROM Producto p "
-			+ "left join p.codigobarras c on c.producto.idproducto = p.idproducto "
-			+ "where (lower(CONCAT(p.dscproducto, p.categoria.dsccategoria, p.marca.dscmarca, c.codigo)) LIKE lower(concat('%',?1,'%'))) "
-			+ "group by p.idproducto, p.dscproducto order by p.dscproducto")	
-	public Page<Producto> findByParametroSoloProducto(String parametro, Pageable pageable);
+			+ "left join p.codigobarras c on p.idproducto = c.producto.idproducto "
+			+ "where lower(CONCAT(p.dscproducto, "
+			+ "case when(c.codigo is null) then '' else c.codigo end ,"
+			+ "case when(p.categoria.dsccategoria is null) then '' else p.categoria.dsccategoria end ,"
+			+ "case when(p.marca.dscmarca is null) then '' else p.marca.dscmarca end "
+			+ ")) LIKE lower(CONCAT('%',:parametro,'%'))" 
+			)
+	//+ "where (lower(p.dscproducto) LIKE %:parametro% ) "
+	public Page<Producto> findByParametroSoloProducto(@Param("parametro") String parametro, Pageable pageable);
 	
 }

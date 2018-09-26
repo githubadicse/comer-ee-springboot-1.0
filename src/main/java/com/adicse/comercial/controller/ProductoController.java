@@ -125,13 +125,18 @@ public class ProductoController {
 		
 		codigobarraService.deleteAllByCodigoproducto(producto.getIdproducto());
 		
+		
+		
 		// colocamos el id al detalle		
-		for(Codigobarra row: producto.getCodigobarras()) {			
+		for(Codigobarra row: producto.getCodigobarras()) {
+			
 			row.setProducto(producto);			
-			row.setIdcodigobarra(new Idunico().getIdunico());			
+			row.setIdcodigobarra(new Idunico().getIdunico());
+			
 		}
 		
 		BeanUtils.copyProperties(producto, productoUpdate);
+		
 		
 		// evita recursividad
 		Producto entidadRes = productoService.grabar(productoUpdate);
