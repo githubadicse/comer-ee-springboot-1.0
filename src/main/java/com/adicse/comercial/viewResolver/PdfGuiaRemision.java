@@ -176,6 +176,7 @@ public class PdfGuiaRemision extends AbstractPdfGuiaRemision {
 					numeroLote = "";
 					if (guiaRemision002.getVolumenConvertidoEnvace().getRequerimientoVolumen002Producto()
 							.getProductoPorNumeroEntrega().getCatalogoProductoQaliwarma().getPrintLote().equals(1))
+						
 						numeroLote = " LT:" + guiaRemision002.getNumeroLote() == null ? ""
 								: " LT:" + guiaRemision002.getNumeroLote();
 

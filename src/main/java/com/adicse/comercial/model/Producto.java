@@ -26,9 +26,11 @@ public class Producto implements Serializable {
 
 	private Integer estado;
 
-	private Integer exigelote;
+	@Column(name="exige_lote")
+	private Boolean exigeLote;
 
-	private Integer exigevencimiento;
+	@Column(name="exige_vencimiento")
+	private Boolean exigeVencimiento;
 
 	private Integer numeropiezas;
 
@@ -118,7 +120,7 @@ public class Producto implements Serializable {
 
 	//bi-directional many-to-one association to Moneda
 	@ManyToOne
-	@JoinColumn(name="idmoneda")
+	@JoinColumn(name="id_moneda")
 	private Moneda moneda;
 
 	//bi-directional many-to-one association to Unidadmedida
@@ -177,20 +179,20 @@ public class Producto implements Serializable {
 		this.estado = estado;
 	}
 
-	public Integer getExigelote() {
-		return this.exigelote;
+	public Boolean getExigeLote() {
+		return this.exigeLote;
 	}
 
-	public void setExigelote(Integer exigelote) {
-		this.exigelote = exigelote;
+	public void setExigeLote(Boolean exigeLote) {
+		this.exigeLote = exigeLote;
 	}
 
-	public Integer getExigevencimiento() {
-		return this.exigevencimiento;
+	public Boolean getExigeVencimiento() {
+		return this.exigeVencimiento;
 	}
 
-	public void setExigevencimiento(Integer exigevencimiento) {
-		this.exigevencimiento = exigevencimiento;
+	public void setExigeVencimiento(Boolean exigeVencimiento) {
+		this.exigeVencimiento = exigeVencimiento;
 	}
 
 	public Integer getNumeropiezas() {
