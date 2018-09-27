@@ -61,6 +61,7 @@ public class JWTServiceImpl implements JWTService {
 		claims.put("numeroEntrega", pl.getNumeroEntrega());
 		claims.put("filial", usuario.getFilial().getIdfilial() );		
 		claims.put("idusuario", usuario.getIdusuario() );
+		claims.put("cntCambioClave", usuario.getCntCambioClave() );
 		
 		
 		String token = Jwts.builder().setClaims(claims).setSubject(username)
