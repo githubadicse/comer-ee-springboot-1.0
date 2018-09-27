@@ -63,6 +63,7 @@ public class JWTServiceImpl implements JWTService {
 		claims.put("idusuario", usuario.getIdusuario() );
 		
 		
+		
 		String token = Jwts.builder().setClaims(claims).setSubject(username)
 				.signWith(SignatureAlgorithm.HS512, SECRET.getBytes() ).setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_DATE)).compact();
