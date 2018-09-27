@@ -46,40 +46,18 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 		Filter _filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(filter);
 		
 		return selectFrom(iProductoDao).leftJoin("stockactuals").where(_filter).findPage(pageable);
-
-		/*  
-		 * instanciamos una entidad la cual servira de contenedor para realizar el filtro
-		 * este evento sera llenado dentro de una funcion que esta en CustomFilterSpec
-		 * se le debe pasar dos parametros, uno la entidad que queremos llenar con los datos 
-		 * del segundo parametro que es un objecto json que se para en la variable filter  
-		 */
-//		Producto productofiltro = new Producto();
-//		productofiltro.setIdproducto(null);
-//		productofiltro.setDscproducto(null);
-//		
-//		Unidadmedida unidadmedida = new Unidadmedida();
-//		productofiltro.setUnidadmedida(unidadmedida);
-//		
-//
-//		CustomFilterSpec efs = new CustomFilterSpec();
-//		try {
-//			
-//			productofiltro = (Producto) efs.CreateCustomFilter(productofiltro, filter);
-//		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		/* Specification nos permite agregar implicitamente los where que se pasaran al evento findAll,
-//		 * Esto sucede en CrudRepository
-//		 */
-//		Specification<Producto> spec = new ProductoSpecification(productofiltro);
-//		
-//		Page<Producto> lista = iProductoDao.findAll(spec,pageable);
- 
-
-		//
-//		return lista;
+	}
+	
+	public List<Producto> findByParametroLista(String parametro){
+		Pageable pageable =  PageRequest.of(0, 4);
+		return iProductoDao.findByParametroSoloProducto(parametro, pageable).getContent();
+	}
+	
+	// para el control busca producto PAGINABLE
+	public Page<Producto> findByParametroPageable(Integer pagenumber, Integer rows, String parametro){
+		Pageable pageable =  PageRequest.of(pagenumber, rows);
+		String _parametro = parametro.toLowerCase();
+		return iProductoDao.findByParametroSoloProducto(_parametro, pageable);
 	}
 
 	
@@ -105,7 +83,8 @@ public class ProductoService implements IAdicseService<Producto, Integer>  {
 		if(entidad.getIdproducto() == 0){
 			entidad.setIdproducto(iProductoDao.getMax() == null?1:iProductoDao.getMax() + 1 );
 		}
-		return iProductoDao.save(entidad);
+		Producto producto = iProductoDao.save(entidad); 
+		return producto;
 	}
 
 	@Override

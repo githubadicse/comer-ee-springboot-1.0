@@ -1,5 +1,6 @@
 package com.adicse.comercial.controller;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +19,15 @@ import com.adicse.comercial.model.Ing001;
 import com.adicse.comercial.model.Ing002;
 import com.adicse.comercial.model.Periodoalmacen;
 import com.adicse.comercial.model.Producto;
+import com.adicse.comercial.model.Stockactual;
 import com.adicse.comercial.service.Ing001Service;
 import com.adicse.comercial.service.Ing002KardexService;
 import com.adicse.comercial.service.Ing002Service;
 import com.adicse.comercial.service.KardexService;
 import com.adicse.comercial.service.PeriodoalmacenService;
 import com.adicse.comercial.service.ProductoService;
+import com.adicse.comercial.service.StockactualService;
+import com.adicse.comercial.utilitarios.Idunico;
 import com.adicse.comercial.viewResolver.PdfListaIngresos;
 import com.adicse.comercial.viewResolver.PdfNotaIngreso;
 
@@ -51,6 +55,9 @@ public class Ing001Controller {
 	@Autowired
 	private PeriodoalmacenService periodoalmacenService;
 	
+	@Autowired
+	private StockactualService stockactualService;
+	
 	@RequestMapping("/pagination")
 	@ResponseBody
 	public Map<String, Object> pagination(@RequestParam("pagenumber") Integer pagenumber,
@@ -74,8 +81,42 @@ public class Ing001Controller {
 	@ResponseBody
 	public Ing001 create(@RequestBody Ing001 ing001) {
 		ing001.setIding001(0);
-		return ing001Service.grabar(ing001);
+					
+		Stockactual ItemStockActual;
+		
+		for (Ing002 rowDt: ing001.getIng002s()) {
+			rowDt.setIng001(ing001);
+			rowDt.setIding002(new Idunico().getIdunico());
+			
+			// guarda en stock actual
+			Integer idalmacen = ing001.getAlmacen().getIdalmacen();
+			Integer idproducto = rowDt.getProducto().getIdproducto();
+			
+			ItemStockActual = stockactualService.getByProductoAlmacen(idalmacen, idproducto);
+			
+			// si ya existe este producto en stockactual, aumentamos su stock
+			if (ItemStockActual != null) {
+				BigDecimal _stockActual = ItemStockActual.getStockactual().add(rowDt.getCantidad());
+				ItemStockActual.setStockactual(_stockActual);
+			} 
+			else { // nuevo producto en stockactual
+				ItemStockActual =   new Stockactual();
+				ItemStockActual.setIdstockactual(new Idunico().getIdunico());
+				ItemStockActual.setProducto(rowDt.getProducto());
+				ItemStockActual.setAlmacen(ing001.getAlmacen());
+				ItemStockActual.setStockactual(rowDt.getCantidad());
+			}
+									
+			stockactualService.grabar(ItemStockActual);
+		}
+				
+		Ing001 ing001_grabar = ing001Service.grabar(ing001);
+		
+		for (Ing002 rowDt: ing001_grabar.getIng002s()) {
+			rowDt.setIng001(null);
+		}
 
+		return ing001_grabar;
 	}
 	
 

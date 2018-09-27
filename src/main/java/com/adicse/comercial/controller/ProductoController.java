@@ -125,13 +125,18 @@ public class ProductoController {
 		
 		codigobarraService.deleteAllByCodigoproducto(producto.getIdproducto());
 		
+		
+		
 		// colocamos el id al detalle		
-		for(Codigobarra row: producto.getCodigobarras()) {			
+		for(Codigobarra row: producto.getCodigobarras()) {
+			
 			row.setProducto(producto);			
-			row.setIdcodigobarra(new Idunico().getIdunico());			
+			row.setIdcodigobarra(new Idunico().getIdunico());
+			
 		}
 		
 		BeanUtils.copyProperties(producto, productoUpdate);
+		
 		
 		// evita recursividad
 		Producto entidadRes = productoService.grabar(productoUpdate);
@@ -242,6 +247,44 @@ public class ProductoController {
 		}
 
 		return producto;
+	}
+	
+	
+	@RequestMapping(value="/getByParametroList", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Producto>  findByParametro(@RequestParam("parametro") String parametro) {
+		
+		List<Producto> lst = productoService.findByParametroLista(parametro);
+		
+		for (Producto rowS: lst) {
+			for (Codigobarra rowP: rowS.getCodigobarras()) {
+				rowP.setProducto(null);
+			}
+		}
+		
+		return lst;			
+	}
+	
+	@RequestMapping(value="/getByParametroPageable", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, Object>  findByParametroPageable(
+			@RequestParam("pagenumber") Integer pagenumber,
+			@RequestParam("rows") Integer rows, 
+			@RequestParam("parametro") String parametro) {
+		
+		Page<Producto> page = productoService.findByParametroPageable(pagenumber, rows,parametro);
+		List<Producto> lst = page.getContent();
+		
+		for (Producto rowS: lst) {
+			for (Codigobarra rowP: rowS.getCodigobarras()) {
+				rowP.setProducto(null);
+			}
+		}
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("data", lst);
+		response.put("totalCount", page.getTotalElements());
+		response.put("success", true);
+		return response;
+			
 	}
 
 	@ResponseBody
