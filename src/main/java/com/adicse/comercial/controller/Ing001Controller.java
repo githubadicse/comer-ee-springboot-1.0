@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.adicse.comercial.dao.IIng002Dao;
 import com.adicse.comercial.model.Ing001;
 import com.adicse.comercial.model.Ing002;
 import com.adicse.comercial.model.Periodoalmacen;
@@ -38,6 +39,9 @@ public class Ing001Controller {
 	
 	@Autowired
 	private Ing001Service ing001Service;
+	
+	@Autowired
+	private IIng002Dao iIng002Dao;
 	
 	@Autowired
 	private Ing002Service ing002Service;
@@ -80,10 +84,41 @@ public class Ing001Controller {
 	@RequestMapping("/create")
 	@ResponseBody
 	public Ing001 create(@RequestBody Ing001 ing001) {
-		ing001.setIding001(0);
+//		ing001.setIding001(0);
 					
-		Stockactual ItemStockActual;
+		CocinarStockActual(ing001);
+				
+		Ing001 ing001_grabar = ing001Service.grabar(ing001);
 		
+		for (Ing002 rowDt: ing001_grabar.getIng002s()) {
+			rowDt.setIng001(null);
+		}
+
+		return ing001_grabar;
+	}
+	
+	@RequestMapping("/update")
+	@ResponseBody
+	public Ing001 update(@RequestBody Ing001 ing001) {		
+//		Integer idIng001 = ing001.getIding001();
+//		iIng002Dao.deleteIng002ByIdIng001(idIng001);
+		
+		CocinarStockActual(ing001);
+				
+		Ing001 ing001_grabar = ing001Service.grabar(ing001);
+		
+		for (Ing002 rowDt: ing001_grabar.getIng002s()) {
+			rowDt.setIng001(null);
+		}
+
+		return ing001_grabar;
+	}
+	
+	
+	// registra los datos en Stockactual, se usa en create y update	
+	private void CocinarStockActual(Ing001 ing001) {
+		
+		Stockactual ItemStockActual;		
 		for (Ing002 rowDt: ing001.getIng002s()) {
 			rowDt.setIng001(ing001);
 			rowDt.setIding002(new Idunico().getIdunico());
@@ -109,14 +144,7 @@ public class Ing001Controller {
 									
 			stockactualService.grabar(ItemStockActual);
 		}
-				
-		Ing001 ing001_grabar = ing001Service.grabar(ing001);
 		
-		for (Ing002 rowDt: ing001_grabar.getIng002s()) {
-			rowDt.setIng001(null);
-		}
-
-		return ing001_grabar;
 	}
 	
 
@@ -126,9 +154,9 @@ public class Ing001Controller {
 		Map<String, Object> response = new HashMap<>();
 		
 		Ing001 ing001 = ing001Service.findbyid(id).get() ;
-		
-		for(Ing002 row : ing001.getIng002s()){
-			row.setIng001(null);
+						
+		for (Ing002 rowDt: ing001.getIng002s()) {
+			rowDt.setIng001(null);
 		}
 		
 		response.put("data", ing001);

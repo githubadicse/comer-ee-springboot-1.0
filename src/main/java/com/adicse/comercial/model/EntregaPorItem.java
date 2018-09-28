@@ -4,9 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 
 /**
  * The persistent class for the entrega_por_item database table.
@@ -24,12 +22,10 @@ public class EntregaPorItem implements Serializable {
 
 	private Boolean cerrado;
 
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fin_atencion")
 	private Date finAtencion;
 
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="inicio_atencion")
 	private Date inicioAtencion;

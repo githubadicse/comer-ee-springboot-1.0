@@ -4,9 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 
 /**
  * The persistent class for the usuario database table.
