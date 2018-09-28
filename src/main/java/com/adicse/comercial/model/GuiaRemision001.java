@@ -1,11 +1,11 @@
 package com.adicse.comercial.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * The persistent class for the guia_remision_001 database table.
@@ -24,7 +24,6 @@ public class GuiaRemision001 implements Serializable {
 	private String estado;
 
 	@Temporal(TemporalType.DATE)
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Column(name="fecha_emision")
 	private Date fechaEmision;
 
@@ -77,7 +76,7 @@ public class GuiaRemision001 implements Serializable {
 	private Vehiculo vehiculo;
 
 	//bi-directional many-to-one association to GuiaRemision002
-	@OneToMany(mappedBy="guiaRemision001", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="guiaRemision001")
 	private List<GuiaRemision002> guiaRemision002s;
 
 	public GuiaRemision001() {

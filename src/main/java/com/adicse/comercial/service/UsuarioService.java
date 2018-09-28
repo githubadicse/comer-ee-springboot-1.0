@@ -25,10 +25,8 @@ import org.springframework.stereotype.Service;
 
 import com.adicse.comercial.dao.IUsuarioDao;
 import com.adicse.comercial.model.Usuario;
-import com.adicse.comercial.model.Usuarioempleado;
 import com.adicse.comercial.specification.ConvertObjectToFormatJson;
 import com.adicse.comercial.specification.Filter;
-import com.adicse.comercial.utilitarios.Idunico;
 
 @Service
 @Transactional
@@ -84,11 +82,7 @@ public class UsuarioService implements IAdicseService<Usuario, Integer>, UserDet
 			entidad.setIdusuario(nexId);
 		}
 		
-		if(entidad.getUsuarioempleados() != null ){
-			for (Usuarioempleado usuarioempleado : entidad.getUsuarioempleados()) {
-				usuarioempleado.setIdusuarioempleado(new Idunico().getIdunico());
-			}
-		}
+		
 
 		return iUsuarioDao.save(entidad);
 	}

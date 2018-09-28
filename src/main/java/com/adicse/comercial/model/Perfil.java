@@ -22,7 +22,7 @@ public class Perfil implements Serializable {
 	private Integer idfilial;
 
 	//bi-directional many-to-one association to Perfilesdetalle
-	@OneToMany(mappedBy="perfil", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="perfil")
 	private List<Perfilesdetalle> perfilesdetalles;
 
 	//bi-directional many-to-one association to Usuario

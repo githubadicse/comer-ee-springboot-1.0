@@ -2,8 +2,9 @@ package com.adicse.comercial.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * The persistent class for the usuario database table.
@@ -26,6 +27,20 @@ public class Usuario implements Serializable {
 
 	private String dni;
 
+	@Column(name="fecha_registro_systema")
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
+	private Timestamp fechaRegistroSystema;
+
+	@Column(name="fecha_registro_systema_modifica")
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
+	private Timestamp fechaRegistroSystemaModifica;
+
+	@Column(name="idusuario_crea")
+	private Integer idusuarioCrea;
+
+	@Column(name="idusuario_modifica")
+	private Integer idusuarioModifica;
+
 	private String login;
 
 	private String nomusuario;
@@ -43,10 +58,6 @@ public class Usuario implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="idperfil")
 	private Perfil perfil;
-
-	//bi-directional many-to-one association to Usuarioempleado
-	@OneToMany(mappedBy="usuario", cascade={CascadeType.ALL})
-	private List<Usuarioempleado> usuarioempleados;
 
 	public Usuario() {
 	}
@@ -89,6 +100,38 @@ public class Usuario implements Serializable {
 
 	public void setDni(String dni) {
 		this.dni = dni;
+	}
+
+	public Timestamp getFechaRegistroSystema() {
+		return this.fechaRegistroSystema;
+	}
+
+	public void setFechaRegistroSystema(Timestamp fechaRegistroSystema) {
+		this.fechaRegistroSystema = fechaRegistroSystema;
+	}
+
+	public Timestamp getFechaRegistroSystemaModifica() {
+		return this.fechaRegistroSystemaModifica;
+	}
+
+	public void setFechaRegistroSystemaModifica(Timestamp fechaRegistroSystemaModifica) {
+		this.fechaRegistroSystemaModifica = fechaRegistroSystemaModifica;
+	}
+
+	public Integer getIdusuarioCrea() {
+		return this.idusuarioCrea;
+	}
+
+	public void setIdusuarioCrea(Integer idusuarioCrea) {
+		this.idusuarioCrea = idusuarioCrea;
+	}
+
+	public Integer getIdusuarioModifica() {
+		return this.idusuarioModifica;
+	}
+
+	public void setIdusuarioModifica(Integer idusuarioModifica) {
+		this.idusuarioModifica = idusuarioModifica;
 	}
 
 	public String getLogin() {
@@ -143,28 +186,6 @@ public class Usuario implements Serializable {
 
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
-	}
-
-	public List<Usuarioempleado> getUsuarioempleados() {
-		return this.usuarioempleados;
-	}
-
-	public void setUsuarioempleados(List<Usuarioempleado> usuarioempleados) {
-		this.usuarioempleados = usuarioempleados;
-	}
-
-	public Usuarioempleado addUsuarioempleado(Usuarioempleado usuarioempleado) {
-		getUsuarioempleados().add(usuarioempleado);
-		usuarioempleado.setUsuario(this);
-
-		return usuarioempleado;
-	}
-
-	public Usuarioempleado removeUsuarioempleado(Usuarioempleado usuarioempleado) {
-		getUsuarioempleados().remove(usuarioempleado);
-		usuarioempleado.setUsuario(null);
-
-		return usuarioempleado;
 	}
 
 }

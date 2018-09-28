@@ -1,12 +1,12 @@
 package com.adicse.comercial.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * The persistent class for the ing001 database table.
@@ -23,14 +23,25 @@ public class Ing001 implements Serializable {
 	private Integer condicionrelacioncompra;
 
 	@Temporal(TemporalType.DATE)
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	private Date fecha;
 
-	private Timestamp fechahorasys;
+	@Column(name="fecha_registro_systema")
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
+	private Timestamp fechaRegistroSystema;
+
+	@Column(name="fecha_registro_systema_modifica")
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
+	private Timestamp fechaRegistroSystemaModifica;
 
 	private String glosa;
 
 	private Time hora;
+
+	@Column(name="idusuario_crea")
+	private Integer idusuarioCrea;
+
+	@Column(name="idusuario_modifica")
+	private Integer idusuarioModifica;
 
 	private Integer nrodoc;
 
@@ -79,7 +90,7 @@ public class Ing001 implements Serializable {
 	private Traslado traslado;
 
 	//bi-directional many-to-one association to Ing002
-	@OneToMany(mappedBy="ing001", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="ing001")
 	private List<Ing002> ing002s;
 
 	public Ing001() {
@@ -109,12 +120,20 @@ public class Ing001 implements Serializable {
 		this.fecha = fecha;
 	}
 
-	public Timestamp getFechahorasys() {
-		return this.fechahorasys;
+	public Timestamp getFechaRegistroSystema() {
+		return this.fechaRegistroSystema;
 	}
 
-	public void setFechahorasys(Timestamp fechahorasys) {
-		this.fechahorasys = fechahorasys;
+	public void setFechaRegistroSystema(Timestamp fechaRegistroSystema) {
+		this.fechaRegistroSystema = fechaRegistroSystema;
+	}
+
+	public Timestamp getFechaRegistroSystemaModifica() {
+		return this.fechaRegistroSystemaModifica;
+	}
+
+	public void setFechaRegistroSystemaModifica(Timestamp fechaRegistroSystemaModifica) {
+		this.fechaRegistroSystemaModifica = fechaRegistroSystemaModifica;
 	}
 
 	public String getGlosa() {
@@ -131,6 +150,22 @@ public class Ing001 implements Serializable {
 
 	public void setHora(Time hora) {
 		this.hora = hora;
+	}
+
+	public Integer getIdusuarioCrea() {
+		return this.idusuarioCrea;
+	}
+
+	public void setIdusuarioCrea(Integer idusuarioCrea) {
+		this.idusuarioCrea = idusuarioCrea;
+	}
+
+	public Integer getIdusuarioModifica() {
+		return this.idusuarioModifica;
+	}
+
+	public void setIdusuarioModifica(Integer idusuarioModifica) {
+		this.idusuarioModifica = idusuarioModifica;
 	}
 
 	public Integer getNrodoc() {
