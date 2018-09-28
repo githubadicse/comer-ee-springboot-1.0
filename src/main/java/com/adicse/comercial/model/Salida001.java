@@ -6,7 +6,9 @@ import java.sql.Time;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 /**
  * The persistent class for the salida001 database table.
@@ -22,6 +24,7 @@ public class Salida001 implements Serializable {
 
 	private Integer condicionrelacionventa;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
@@ -70,7 +73,7 @@ public class Salida001 implements Serializable {
 	private Ven001 ven001;
 
 	//bi-directional many-to-one association to Salida002
-	@OneToMany(mappedBy="salida001")
+	@OneToMany(mappedBy="salida001", cascade={CascadeType.ALL})
 	private List<Salida002> salida002s;
 
 	public Salida001() {

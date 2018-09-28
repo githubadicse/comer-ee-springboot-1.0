@@ -27,7 +27,7 @@ public class Ubigeo implements Serializable {
 	private String nombreProvincia;
 
 	//bi-directional many-to-one association to RequerimientoVolumen001
-	@OneToMany(mappedBy="ubigeo")
+	@OneToMany(mappedBy="ubigeo", cascade={CascadeType.ALL})
 	private List<RequerimientoVolumen001> requerimientoVolumen001s;
 
 	public Ubigeo() {

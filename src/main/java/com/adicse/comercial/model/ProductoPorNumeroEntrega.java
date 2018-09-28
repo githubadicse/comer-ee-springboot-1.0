@@ -5,7 +5,9 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 /**
  * The persistent class for the producto_por_numero_entrega database table.
@@ -39,30 +41,37 @@ public class ProductoPorNumeroEntrega implements Serializable {
 	@Column(name="dsc_complemento_producto")
 	private String dscComplementoProducto;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_elavoracion")
 	private Date fechaElavoracion;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_vencimiento")
 	private Date fechaVencimiento;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_vencimiento1")
 	private Date fechaVencimiento1;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_vencimiento2")
 	private Date fechaVencimiento2;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_vencimiento3")
 	private Date fechaVencimiento3;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_vencimiento4")
 	private Date fechaVencimiento4;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_vencimiento5")
 	private Date fechaVencimiento5;

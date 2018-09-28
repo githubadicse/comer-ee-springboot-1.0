@@ -82,7 +82,7 @@ public class Producto implements Serializable {
 	private List<Cierremensual> cierremensuals;
 
 	//bi-directional many-to-one association to Codigobarra
-	@OneToMany(mappedBy="producto")
+	@OneToMany(mappedBy="producto", cascade={CascadeType.ALL})
 	private List<Codigobarra> codigobarras;
 
 	//bi-directional many-to-one association to Ing002

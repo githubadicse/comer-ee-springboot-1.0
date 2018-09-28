@@ -4,7 +4,9 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 /**
  * The persistent class for the catalogo_lote database table.
@@ -22,6 +24,7 @@ public class CatalogoLote implements Serializable {
 
 	private Integer cantidad;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_vencimiento")
 	private Date fechaVencimiento;
@@ -42,7 +45,7 @@ public class CatalogoLote implements Serializable {
 	private List<MarcaLote> marcaLotes;
 
 	//bi-directional many-to-one association to Piking
-	@OneToMany(mappedBy="catalogoLote")
+	@OneToMany(mappedBy="catalogoLote", cascade={CascadeType.ALL})
 	private List<Piking> pikings;
 
 	public CatalogoLote() {
