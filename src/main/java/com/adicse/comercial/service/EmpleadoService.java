@@ -64,8 +64,11 @@ public class EmpleadoService implements IAdicseService<Empleado, Integer> {
 	@Override
 	public Empleado grabar(Empleado entidad) {
 		// TODO Auto-generated method stub
-		Integer id = iEmpleadoDao.getMax() == null?1:iEmpleadoDao.getMax() + 1;
-		entidad.setIdempleado(id);	
+		if(entidad.getIdempleado() == 0) {
+			Integer id = iEmpleadoDao.getMax() == null?1:iEmpleadoDao.getMax() + 1;
+			entidad.setIdempleado(id);				
+		}
+
 		
 		return iEmpleadoDao.save(entidad) ;
 	}

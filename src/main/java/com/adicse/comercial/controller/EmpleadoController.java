@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.adicse.comercial.model.Empleado;
 import com.adicse.comercial.model.Usuario;
-import com.adicse.comercial.model.Usuarioempleado;
 import com.adicse.comercial.service.EmpleadoService;
 import com.adicse.comercial.service.UsuarioService;
 import com.adicse.comercial.specification.ConvertObjectToFormatJson;
@@ -82,12 +81,6 @@ public class EmpleadoController {
 		Filter filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(f);
 		List<Empleado> lst = empleadoService.findByFilter(filter);
 		
-		for (Empleado em: lst) {
-			for (Usuarioempleado rowUs: em.getUsuarioempleados()) {
-				rowUs.setEmpleado(null);
-			}
-		}
-		
 		return lst;
 	}
 	
@@ -108,7 +101,7 @@ public class EmpleadoController {
 		Date utilDate = new Date();
 		Timestamp sq = new Timestamp(utilDate.getTime());
 		
-		empleado.setIdusuario(usuario.getIdusuario());
+		empleado.setIdusuarioCrea(usuario.getIdusuario());
 		empleado.setFechaRegistroSystema(sq);
 		
 		return empleadoService.grabar(empleado);

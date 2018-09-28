@@ -1,12 +1,11 @@
 package com.adicse.comercial.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * The persistent class for the empleado database table.
  * 
@@ -28,20 +27,21 @@ public class Empleado implements Serializable {
 	private String email;
 
 	@Column(name="fecha_registro_systema")
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaRegistroSystema;
 
 	@Column(name="fecha_registro_systema_modifica")
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaRegistroSystemaModifica;
 
 	@Temporal(TemporalType.DATE)
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	private Date fechaingreso;
 
 	@Temporal(TemporalType.DATE)
-	@JsonFormat (pattern ="dd/MM/yyyy")
 	private Date fechanacimiento;
 
-	private Integer idusuario;
+	@Column(name="idusuario_crea")
+	private Integer idusuarioCrea;
 
 	@Column(name="idusuario_modifica")
 	private Integer idusuarioModifica;
@@ -66,10 +66,6 @@ public class Empleado implements Serializable {
 	//bi-directional many-to-one association to Salida001
 	@OneToMany(mappedBy="empleado")
 	private List<Salida001> salida001s;
-
-	//bi-directional many-to-one association to Usuarioempleado
-	@OneToMany(mappedBy="empleado", cascade={CascadeType.ALL})
-	private List<Usuarioempleado> usuarioempleados;
 
 	public Empleado() {
 	}
@@ -146,12 +142,12 @@ public class Empleado implements Serializable {
 		this.fechanacimiento = fechanacimiento;
 	}
 
-	public Integer getIdusuario() {
-		return this.idusuario;
+	public Integer getIdusuarioCrea() {
+		return this.idusuarioCrea;
 	}
 
-	public void setIdusuario(Integer idusuario) {
-		this.idusuario = idusuario;
+	public void setIdusuarioCrea(Integer idusuarioCrea) {
+		this.idusuarioCrea = idusuarioCrea;
 	}
 
 	public Integer getIdusuarioModifica() {
@@ -250,28 +246,6 @@ public class Empleado implements Serializable {
 		salida001.setEmpleado(null);
 
 		return salida001;
-	}
-
-	public List<Usuarioempleado> getUsuarioempleados() {
-		return this.usuarioempleados;
-	}
-
-	public void setUsuarioempleados(List<Usuarioempleado> usuarioempleados) {
-		this.usuarioempleados = usuarioempleados;
-	}
-
-	public Usuarioempleado addUsuarioempleado(Usuarioempleado usuarioempleado) {
-		getUsuarioempleados().add(usuarioempleado);
-		usuarioempleado.setEmpleado(this);
-
-		return usuarioempleado;
-	}
-
-	public Usuarioempleado removeUsuarioempleado(Usuarioempleado usuarioempleado) {
-		getUsuarioempleados().remove(usuarioempleado);
-		usuarioempleado.setEmpleado(null);
-
-		return usuarioempleado;
 	}
 
 }
