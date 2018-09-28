@@ -21,8 +21,9 @@ public class Ing001 implements Serializable {
 	private Integer iding001;
 
 	private Integer condicionrelacioncompra;
-
+	
 	@Temporal(TemporalType.DATE)
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	private Date fecha;
 
 	@Column(name="fecha_registro_systema")
@@ -35,6 +36,7 @@ public class Ing001 implements Serializable {
 
 	private String glosa;
 
+	@JsonFormat(pattern = "HH:mm")
 	private Time hora;
 
 	@Column(name="idusuario_crea")
