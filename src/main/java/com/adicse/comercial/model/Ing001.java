@@ -6,7 +6,9 @@ import java.sql.Time;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 /**
  * The persistent class for the ing001 database table.
@@ -22,6 +24,7 @@ public class Ing001 implements Serializable {
 
 	private Integer condicionrelacioncompra;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
@@ -90,7 +93,7 @@ public class Ing001 implements Serializable {
 	private Traslado traslado;
 
 	//bi-directional many-to-one association to Ing002
-	@OneToMany(mappedBy="ing001")
+	@OneToMany(mappedBy="ing001", cascade={CascadeType.ALL})
 	private List<Ing002> ing002s;
 
 	public Ing001() {

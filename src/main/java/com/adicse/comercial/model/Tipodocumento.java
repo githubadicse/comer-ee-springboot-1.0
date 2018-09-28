@@ -33,7 +33,7 @@ public class Tipodocumento implements Serializable {
 	private List<Ing001> ing001s;
 
 	//bi-directional many-to-one association to Numerador
-	@OneToMany(mappedBy="tipodocumento")
+	@OneToMany(mappedBy="tipodocumento", cascade={CascadeType.ALL})
 	private List<Numerador> numeradors;
 
 	//bi-directional many-to-one association to Ven001

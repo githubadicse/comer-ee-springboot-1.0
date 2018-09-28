@@ -79,7 +79,7 @@ public class CatalogoProductoQaliwarma implements Serializable {
 	private List<ProductoPorNumeroEntrega> productoPorNumeroEntregas;
 
 	//bi-directional many-to-one association to ProductoPresentacion
-	@OneToMany(mappedBy="catalogoProductoQaliwarma")
+	@OneToMany(mappedBy="catalogoProductoQaliwarma", cascade={CascadeType.ALL})
 	private List<ProductoPresentacion> productoPresentacions;
 
 	public CatalogoProductoQaliwarma() {

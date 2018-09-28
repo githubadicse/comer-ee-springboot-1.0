@@ -61,7 +61,7 @@ public class Proveedorcliente implements Serializable {
 	private Documentoidentificacion documentoidentificacion;
 
 	//bi-directional many-to-one association to Proveedorclientedireccion
-	@OneToMany(mappedBy="proveedorcliente")
+	@OneToMany(mappedBy="proveedorcliente", cascade={CascadeType.ALL})
 	private List<Proveedorclientedireccion> proveedorclientedireccions;
 
 	//bi-directional many-to-one association to Salida001
