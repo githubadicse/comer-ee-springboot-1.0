@@ -1,6 +1,7 @@
 package com.adicse.comercial.controller;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -110,6 +111,13 @@ public class EmpleadoController {
 	@RequestMapping("/update")
 	@ResponseBody
 	public Empleado putUdate(@RequestBody Empleado empleado) {
+		
+		
+		Date d1 = new Date();
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/YYYY HH:mm a");
+		String formattedDate = df.format(d1);
+		
+		System.out.println(formattedDate);
 		
 		Empleado update = empleadoService.findbyid(empleado.getIdempleado()).get();
 		
