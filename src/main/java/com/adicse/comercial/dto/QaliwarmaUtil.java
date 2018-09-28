@@ -2245,8 +2245,8 @@ public class QaliwarmaUtil {
 	public void pasarRutaSiguienteEntrega() {
 
 		Integer anno = 2018;
-		Integer numeroEntregaOrigen = 1;
-		Integer numeroEntregaDestino = 2;
+		Integer numeroEntregaOrigen = 7;
+		Integer numeroEntregaDestino = 8;
 		List<RutaDistribucion> lstRutaDistribucion = rutaDistribucionService
 				.getRutaDistribucionByAnnoAndNumeroEntrega(anno, numeroEntregaOrigen);
 		RequerimientoVolumen001 requerimientoVolumen001Destino;
