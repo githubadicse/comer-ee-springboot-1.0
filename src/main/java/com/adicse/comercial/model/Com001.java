@@ -6,6 +6,8 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 /**
  * The persistent class for the com001 database table.
@@ -19,15 +21,27 @@ public class Com001 implements Serializable {
 	@Id
 	private Integer idcom001;
 
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fecha;
 
-	private Timestamp fechahorasys;
+	@Column(name="fecha_registro_systema")
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
+	private Timestamp fechaRegistroSystema;
 
+	@Column(name="fecha_registro_systema_modifica")
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
+	private Timestamp fechaRegistroSystemaModifica;
+
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechasys;
 
 	private Time hora;
 
-	private Integer idusuario;
+	@Column(name="id_usuario_modifica")
+	private Integer idUsuarioModifica;
+
+	@Column(name="idusuario_crea")
+	private Integer idusuarioCrea;
 
 	private double igvimporte;
 
@@ -83,12 +97,20 @@ public class Com001 implements Serializable {
 		this.fecha = fecha;
 	}
 
-	public Timestamp getFechahorasys() {
-		return this.fechahorasys;
+	public Timestamp getFechaRegistroSystema() {
+		return this.fechaRegistroSystema;
 	}
 
-	public void setFechahorasys(Timestamp fechahorasys) {
-		this.fechahorasys = fechahorasys;
+	public void setFechaRegistroSystema(Timestamp fechaRegistroSystema) {
+		this.fechaRegistroSystema = fechaRegistroSystema;
+	}
+
+	public Timestamp getFechaRegistroSystemaModifica() {
+		return this.fechaRegistroSystemaModifica;
+	}
+
+	public void setFechaRegistroSystemaModifica(Timestamp fechaRegistroSystemaModifica) {
+		this.fechaRegistroSystemaModifica = fechaRegistroSystemaModifica;
 	}
 
 	public Timestamp getFechasys() {
@@ -107,12 +129,20 @@ public class Com001 implements Serializable {
 		this.hora = hora;
 	}
 
-	public Integer getIdusuario() {
-		return this.idusuario;
+	public Integer getIdUsuarioModifica() {
+		return this.idUsuarioModifica;
 	}
 
-	public void setIdusuario(Integer idusuario) {
-		this.idusuario = idusuario;
+	public void setIdUsuarioModifica(Integer idUsuarioModifica) {
+		this.idUsuarioModifica = idUsuarioModifica;
+	}
+
+	public Integer getIdusuarioCrea() {
+		return this.idusuarioCrea;
+	}
+
+	public void setIdusuarioCrea(Integer idusuarioCrea) {
+		this.idusuarioCrea = idusuarioCrea;
 	}
 
 	public double getIgvimporte() {

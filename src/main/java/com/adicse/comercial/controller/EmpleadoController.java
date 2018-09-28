@@ -1,6 +1,7 @@
 package com.adicse.comercial.controller;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.adicse.comercial.model.Empleado;
 import com.adicse.comercial.model.Usuario;
-import com.adicse.comercial.model.Usuarioempleado;
 import com.adicse.comercial.service.EmpleadoService;
 import com.adicse.comercial.service.UsuarioService;
 import com.adicse.comercial.specification.ConvertObjectToFormatJson;
@@ -82,12 +82,6 @@ public class EmpleadoController {
 		Filter filter = convertObjectToFormatJson.ConvertObjectToFormatSpecification(f);
 		List<Empleado> lst = empleadoService.findByFilter(filter);
 		
-		for (Empleado em: lst) {
-			for (Usuarioempleado rowUs: em.getUsuarioempleados()) {
-				rowUs.setEmpleado(null);
-			}
-		}
-		
 		return lst;
 	}
 	
@@ -108,8 +102,12 @@ public class EmpleadoController {
 		Date utilDate = new Date();
 		Timestamp sq = new Timestamp(utilDate.getTime());
 		
+<<<<<<< HEAD
 		empleado.setIdusuario(usuario.getIdusuario());
 		empleado.setIdusuarioModifica(usuario.getIdusuario());
+=======
+		empleado.setIdusuarioCrea(usuario.getIdusuario());
+>>>>>>> 4735befa2e2661e2b6ce56431e21f5f220f14c14
 		empleado.setFechaRegistroSystema(sq);
 		empleado.setFechaRegistroSystemaModifica(sq);
 		
@@ -119,6 +117,13 @@ public class EmpleadoController {
 	@RequestMapping("/update")
 	@ResponseBody
 	public Empleado putUdate(@RequestBody Empleado empleado) {
+		
+		
+		Date d1 = new Date();
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/YYYY HH:mm a");
+		String formattedDate = df.format(d1);
+		
+		System.out.println(formattedDate);
 		
 		Empleado update = empleadoService.findbyid(empleado.getIdempleado()).get();
 		

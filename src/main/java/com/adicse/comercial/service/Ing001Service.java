@@ -20,14 +20,9 @@ import com.adicse.comercial.dao.ICierremensualDao;
 import com.adicse.comercial.dao.IIng001Dao;
 import com.adicse.comercial.dao.IIng002KardexDao;
 import com.adicse.comercial.dao.IKardexDao;
-import com.adicse.comercial.model.Cierremensual;
 import com.adicse.comercial.model.Ing001;
-import com.adicse.comercial.model.Ing002;
-import com.adicse.comercial.model.Ing002kardex;
-import com.adicse.comercial.model.Kardex;
 import com.adicse.comercial.specification.ConvertObjectToFormatJson;
 import com.adicse.comercial.specification.Filter;
-import com.adicse.comercial.utilitarios.Idunico;
 
 @Service
 @Transactional
@@ -93,7 +88,7 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 		// TODO Auto-generated method stub
 		Date date = new Date();
 		Timestamp tm = new Timestamp(date.getTime());
-		entidad.setFechahorasys(tm);
+		entidad.setFechaRegistroSystema(tm);
 		Integer next = null;
 		if (entidad.getIding001() == 0) {
 			next = iIng001Dao.getMax() == null ? 0 : iIng001Dao.getMax();
@@ -105,23 +100,7 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 		}
 		Ing001 ing001 = iIng001Dao.save(entidad);
 		
-		//grabamos cierre de periodo y kardex
-//		for(Ing002 ing002 : ing001.getIng002s()){
-//			
-//			Cierremensual cierremensual = cierremensualService.actualizaCierremensualIng002(ing002);
-//			iCierremensualDao.save(cierremensual);
-//	
-//			Kardex kardex = kardexService.actualizaKardexIng002(ing002);
-//			iKardexDao.save(kardex);
-//			
-//			Ing002kardex ing002kardex = new Ing002kardex();
-//			ing002kardex.setIding002kardex(new Idunico().getIdunico() );
-//			ing002kardex.setIng002(ing002);
-//			ing002kardex.setKardex(kardex);
-//			
-//			iIng002KardexDao.save(ing002kardex);
-//			
-//		}
+
 		
 		return ing001;
 	}

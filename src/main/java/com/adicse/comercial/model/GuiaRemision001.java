@@ -1,11 +1,13 @@
 package com.adicse.comercial.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 /**
  * The persistent class for the guia_remision_001 database table.
@@ -23,8 +25,8 @@ public class GuiaRemision001 implements Serializable {
 
 	private String estado;
 
-	@Temporal(TemporalType.DATE)
 	@JsonFormat (pattern ="dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_emision")
 	private Date fechaEmision;
 

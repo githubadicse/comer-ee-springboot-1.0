@@ -30,8 +30,6 @@ public class AgregarRelaciones {
 				{ "Usuario", "@OneToMany(mappedBy=\"usuario\")", "private List<Usuarioempleado> usuarioempleados;",
 				"\t@OneToMany(mappedBy=\"usuario\", cascade={CascadeType.ALL})" },
 				
-				{ "Empleado", "@OneToMany(mappedBy=\"empleado\")", "private List<Usuarioempleado> usuarioempleados;",
-				"\t@OneToMany(mappedBy=\"empleado\", cascade={CascadeType.ALL})" },
 				
 				{ "Proveedorcliente", "@OneToMany(mappedBy=\"proveedorcliente\")", "private List<Proveedorclientedireccion> proveedorclientedireccions;",
 				"\t@OneToMany(mappedBy=\"proveedorcliente\", cascade={CascadeType.ALL})" },

@@ -67,7 +67,7 @@ public class ComercialApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		String passw = "admin";
+		String passw = "123";
 		
 		for(int i=0 ; i < 2 ; i++) {
 			String ps = passwordEncoder.encode(passw);

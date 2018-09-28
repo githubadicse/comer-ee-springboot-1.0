@@ -1,7 +1,5 @@
 package com.adicse.comercial.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,7 +33,6 @@ import com.adicse.comercial.service.GuiaRemision001Service;
 import com.adicse.comercial.viewResolver.PdfGuiaRemision;
 
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -43,12 +40,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
-import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
 @RestController
 @RequestMapping("/res/guiaremision")
@@ -160,8 +151,9 @@ public class GuiaRemision001Controller {
 		
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data);
 
-		ClassLoader classLoader = getClass().getClassLoader();
-		InputStream jasperStream = classLoader.getResourceAsStream("reportes\\Blank_A4.jrxml");
+		//ClassLoader classLoader = getClass().getClassLoader();
+		//InputStream jasperStream = classLoader.getResourceAsStream("reportes\\Blank_A4.jrxml");
+		InputStream jasperStream = getClass().getResourceAsStream("/reportes/Blank_A4.jrxml");
 
 		Map<String, Object> params = new HashMap<>();
 
@@ -199,8 +191,9 @@ public class GuiaRemision001Controller {
 		
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data);
 
-		ClassLoader classLoader = getClass().getClassLoader();
-		InputStream jasperStream = classLoader.getResourceAsStream("reportes\\Blank_A4.jrxml");
+		//ClassLoader classLoader = getClass().getClassLoader();
+		//InputStream jasperStream = classLoader.getResourceAsStream("reportes\\Blank_A4.jrxml");
+		InputStream jasperStream = getClass().getResourceAsStream("/reportes/Blank_A4.jrxml");
 
 		Map<String, Object> params = new HashMap<>();
 
@@ -237,13 +230,15 @@ public class GuiaRemision001Controller {
 		
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data);
 
-		ClassLoader classLoader = getClass().getClassLoader();
-		InputStream jasperStream = classLoader.getResourceAsStream("reportes\\Blank_A4.jrxml");
+		//ClassLoader classLoader = getClass().getClassLoader();
+		//InputStream jasperStream = classLoader.getResourceAsStream("reportes\\Blank_A4.jrxml");
+		InputStream jasperStream = getClass().getResourceAsStream("/reportes/Blank_A4.jrxml");
 
 		Map<String, Object> params = new HashMap<>();
 
 
 		JasperReport jasperReport = JasperCompileManager.compileReport(jasperStream);
+		//JRSaver.saveObject(jasperReport, "reportes\\Blank_A4.jrxml");
 
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
 
