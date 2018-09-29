@@ -5,7 +5,13 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import com.adicse.comercial.shared.SqlTimeDeserializer;
+
 
 /**
  * The persistent class for the com001 database table.
@@ -19,20 +25,25 @@ public class Com001 implements Serializable {
 	@Id
 	private Integer idcom001;
 
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fecha;
 
 	@Column(name="fecha_registro_systema")
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaRegistroSystema;
 
 	@Column(name="fecha_registro_systema_modifica")
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaRegistroSystemaModifica;
 
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechasys;
 
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	private Time hora;
 
 	@Column(name="id_usuario_modifica")

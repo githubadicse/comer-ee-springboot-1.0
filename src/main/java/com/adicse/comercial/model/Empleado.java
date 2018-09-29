@@ -1,21 +1,18 @@
 package com.adicse.comercial.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import javax.persistence.*;
 import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import com.adicse.comercial.shared.SqlTimeDeserializer;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+
 /**
  * The persistent class for the empleado database table.
  * 
@@ -44,12 +41,12 @@ public class Empleado implements Serializable {
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaRegistroSystemaModifica;
 
-	@Temporal(TemporalType.DATE)
 	@JsonFormat (pattern ="dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	private Date fechaingreso;
 
-	@Temporal(TemporalType.DATE)
 	@JsonFormat (pattern ="dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	private Date fechanacimiento;
 
 	@Column(name="idusuario_crea")

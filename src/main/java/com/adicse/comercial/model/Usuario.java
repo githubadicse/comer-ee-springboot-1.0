@@ -4,7 +4,13 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import com.adicse.comercial.shared.SqlTimeDeserializer;
+
 
 /**
  * The persistent class for the usuario database table.
@@ -28,10 +34,12 @@ public class Usuario implements Serializable {
 	private String dni;
 
 	@Column(name="fecha_registro_systema")
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaRegistroSystema;
 
 	@Column(name="fecha_registro_systema_modifica")
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaRegistroSystemaModifica;
 

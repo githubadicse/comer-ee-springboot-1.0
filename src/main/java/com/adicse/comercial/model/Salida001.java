@@ -1,13 +1,19 @@
 package com.adicse.comercial.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import com.adicse.comercial.shared.SqlTimeDeserializer;
+
+
 /**
  * The persistent class for the salida001 database table.
  * 
@@ -22,15 +28,17 @@ public class Salida001 implements Serializable {
 
 	private Integer condicionrelacionventa;
 
-	@Temporal(TemporalType.DATE)
 	@JsonFormat (pattern ="dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechahorasys;
 
 	private String glosa;
 
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	private Time hora;
 
 	private Integer nrodoc;
