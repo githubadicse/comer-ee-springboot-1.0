@@ -45,7 +45,7 @@ public class RequerimientoVolumen002Producto implements Serializable {
 	private RequerimientoVolumen002 requerimientoVolumen002;
 
 	//bi-directional many-to-one association to VolumenConvertidoEnvace
-	@OneToMany(mappedBy="requerimientoVolumen002Producto")
+	@OneToMany(mappedBy="requerimientoVolumen002Producto", cascade={CascadeType.ALL})
 	private List<VolumenConvertidoEnvace> volumenConvertidoEnvaces;
 
 	public RequerimientoVolumen002Producto() {

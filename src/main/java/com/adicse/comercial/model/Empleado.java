@@ -5,7 +5,14 @@ import javax.persistence.*;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import com.adicse.comercial.shared.SqlTimeDeserializer;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+
 /**
  * The persistent class for the empleado database table.
  * 
@@ -34,9 +41,11 @@ public class Empleado implements Serializable {
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaRegistroSystemaModifica;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date fechaingreso;
 
+	@JsonFormat (pattern ="dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date fechanacimiento;
 

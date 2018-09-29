@@ -9,9 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
-public class AgregarJsonFormatTimeStamp {
+
+public class AgregarJsonFormatDateJSon {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -43,7 +46,7 @@ public class AgregarJsonFormatTimeStamp {
 	
 			List<TextoLine> list = createListLineasArchivo(archivoFuente);
 			list = createListLineasArchivoActualizarImport(list,"import com.fasterxml.jackson.annotation.JsonFormat");
-			list = createListLineasArchivoAgregaFormato(list, "private Timestamp", "A");
+			list = createListLineasArchivoAgregaFormato(list, "@Temporal(TemporalType.DATE)", "A");
 			EscribeArchivo(list,archivoFuente);
 		}
 		System.out.println("Fin procedimiento agregar formato TimeStamp ...");
@@ -70,7 +73,6 @@ public class AgregarJsonFormatTimeStamp {
 			Integer nroLinea = 0;
 			for (int i = 0; i < list.size(); i++) {
 				nroLinea++;
-				
 
 				if(  ((TextoLine)list.get(i)).getTexto().trim().length() == 0 && i > 2 && !registrado) {
 					TextoLine textoLine = new TextoLine();
@@ -104,18 +106,12 @@ public class AgregarJsonFormatTimeStamp {
 		
 		// 
 		//cadena a insertar
-		String textoLinea = "\t@JsonFormat (pattern =\"dd/MM/yyyy hh:mm:ss\")";
-		String textoContains = "@JsonFormat (pattern =\"dd/MM/yyyy hh:mm:ss\")";
+		String textoLinea = "\t@JsonFormat (pattern =\"dd/MM/yyyy\")";
+		String textoContains = "@JsonFormat (pattern =\"dd/MM/yyyy\")";
 		Integer nroLinea = 0;
 		for (int i = 0; i < list.size(); i++) {
 			nroLinea++;
-			
-			String textoActual = ((TextoLine)list.get(i)).getTexto().trim();
-			if(textoActual.length() > 16 ) {
-				textoActual = textoActual.substring(0, 17);
-			}
-			
-			if( textoActual.equals(cadenaABuscar)) {
+			if( ((TextoLine)list.get(i)).getTexto().trim().contains(cadenaABuscar)) {
 				
 				if(InsertarAntesDespues.equals("A")) {
 					

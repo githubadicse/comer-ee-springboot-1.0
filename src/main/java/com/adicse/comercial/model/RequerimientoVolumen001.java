@@ -82,7 +82,7 @@ public class RequerimientoVolumen001 implements Serializable {
 	private Ubigeo ubigeo;
 
 	//bi-directional many-to-one association to RequerimientoVolumen002
-	@OneToMany(mappedBy="requerimientoVolumen001")
+	@OneToMany(mappedBy="requerimientoVolumen001", cascade={CascadeType.ALL})
 	private List<RequerimientoVolumen002> requerimientoVolumen002s;
 
 	//bi-directional many-to-one association to RutaDistribucionDetalle

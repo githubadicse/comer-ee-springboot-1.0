@@ -9,9 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.adicse.comercial.shared.SqlTimeDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 
-public class AgregarJsonFormatTimeStamp {
+
+public class AgregarJsonFormatTime {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -42,11 +45,13 @@ public class AgregarJsonFormatTimeStamp {
 
 	
 			List<TextoLine> list = createListLineasArchivo(archivoFuente);
-			list = createListLineasArchivoActualizarImport(list,"import com.fasterxml.jackson.annotation.JsonFormat");
-			list = createListLineasArchivoAgregaFormato(list, "private Timestamp", "A");
+			list = createListLineasArchivoActualizarImport(list,"import com.adicse.comercial.shared.SqlTimeDeserializer");
+			list = createListLineasArchivoActualizarImport(list,"import com.fasterxml.jackson.databind.annotation.JsonDeserialize");
+			
+			list = createListLineasArchivoAgregaFormato(list, "private Time ", "A");
 			EscribeArchivo(list,archivoFuente);
 		}
-		System.out.println("Fin procedimiento agregar formato TimeStamp ...");
+		System.out.println("Fin procedimiento agregar formato Time ...");
 		return ;		
 
 	}
@@ -70,7 +75,6 @@ public class AgregarJsonFormatTimeStamp {
 			Integer nroLinea = 0;
 			for (int i = 0; i < list.size(); i++) {
 				nroLinea++;
-				
 
 				if(  ((TextoLine)list.get(i)).getTexto().trim().length() == 0 && i > 2 && !registrado) {
 					TextoLine textoLine = new TextoLine();
@@ -104,17 +108,15 @@ public class AgregarJsonFormatTimeStamp {
 		
 		// 
 		//cadena a insertar
-		String textoLinea = "\t@JsonFormat (pattern =\"dd/MM/yyyy hh:mm:ss\")";
-		String textoContains = "@JsonFormat (pattern =\"dd/MM/yyyy hh:mm:ss\")";
+		String textoLinea = "\t@JsonDeserialize(using=SqlTimeDeserializer.class)";
+		String textoContains = "@JsonDeserialize(using=SqlTimeDeserializer.class)";
 		Integer nroLinea = 0;
 		for (int i = 0; i < list.size(); i++) {
 			nroLinea++;
-			
 			String textoActual = ((TextoLine)list.get(i)).getTexto().trim();
-			if(textoActual.length() > 16 ) {
-				textoActual = textoActual.substring(0, 17);
+			if(textoActual.length() > 12 ) {
+				textoActual = textoActual.substring(0, 13);
 			}
-			
 			if( textoActual.equals(cadenaABuscar)) {
 				
 				if(InsertarAntesDespues.equals("A")) {
