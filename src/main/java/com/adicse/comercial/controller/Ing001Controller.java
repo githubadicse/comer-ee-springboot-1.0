@@ -1,6 +1,5 @@
 package com.adicse.comercial.controller;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,19 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.adicse.comercial.dao.IIng002Dao;
 import com.adicse.comercial.model.Ing001;
 import com.adicse.comercial.model.Ing002;
 import com.adicse.comercial.model.Periodoalmacen;
 import com.adicse.comercial.model.Producto;
-import com.adicse.comercial.model.Stockactual;
 import com.adicse.comercial.service.Ing001Service;
-import com.adicse.comercial.service.Ing002KardexService;
 import com.adicse.comercial.service.Ing002Service;
-import com.adicse.comercial.service.KardexService;
 import com.adicse.comercial.service.PeriodoalmacenService;
 import com.adicse.comercial.service.ProductoService;
-import com.adicse.comercial.service.StockactualService;
 import com.adicse.comercial.utilitarios.Idunico;
 import com.adicse.comercial.viewResolver.PdfListaIngresos;
 import com.adicse.comercial.viewResolver.PdfNotaIngreso;
@@ -40,17 +34,12 @@ public class Ing001Controller {
 	@Autowired
 	private Ing001Service ing001Service;
 	
-	@Autowired
-	private IIng002Dao iIng002Dao;
+
 	
 	@Autowired
 	private Ing002Service ing002Service;
 	
-	@Autowired
-	private Ing002KardexService ing002KardexService;
 
-	@Autowired
-	private KardexService kardexService;
 	
 	
 	@Autowired
@@ -59,8 +48,7 @@ public class Ing001Controller {
 	@Autowired
 	private PeriodoalmacenService periodoalmacenService;
 	
-	@Autowired
-	private StockactualService stockactualService;
+	
 	
 	@RequestMapping("/pagination")
 	@ResponseBody
@@ -86,7 +74,10 @@ public class Ing001Controller {
 	public Ing001 create(@RequestBody Ing001 ing001) {
 //		ing001.setIding001(0);
 					
-		CocinarStockActual(ing001);
+		for(Ing002 row:ing001.getIng002s()) {
+			row.setIng001(ing001);
+			row.setIding002(new Idunico().getIdunico());
+		}
 				
 		Ing001 ing001_grabar = ing001Service.grabar(ing001);
 		
@@ -103,7 +94,7 @@ public class Ing001Controller {
 //		Integer idIng001 = ing001.getIding001();
 //		iIng002Dao.deleteIng002ByIdIng001(idIng001);
 		
-		CocinarStockActual(ing001);
+		
 				
 		Ing001 ing001_grabar = ing001Service.grabar(ing001);
 		
@@ -115,37 +106,7 @@ public class Ing001Controller {
 	}
 	
 	
-	// registra los datos en Stockactual, se usa en create y update	
-	private void CocinarStockActual(Ing001 ing001) {
-		
-		Stockactual ItemStockActual;		
-		for (Ing002 rowDt: ing001.getIng002s()) {
-			rowDt.setIng001(ing001);
-			rowDt.setIding002(new Idunico().getIdunico());
-			
-			// guarda en stock actual
-			Integer idalmacen = ing001.getAlmacen().getIdalmacen();
-			Integer idproducto = rowDt.getProducto().getIdproducto();
-			
-			ItemStockActual = stockactualService.getByProductoAlmacen(idalmacen, idproducto);
-			
-			// si ya existe este producto en stockactual, aumentamos su stock
-			if (ItemStockActual != null) {
-				BigDecimal _stockActual = ItemStockActual.getStockactual().add(rowDt.getCantidad());
-				ItemStockActual.setStockactual(_stockActual);
-			} 
-			else { // nuevo producto en stockactual
-				ItemStockActual =   new Stockactual();
-				ItemStockActual.setIdstockactual(new Idunico().getIdunico());
-				ItemStockActual.setProducto(rowDt.getProducto());
-				ItemStockActual.setAlmacen(ing001.getAlmacen());
-				ItemStockActual.setStockactual(rowDt.getCantidad());
-			}
-									
-			stockactualService.grabar(ItemStockActual);
-		}
-		
-	}
+
 	
 
 	@ResponseBody

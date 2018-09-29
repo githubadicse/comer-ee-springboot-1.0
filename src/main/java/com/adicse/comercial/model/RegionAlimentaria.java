@@ -23,7 +23,7 @@ public class RegionAlimentaria implements Serializable {
 	private String dscRegionAlimentaria;
 
 	//bi-directional many-to-one association to CatalogoBonificacion
-	@OneToMany(mappedBy="regionAlimentaria")
+	@OneToMany(mappedBy="regionAlimentaria", cascade={CascadeType.ALL})
 	private List<CatalogoBonificacion> catalogoBonificacions;
 
 	//bi-directional many-to-one association to RequerimientoVolumen001

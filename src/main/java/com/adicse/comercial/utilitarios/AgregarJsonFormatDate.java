@@ -43,7 +43,7 @@ public class AgregarJsonFormatDate {
 			CrearArchivoTemporal(archivoFuente,archivoTemporal);
 			CrearArchivoFuente(archivoTemporal,archivoFuente);			
 		}
-		System.out.println("Fin procedimiento relaciones ...");
+		System.out.println("Fin procedimiento Actulizacion de Formato Date ...");
 		return ;		
 
 	}
