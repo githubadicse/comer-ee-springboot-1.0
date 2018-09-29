@@ -17,7 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.adicse.comercial.shared.SqlTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 /**
  * The persistent class for the ing001 database table.
  * 
@@ -46,6 +48,8 @@ public class Ing001 implements Serializable {
 
 	private String glosa;
 
+	@JsonFormat (pattern ="HH:mm")
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	private Time hora;
 
 	@Column(name="idusuario_crea")

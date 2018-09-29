@@ -1,6 +1,6 @@
 package com.adicse.comercial.specification;
 
-import com.jontian.specification.exception.SpecificationException;
+import com.adicse.comercial.specification.exception.SpecificationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
