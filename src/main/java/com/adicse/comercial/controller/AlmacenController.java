@@ -24,6 +24,7 @@ public class AlmacenController {
 	@Autowired
 	private AlmacenService almacenService;
 	
+	//cambio
 	@RequestMapping("/pagination")
 	@ResponseBody
 	public  Map<String,Object>  pagination(
