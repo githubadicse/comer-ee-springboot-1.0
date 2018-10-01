@@ -70,6 +70,7 @@ public class AgregarJsonFormatTimeStamp {
 			Integer nroLinea = 0;
 			for (int i = 0; i < list.size(); i++) {
 				nroLinea++;
+				
 
 				if(  ((TextoLine)list.get(i)).getTexto().trim().length() == 0 && i > 2 && !registrado) {
 					TextoLine textoLine = new TextoLine();
@@ -108,7 +109,13 @@ public class AgregarJsonFormatTimeStamp {
 		Integer nroLinea = 0;
 		for (int i = 0; i < list.size(); i++) {
 			nroLinea++;
-			if( ((TextoLine)list.get(i)).getTexto().trim().contains(cadenaABuscar)) {
+			
+			String textoActual = ((TextoLine)list.get(i)).getTexto().trim();
+			if(textoActual.length() > 16 ) {
+				textoActual = textoActual.substring(0, 17);
+			}
+			
+			if( textoActual.equals(cadenaABuscar)) {
 				
 				if(InsertarAntesDespues.equals("A")) {
 					

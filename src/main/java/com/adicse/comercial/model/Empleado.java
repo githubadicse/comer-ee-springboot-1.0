@@ -6,6 +6,10 @@ import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import com.adicse.comercial.shared.SqlTimeDeserializer;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 

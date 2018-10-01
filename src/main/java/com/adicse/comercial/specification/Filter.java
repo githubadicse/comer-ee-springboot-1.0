@@ -15,7 +15,7 @@
  */
 package com.adicse.comercial.specification;
 
-import com.jontian.specification.exception.SpecificationException;
+import com.adicse.comercial.specification.exception.SpecificationException;
 
 import java.util.Arrays;
 import java.util.LinkedList;

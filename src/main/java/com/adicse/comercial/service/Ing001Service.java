@@ -2,8 +2,6 @@ package com.adicse.comercial.service;
 
 import static com.adicse.comercial.specification.SpecificationBuilder.selectFrom;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +14,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.adicse.comercial.dao.ICierremensualDao;
 import com.adicse.comercial.dao.IIng001Dao;
-import com.adicse.comercial.dao.IIng002KardexDao;
-import com.adicse.comercial.dao.IKardexDao;
 import com.adicse.comercial.model.Ing001;
 import com.adicse.comercial.specification.ConvertObjectToFormatJson;
 import com.adicse.comercial.specification.Filter;
@@ -31,20 +26,7 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 	@Autowired
 	private IIng001Dao iIng001Dao;
 	
-	@Autowired
-	private ICierremensualDao iCierremensualDao;
-	
-	@Autowired
-	private CierremensualService  cierremensualService;
-		
-	@Autowired
-	private IKardexDao iKardexDao;
-	
-	@Autowired
-	private KardexService kardexService;
-	
-	@Autowired
-	private IIng002KardexDao iIng002KardexDao;
+
 	
 	@Autowired
 	private ConvertObjectToFormatJson convertObjectToFormatJson; 
@@ -86,9 +68,7 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 	@Override
 	public Ing001 grabar(Ing001 entidad) {
 		// TODO Auto-generated method stub
-		Date date = new Date();
-		Timestamp tm = new Timestamp(date.getTime());
-		entidad.setFechaRegistroSystema(tm);
+	
 		Integer next = null;
 		if (entidad.getIding001() == 0) {
 			next = iIng001Dao.getMax() == null ? 0 : iIng001Dao.getMax();

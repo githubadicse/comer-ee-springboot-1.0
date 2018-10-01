@@ -20,6 +20,6 @@ JpaSpecificationExecutor<Perfilesdetalle>
 	@Query("delete From Perfilesdetalle c where c.perfil.idperfil = :id")
 	void deletePerfilDetalleByIdPerfil(@Param("id") Integer id);
 	
-	@Query("select p from Perfilesdetalle p where p.perfil.idperfil = :idperfil")
+	@Query("select p from Perfilesdetalle p where p.perfil.idperfil = :idperfil order by idmenu")
 	List<Perfilesdetalle> getPerfildetalleByIdPerfil(@Param("idperfil") Integer idperfil);
 }

@@ -8,6 +8,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import com.adicse.comercial.shared.SqlTimeDeserializer;
+
 
 /**
  * The persistent class for the producto_por_numero_entrega database table.

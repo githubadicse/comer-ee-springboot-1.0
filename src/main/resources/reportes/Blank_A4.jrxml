@@ -135,14 +135,14 @@
 				<textField>
 					<reportElement x="146" y="10" width="266" height="12" uuid="5f3b1447-40c5-4b04-90a4-787db06a833d"/>
 					<textElement>
-						<font fontName="Times-Roman" size="8" pdfFontName="Times-Roman" pdfEncoding=""/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{transportista}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="146" y="25" width="266" height="12" uuid="751ac392-3ebc-4e6b-ab4a-a10d0a0fcfae"/>
 					<textElement>
-						<font fontName="Times-Roman" size="8" pdfFontName="Times-Roman" pdfEncoding=""/>
+						<font fontName="Times-Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{domicilio}]]></textFieldExpression>
 				</textField>
@@ -223,7 +223,11 @@
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c88e67c3-b1a7-4352-b08a-1eb5a7661a68"/>
 				</reportElement>
 				<textElement>
+configImpreGuias
 					<font fontName="Times-Roman" size="6" pdfFontName="Times-Roman"/>
+
+					<font fontName="Times-Roman" size="8" pdfFontName="Times-Roman" pdfEncoding=""/>
+ master
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sProductoComplemento}]]></textFieldExpression>
 			</textField>

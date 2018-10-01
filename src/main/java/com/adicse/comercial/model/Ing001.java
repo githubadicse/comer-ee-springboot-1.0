@@ -9,6 +9,11 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import com.adicse.comercial.shared.SqlTimeDeserializer;
+
+
 
 /**
  * The persistent class for the ing001 database table.
@@ -38,6 +43,8 @@ public class Ing001 implements Serializable {
 
 	private String glosa;
 
+	
+	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	private Time hora;
 
 	@Column(name="idusuario_crea")
