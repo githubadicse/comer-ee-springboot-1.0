@@ -102,8 +102,14 @@ public class EmpleadoController {
 		Date utilDate = new Date();
 		Timestamp sq = new Timestamp(utilDate.getTime());
 		
+<<<<<<< HEAD
+		empleado.setIdusuario(usuario.getIdusuario());
+		empleado.setIdusuarioModifica(usuario.getIdusuario());
+=======
 		empleado.setIdusuarioCrea(usuario.getIdusuario());
+>>>>>>> 4735befa2e2661e2b6ce56431e21f5f220f14c14
 		empleado.setFechaRegistroSystema(sq);
+		empleado.setFechaRegistroSystemaModifica(sq);
 		
 		return empleadoService.grabar(empleado);
 	}
@@ -127,8 +133,10 @@ public class EmpleadoController {
 		Date utilDate = new Date();
 		Timestamp sq = new Timestamp(utilDate.getTime());
 		
+		empleado.setIdusuario(usuario.getIdusuario());
 		empleado.setIdusuarioModifica(usuario.getIdusuario());
-		empleado.setFechaRegistroSystemaModifica(sq);		
+		empleado.setFechaRegistroSystema(sq);
+		empleado.setFechaRegistroSystemaModifica(sq);	
 		
 		BeanUtils.copyProperties(empleado, update);
 		

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -93,7 +94,7 @@ public class UsuarioResController {
 	}
 	
 
-	@RequestMapping("/getall")
+	@RequestMapping(value="/getall", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<Usuario> getall(){
 		return usuarioService.getall();

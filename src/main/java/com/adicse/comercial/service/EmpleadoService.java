@@ -82,7 +82,7 @@ public class EmpleadoService implements IAdicseService<Empleado, Integer> {
 	@Override
 	public void deletebyid(Integer id) {
 		// TODO Auto-generated method stub
-		
+		iEmpleadoDao.deleteById(id);
 	}
 
 	@Override
