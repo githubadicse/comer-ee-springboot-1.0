@@ -52,6 +52,23 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 
 		return lista;
 	}
+	
+	public Page<Ing001> paginacion(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
+			Filter f) {
+		// TODO Auto-generated method stub
+		Sort sort = new Sort(sortdireccion.toUpperCase().equals("DESC") ? Direction.DESC : Direction.ASC, sortcolumn);
+		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
+			
+		Page<Ing001> lista = selectFrom(iIng001Dao).where(f).findPage(pageable);
+
+		return lista;
+	}
+	
+//	public Page<Ing001> findListByParametro(Integer idalmacen, Integer pagenumber, Integer rows, String parametro){
+//		Pageable pageable =  PageRequest.of(pagenumber, rows);
+//		String _parametro = parametro.toLowerCase();
+//		return iIng001Dao.findListByParametro(idalmacen, _parametro, pageable);
+//	}
 
 	@Override
 	public List<Ing001> getall() {
@@ -94,7 +111,7 @@ public class Ing001Service implements IAdicseService<Ing001, Integer> {
 	@Override
 	public void deletebyid(Integer id) {
 		// TODO Auto-generated method stub
-
+		iIng001Dao.deleteById(id);
 	}
 
 	@Override

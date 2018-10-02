@@ -7,6 +7,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +25,7 @@ import com.adicse.comercial.service.Ing001Service;
 import com.adicse.comercial.service.Ing002Service;
 import com.adicse.comercial.service.PeriodoalmacenService;
 import com.adicse.comercial.service.ProductoService;
+import com.adicse.comercial.specification.Filter;
 import com.adicse.comercial.utilitarios.Idunico;
 import com.adicse.comercial.viewResolver.PdfListaIngresos;
 import com.adicse.comercial.viewResolver.PdfNotaIngreso;
@@ -65,7 +69,27 @@ public class Ing001Controller {
 		response.put("totalCount", page.getTotalElements());
 		response.put("success", true);
 		return response;
-	}	
+	}
+	
+//	@RequestMapping("/paginacion")
+//	@ResponseBody
+	@PostMapping("/paginacion")
+	public Map<String, Object> paginacion(@RequestParam("pagenumber") Integer pagenumber,
+			@RequestParam("rows") Integer rows, @RequestParam("sortdireccion") String sortdireccion,
+			@RequestParam("sortcolumn") String sortcolumn, @RequestBody Filter filters) {
+
+		
+		Page<Ing001> page = ing001Service.paginacion(pagenumber, rows, sortdireccion, sortcolumn, filters);
+
+		List<Ing001> lst = page.getContent();
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		response.put("data", lst);
+		response.put("totalCount", page.getTotalElements());
+		response.put("success", true);
+		return response;
+	}
 	
 	@RequestMapping("/create")
 	@ResponseBody
@@ -86,24 +110,42 @@ public class Ing001Controller {
 		return ing001_grabar;
 	}
 	
-	@RequestMapping("/update")
+//	@RequestMapping("/update")
+	@RequestMapping(value="/update", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Ing001 update(@RequestBody Ing001 ing001) {		
-//		Integer idIng001 = ing001.getIding001();
-//		iIng002Dao.deleteIng002ByIdIng001(idIng001);
+	public void update(@RequestBody Ing001 ing001) {		
+		
+		Integer idIng001 = ing001.getIding001();		
+		ing002Service.deleteIng002ByIdIng001(idIng001);
 		
 		
 				
-		Ing001 ing001_grabar = ing001Service.grabar(ing001);
-		
-		for (Ing002 rowDt: ing001_grabar.getIng002s()) {
-			rowDt.setIng001(null);
+		for(Ing002 row:ing001.getIng002s()) {
+			row.setIng001(ing001);
+			row.setIding002(new Idunico().getIdunico());
 		}
+				
+		ing001Service.grabar(ing001);
+		
+//		ing001_grabar.setIng002s(null);
+		
+//		for (Ing002 rowDt: ing001_grabar.getIng002s()) {
+//			rowDt.setIng001(null);			
+//			rowDt.getProducto().setIng002s(null);
+//			rowDt.setProducto(null);
+//			
+//		}
 
-		return ing001_grabar;
+//		return ing001_grabar;
 	}
 	
-	
+	@RequestMapping("/delete/{id}")
+	@ResponseBody
+	public void delete(@PathVariable Integer id) {
+		// perfilService.deletePerfilesdetalleByIdPerfil(id);		
+//		ing002Service.deleteIng002ByIdIng001(id);
+		ing001Service.deletebyid(id);
+	}
 
 	
 
@@ -121,6 +163,28 @@ public class Ing001Controller {
 		response.put("data", ing001);
 		return response;
 	}
+	
+//	@RequestMapping(value="/getFindListByParametro", produces=MediaType.APPLICATION_JSON_VALUE)
+//	public Map<String, Object>  findByParametroPageable(
+//			@RequestParam("pagenumber") Integer pagenumber,
+//			@RequestParam("rows") Integer rows,
+//			@RequestParam("idalmacen") Integer idalmacen,
+//			@RequestParam("parametro") String parametro) {
+//				
+//		
+//		Page<Ing001> page = ing001Service.findListByParametro(idalmacen, pagenumber, rows,parametro);
+//
+//		List<Ing001> lst = page.getContent();
+//
+//		Map<String, Object> response = new HashMap<String, Object>();
+//
+//		response.put("data", lst);
+//		response.put("totalCount", page.getTotalElements());
+//		response.put("success", true);
+//		return response;
+//				
+//			
+//	}
 
 	
 	@RequestMapping("/pdfnotaingreso")
