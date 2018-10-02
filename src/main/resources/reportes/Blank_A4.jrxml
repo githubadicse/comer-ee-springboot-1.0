@@ -130,7 +130,9 @@
 					<text><![CDATA[Nivel:]]></text>
 				</staticText>
 				<textField>
+
 					<reportElement x="496" y="90" width="60" height="20" uuid="327e5280-856b-41e5-9873-1c5abd97558d"/>
+
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{numeroOrden}]]></textFieldExpression>
 				</textField>
