@@ -7,11 +7,11 @@ import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import com.adicse.comercial.shared.SqlTimeDeserializer;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 /**
@@ -32,7 +32,6 @@ public class Salida001 implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
-	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechahorasys;
 

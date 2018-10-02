@@ -130,9 +130,7 @@
 					<text><![CDATA[Nivel:]]></text>
 				</staticText>
 				<textField>
-
 					<reportElement x="496" y="90" width="60" height="20" uuid="327e5280-856b-41e5-9873-1c5abd97558d"/>
-
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{numeroOrden}]]></textFieldExpression>
 				</textField>
@@ -235,21 +233,21 @@
 				<textFieldExpression><![CDATA[$F{marcaVehiculo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="465" y="-54" width="48" height="9" uuid="6cef8a2f-db87-4267-8a0a-362d410b82fa"/>
+				<reportElement x="465" y="-54" width="42" height="9" uuid="6cef8a2f-db87-4267-8a0a-362d410b82fa"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<text><![CDATA[Total Peso:]]></text>
 			</staticText>
 			<textField pattern="#,##0.000">
-				<reportElement x="507" y="-54" width="37" height="13" uuid="2394cd94-7640-4862-adfc-9104d4bdfc0d"/>
+				<reportElement x="507" y="-54" width="37" height="9" uuid="2394cd94-7640-4862-adfc-9104d4bdfc0d"/>
 				<textElement>
-					<font fontName="Times-Roman" size="7"/>
+					<font fontName="Times-Roman" size="7" pdfFontName="Times-Roman"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{Variable_peso}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="533" y="-54" width="21" height="13" uuid="1bff7b37-4bc3-4949-9089-70f54bac8d3f"/>
+				<reportElement x="545" y="-54" width="21" height="9" uuid="1bff7b37-4bc3-4949-9089-70f54bac8d3f"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>

@@ -39,8 +39,6 @@ public class Ing001Controller {
 	@Autowired
 	private Ing002Service ing002Service;
 	
-
-	
 	
 	@Autowired
 	private ProductoService productoService;

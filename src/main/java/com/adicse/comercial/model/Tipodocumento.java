@@ -24,6 +24,10 @@ public class Tipodocumento implements Serializable {
 	@Column(name="dsc_tipo_documento")
 	private String dscTipoDocumento;
 
+	//bi-directional many-to-one association to Com001
+	@OneToMany(mappedBy="tipodocumento")
+	private List<Com001> com001s;
+
 	//bi-directional many-to-one association to Gasto001
 	@OneToMany(mappedBy="tipodocumento")
 	private List<Gasto001> gasto001s;
@@ -65,6 +69,28 @@ public class Tipodocumento implements Serializable {
 
 	public void setDscTipoDocumento(String dscTipoDocumento) {
 		this.dscTipoDocumento = dscTipoDocumento;
+	}
+
+	public List<Com001> getCom001s() {
+		return this.com001s;
+	}
+
+	public void setCom001s(List<Com001> com001s) {
+		this.com001s = com001s;
+	}
+
+	public Com001 addCom001(Com001 com001) {
+		getCom001s().add(com001);
+		com001.setTipodocumento(this);
+
+		return com001;
+	}
+
+	public Com001 removeCom001(Com001 com001) {
+		getCom001s().remove(com001);
+		com001.setTipodocumento(null);
+
+		return com001;
 	}
 
 	public List<Gasto001> getGasto001s() {

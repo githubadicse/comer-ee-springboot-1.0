@@ -7,12 +7,11 @@ import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import com.adicse.comercial.shared.SqlTimeDeserializer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 /**
@@ -43,7 +42,6 @@ public class Ing001 implements Serializable {
 
 	private String glosa;
 
-	
 	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	private Time hora;
 
