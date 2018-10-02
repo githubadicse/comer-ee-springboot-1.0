@@ -104,7 +104,7 @@ public class EmpleadoController {
 		empleado.setIdusuarioCrea(usuario.getIdusuario());
 
 		empleado.setFechaRegistroSystema(sq);
-		empleado.setFechaRegistroSystemaModifica(sq);
+
 		
 		return empleadoService.grabar(empleado);
 	}
@@ -121,7 +121,7 @@ public class EmpleadoController {
 		
 		Date utilDate = new Date();
 		Timestamp sq = new Timestamp(utilDate.getTime());
-		
+
 		empleado.setIdusuarioModifica(usuario.getIdusuario());
 		empleado.setFechaRegistroSystemaModifica(sq);	
 		
