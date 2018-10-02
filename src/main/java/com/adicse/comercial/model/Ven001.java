@@ -67,10 +67,10 @@ public class Ven001 implements Serializable {
 	@JoinColumn(name="idaperturapuntoventa")
 	private Aperturapuntoventa aperturapuntoventa;
 
-	//bi-directional many-to-one association to ModalidadVenta
+	//bi-directional many-to-one association to ModalidadCompraVenta
 	@ManyToOne
-	@JoinColumn(name="id_modalidad_venta")
-	private ModalidadVenta modalidadVenta;
+	@JoinColumn(name="id_modalidad_compra_venta")
+	private ModalidadCompraVenta modalidadCompraVenta;
 
 	//bi-directional many-to-one association to Moneda
 	@ManyToOne
@@ -241,12 +241,12 @@ public class Ven001 implements Serializable {
 		this.aperturapuntoventa = aperturapuntoventa;
 	}
 
-	public ModalidadVenta getModalidadVenta() {
-		return this.modalidadVenta;
+	public ModalidadCompraVenta getModalidadCompraVenta() {
+		return this.modalidadCompraVenta;
 	}
 
-	public void setModalidadVenta(ModalidadVenta modalidadVenta) {
-		this.modalidadVenta = modalidadVenta;
+	public void setModalidadCompraVenta(ModalidadCompraVenta modalidadCompraVenta) {
+		this.modalidadCompraVenta = modalidadCompraVenta;
 	}
 
 	public Moneda getMoneda() {

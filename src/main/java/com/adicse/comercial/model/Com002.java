@@ -14,15 +14,41 @@ public class Com002 implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer idcom002;
+	private String idcom002;
 
 	private double cantidad;
 
 	private Integer idproducto;
 
-	private double preciounitario;
+	@Column(name="importe_bruto")
+	private double importeBruto;
 
-	private double total;
+	@Column(name="importe_compra")
+	private double importeCompra;
+
+	@Column(name="importe_descuento")
+	private double importeDescuento;
+
+	@Column(name="importe_flete")
+	private double importeFlete;
+
+	@Column(name="importe_igv")
+	private double importeIgv;
+
+	@Column(name="importe_isc")
+	private double importeIsc;
+
+	@Column(name="importe_porcentaje_igv")
+	private double importePorcentajeIgv;
+
+	@Column(name="importe_total_costo_unitario")
+	private double importeTotalCostoUnitario;
+
+	@Column(name="importe_unitario")
+	private double importeUnitario;
+
+	@Column(name="importe_valor_compra")
+	private double importeValorCompra;
 
 	//bi-directional many-to-one association to Com001
 	@ManyToOne
@@ -32,11 +58,11 @@ public class Com002 implements Serializable {
 	public Com002() {
 	}
 
-	public Integer getIdcom002() {
+	public String getIdcom002() {
 		return this.idcom002;
 	}
 
-	public void setIdcom002(Integer idcom002) {
+	public void setIdcom002(String idcom002) {
 		this.idcom002 = idcom002;
 	}
 
@@ -56,20 +82,84 @@ public class Com002 implements Serializable {
 		this.idproducto = idproducto;
 	}
 
-	public double getPreciounitario() {
-		return this.preciounitario;
+	public double getImporteBruto() {
+		return this.importeBruto;
 	}
 
-	public void setPreciounitario(double preciounitario) {
-		this.preciounitario = preciounitario;
+	public void setImporteBruto(double importeBruto) {
+		this.importeBruto = importeBruto;
 	}
 
-	public double getTotal() {
-		return this.total;
+	public double getImporteCompra() {
+		return this.importeCompra;
 	}
 
-	public void setTotal(double total) {
-		this.total = total;
+	public void setImporteCompra(double importeCompra) {
+		this.importeCompra = importeCompra;
+	}
+
+	public double getImporteDescuento() {
+		return this.importeDescuento;
+	}
+
+	public void setImporteDescuento(double importeDescuento) {
+		this.importeDescuento = importeDescuento;
+	}
+
+	public double getImporteFlete() {
+		return this.importeFlete;
+	}
+
+	public void setImporteFlete(double importeFlete) {
+		this.importeFlete = importeFlete;
+	}
+
+	public double getImporteIgv() {
+		return this.importeIgv;
+	}
+
+	public void setImporteIgv(double importeIgv) {
+		this.importeIgv = importeIgv;
+	}
+
+	public double getImporteIsc() {
+		return this.importeIsc;
+	}
+
+	public void setImporteIsc(double importeIsc) {
+		this.importeIsc = importeIsc;
+	}
+
+	public double getImportePorcentajeIgv() {
+		return this.importePorcentajeIgv;
+	}
+
+	public void setImportePorcentajeIgv(double importePorcentajeIgv) {
+		this.importePorcentajeIgv = importePorcentajeIgv;
+	}
+
+	public double getImporteTotalCostoUnitario() {
+		return this.importeTotalCostoUnitario;
+	}
+
+	public void setImporteTotalCostoUnitario(double importeTotalCostoUnitario) {
+		this.importeTotalCostoUnitario = importeTotalCostoUnitario;
+	}
+
+	public double getImporteUnitario() {
+		return this.importeUnitario;
+	}
+
+	public void setImporteUnitario(double importeUnitario) {
+		this.importeUnitario = importeUnitario;
+	}
+
+	public double getImporteValorCompra() {
+		return this.importeValorCompra;
+	}
+
+	public void setImporteValorCompra(double importeValorCompra) {
+		this.importeValorCompra = importeValorCompra;
 	}
 
 	public Com001 getCom001() {
