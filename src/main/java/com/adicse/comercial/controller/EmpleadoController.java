@@ -1,7 +1,6 @@
 package com.adicse.comercial.controller;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -102,12 +101,8 @@ public class EmpleadoController {
 		Date utilDate = new Date();
 		Timestamp sq = new Timestamp(utilDate.getTime());
 		
-<<<<<<< HEAD
-		empleado.setIdusuario(usuario.getIdusuario());
-		empleado.setIdusuarioModifica(usuario.getIdusuario());
-=======
 		empleado.setIdusuarioCrea(usuario.getIdusuario());
->>>>>>> 4735befa2e2661e2b6ce56431e21f5f220f14c14
+
 		empleado.setFechaRegistroSystema(sq);
 		empleado.setFechaRegistroSystemaModifica(sq);
 		
@@ -119,12 +114,6 @@ public class EmpleadoController {
 	public Empleado putUdate(@RequestBody Empleado empleado) {
 		
 		
-		Date d1 = new Date();
-		SimpleDateFormat df = new SimpleDateFormat("MM/dd/YYYY HH:mm a");
-		String formattedDate = df.format(d1);
-		
-		System.out.println(formattedDate);
-		
 		Empleado update = empleadoService.findbyid(empleado.getIdempleado()).get();
 		
 		String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString() ;
@@ -133,9 +122,7 @@ public class EmpleadoController {
 		Date utilDate = new Date();
 		Timestamp sq = new Timestamp(utilDate.getTime());
 		
-		empleado.setIdusuario(usuario.getIdusuario());
 		empleado.setIdusuarioModifica(usuario.getIdusuario());
-		empleado.setFechaRegistroSystema(sq);
 		empleado.setFechaRegistroSystemaModifica(sq);	
 		
 		BeanUtils.copyProperties(empleado, update);
