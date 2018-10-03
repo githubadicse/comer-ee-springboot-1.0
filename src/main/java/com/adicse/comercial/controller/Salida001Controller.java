@@ -13,12 +13,16 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 
 import com.adicse.comercial.model.Periodoalmacen;
 import com.adicse.comercial.model.Producto;
@@ -31,6 +35,7 @@ import com.adicse.comercial.service.ProductoService;
 import com.adicse.comercial.service.Salida001Service;
 import com.adicse.comercial.service.Salida002KardexService;
 import com.adicse.comercial.service.Salida002Service;
+import com.adicse.comercial.specification.Filter;
 import com.adicse.comercial.utilitarios.Idunico;
 import com.adicse.comercial.viewResolver.PdfListaSalidas;
 import com.adicse.comercial.viewResolver.PdfNotaSalida;
@@ -80,7 +85,25 @@ public class Salida001Controller {
 		response.put("totalCount", page.getTotalElements());
 		response.put("success", true);
 		return response;
-	}	
+	}
+	
+	@PostMapping("/paginacion")
+	public Map<String, Object> paginacion(@RequestParam("pagenumber") Integer pagenumber,
+			@RequestParam("rows") Integer rows, @RequestParam("sortdireccion") String sortdireccion,
+			@RequestParam("sortcolumn") String sortcolumn, @RequestBody Filter filters) {
+
+		
+		Page<Salida001> page = salida001Service.paginacion(pagenumber, rows, sortdireccion, sortcolumn, filters);
+
+		List<Salida001> lst = page.getContent();
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		response.put("data", lst);
+		response.put("totalCount", page.getTotalElements());
+		response.put("success", true);
+		return response;
+	}
 	
 	
 	
@@ -181,15 +204,72 @@ public class Salida001Controller {
 
 	}
 	
+	@RequestMapping("/create")
+	@ResponseBody
+	public Salida001 create(@RequestBody Salida001 salida001) {
+					
+		for(Salida002 row:salida001.getSalida002s()) {
+			row.setSalida001(salida001);
+			row.setIdsalida002(new Idunico().getIdunico());
+		}
+				
+		Salida001 salida001_grabar = salida001Service.grabar(salida001);
+		
+		for (Salida002 rowDt: salida001_grabar.getSalida002s()) {
+			rowDt.setSalida001(null);
+		}
+
+		return salida001_grabar;
+	}
+	
+	@RequestMapping(value="/update", produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public void update(@RequestBody Salida001 salida001) {		
+		
+		Integer idSalida001 = salida001.getIdsalida001();		
+		salida002Service.deleteSalida002ByIdIng001(idSalida001);
+						
+		for(Salida002 row:salida001.getSalida002s()) {
+			row.setSalida001(salida001);
+			row.setIdsalida002(new Idunico().getIdunico());
+		}		
+		
+		salida001Service.grabar(salida001);
+
+	}
+	
+	@RequestMapping("/delete/{id}")
+	@ResponseBody
+	public void delete(@PathVariable Integer id) {
+		// perfilService.deletePerfilesdetalleByIdPerfil(id);		
+//		ing002Service.deleteIng002ByIdIng001(id);
+		salida001Service.deletebyid(id);
+	}
+	
+//	@ResponseBody
+//	@RequestMapping("/findById")
+//	public Map<String, Object> findById(@RequestParam("id") Integer id){
+//		Map<String, Object> response = new HashMap<>();
+//		
+//		Salida001 salida001 = salida001Service.findbyid(id).get();
+//		
+//		for(Salida002 row : salida001.getSalida002s()){
+//			row.setSalida001(null);
+//		}
+//		
+//		response.put("data", salida001);
+//		return response;
+//	}
+	
 	@ResponseBody
 	@RequestMapping("/findById")
 	public Map<String, Object> findById(@RequestParam("id") Integer id){
 		Map<String, Object> response = new HashMap<>();
 		
-		Optional<Salida001> salida001 = salida001Service.findbyid(id);
-		
-		for(Salida002 row : salida001.get().getSalida002s()){
-			row.setSalida001(null);
+		Salida001 salida001 = salida001Service.findbyid(id).get();
+						
+		for (Salida002 rowDt: salida001.getSalida002s()) {
+			rowDt.setSalida001(null);
 		}
 		
 		response.put("data", salida001);
