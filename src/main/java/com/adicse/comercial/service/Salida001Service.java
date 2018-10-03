@@ -1,5 +1,7 @@
 package com.adicse.comercial.service;
 
+import static com.adicse.comercial.specification.SpecificationBuilder.selectFrom;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -16,23 +18,24 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.adicse.comercial.dao.ICierremensualDao;
-import com.adicse.comercial.dao.IKardexDao;
+//import com.adicse.comercial.dao.ICierremensualDao;
+//import com.adicse.comercial.dao.IKardexDao;
 import com.adicse.comercial.dao.ISalida001Dao;
 import com.adicse.comercial.dao.ISalida002Dao;
-import com.adicse.comercial.dao.ISalida002KardexDao;
+//import com.adicse.comercial.dao.ISalida002KardexDao;
 import com.adicse.comercial.especification.Salida001Specification;
 import com.adicse.comercial.model.Almacen;
-import com.adicse.comercial.model.Cierremensual;
-import com.adicse.comercial.model.Kardex;
+//import com.adicse.comercial.model.Cierremensual;
+//import com.adicse.comercial.model.Kardex;
 import com.adicse.comercial.model.Periodoalmacen;
 import com.adicse.comercial.model.Producto;
 import com.adicse.comercial.model.Proveedorcliente;
 import com.adicse.comercial.model.Salida001;
-import com.adicse.comercial.model.Salida002;
-import com.adicse.comercial.model.Salida002kardex;
+//import com.adicse.comercial.model.Salida002;
+//import com.adicse.comercial.model.Salida002kardex;
 import com.adicse.comercial.shared.CustomFilterSpec;
-import com.adicse.comercial.utilitarios.Idunico;
+import com.adicse.comercial.specification.Filter;
+//import com.adicse.comercial.utilitarios.Idunico;
 
 @Service
 @Transactional
@@ -45,20 +48,20 @@ public class Salida001Service implements IAdicseService<Salida001, Integer> {
 	private ISalida002Dao iSalida002Dao;
 	
 	
-	@Autowired
-	private CierremensualService cierremensualService;
-	
-	@Autowired
-	private ICierremensualDao iCierremensualDao;
-	
-	@Autowired
-	private KardexService kardexService;
-	
-	@Autowired
-	private IKardexDao iKardexDao;
-	
-	@Autowired
-	private ISalida002KardexDao iSalida002KardexDao;
+//	@Autowired
+//	private CierremensualService cierremensualService;
+//	
+//	@Autowired
+//	private ICierremensualDao iCierremensualDao;
+//	
+//	@Autowired
+//	private KardexService kardexService;
+//	
+//	@Autowired
+//	private IKardexDao iKardexDao;
+//	
+//	@Autowired
+//	private ISalida002KardexDao iSalida002KardexDao;
 	
 	@Override
 	public Page<?> paginationParmsExtra(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
@@ -110,6 +113,17 @@ public class Salida001Service implements IAdicseService<Salida001, Integer> {
 		//
 		return lista;
 	}
+	
+	public Page<Salida001> paginacion(Integer pagenumber, Integer rows, String sortdireccion, String sortcolumn,
+			Filter f) {
+		// TODO Auto-generated method stub
+		Sort sort = new Sort(sortdireccion.toUpperCase().equals("DESC") ? Direction.DESC : Direction.ASC, sortcolumn);
+		Pageable pageable =  PageRequest.of(pagenumber, rows, sort);
+			
+		Page<Salida001> lista = selectFrom(iSalida001Dao).where(f).findPage(pageable);
+
+		return lista;
+	}
 
 	@Override
 	public List<Salida001> getall() {
@@ -123,44 +137,70 @@ public class Salida001Service implements IAdicseService<Salida001, Integer> {
 		return null;
 	}
 
+//	@Override
+//	public Salida001 grabar(Salida001 entidad) {
+//		// TODO Auto-generated method stub
+//		Date date = new Date();
+//		Timestamp tm = new Timestamp(date.getTime());
+//		entidad.setFechahorasys(tm);
+//		Integer next = null;
+//		if (entidad.getIdsalida001() == 0) {
+//			next = iSalida001Dao.getMax() == null ? 0 : iSalida001Dao.getMax();
+//			entidad .setNrodoc(next + 1);
+//		}
+//		if (entidad.getIdsalida001() == 0) {
+//			next = iSalida001Dao.getMaxId() == null ? 0 : iSalida001Dao.getMaxId();
+//			entidad.setIdsalida001(next + 1);
+//		}
+//		Salida001 salida001 = iSalida001Dao.save(entidad);
+//		
+//		//grabamos cierre de periodo y kardex
+//		
+//		for(Salida002 salida002 : salida001.getSalida002s()){
+//			
+//			Cierremensual cierremensual = cierremensualService.actualizaCierremensualSalida002(salida002);
+//			iCierremensualDao.save(cierremensual);
+//	
+//			Kardex kardex = kardexService.actualizaKardexSalida002(salida002);
+//			iKardexDao.save(kardex);
+//			
+//			Salida002kardex salida002kardex = new Salida002kardex();
+//			salida002kardex.setIdsalida002kardex(new Idunico().getIdunico() );
+//			salida002kardex.setSalida002(salida002);
+//			salida002kardex.setKardex(kardex);
+//			
+//			iSalida002KardexDao.save(salida002kardex);
+//			
+//		}
+//		
+//		return salida001;
+//	}
+	
 	@Override
 	public Salida001 grabar(Salida001 entidad) {
 		// TODO Auto-generated method stub
 		Date date = new Date();
 		Timestamp tm = new Timestamp(date.getTime());
 		entidad.setFechahorasys(tm);
+		
+	
 		Integer next = null;
 		if (entidad.getIdsalida001() == 0) {
-			next = iSalida001Dao.getMax() == null ? 0 : iSalida001Dao.getMax();
-			entidad .setNrodoc(next + 1);
+			next = iSalida001Dao.getMax() == null ? 0 :iSalida001Dao.getMax();
+			entidad.setNrodoc(next + 1);
 		}
 		if (entidad.getIdsalida001() == 0) {
 			next = iSalida001Dao.getMaxId() == null ? 0 : iSalida001Dao.getMaxId();
 			entidad.setIdsalida001(next + 1);
 		}
+		
 		Salida001 salida001 = iSalida001Dao.save(entidad);
 		
-		//grabamos cierre de periodo y kardex
-		
-		for(Salida002 salida002 : salida001.getSalida002s()){
-			
-			Cierremensual cierremensual = cierremensualService.actualizaCierremensualSalida002(salida002);
-			iCierremensualDao.save(cierremensual);
-	
-			Kardex kardex = kardexService.actualizaKardexSalida002(salida002);
-			iKardexDao.save(kardex);
-			
-			Salida002kardex salida002kardex = new Salida002kardex();
-			salida002kardex.setIdsalida002kardex(new Idunico().getIdunico() );
-			salida002kardex.setSalida002(salida002);
-			salida002kardex.setKardex(kardex);
-			
-			iSalida002KardexDao.save(salida002kardex);
-			
-		}
+
 		
 		return salida001;
 	}
+	
 
 	@Override
 	public void delete(Salida001 entidad) {
@@ -171,7 +211,7 @@ public class Salida001Service implements IAdicseService<Salida001, Integer> {
 	@Override
 	public void deletebyid(Integer id) {
 		// TODO Auto-generated method stub
-		
+		iSalida001Dao.deleteById(id);
 	}
 
 	@Override

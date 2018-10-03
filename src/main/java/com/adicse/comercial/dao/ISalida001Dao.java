@@ -1,5 +1,6 @@
 package com.adicse.comercial.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -7,8 +8,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.adicse.comercial.model.Salida001;
 
-public interface ISalida001Dao extends CrudRepository<Salida001, Integer>
-,
+public interface ISalida001Dao extends 
+CrudRepository<Salida001, Integer>, JpaRepository<Salida001,Integer>,
 PagingAndSortingRepository<Salida001, Integer>,
 JpaSpecificationExecutor<Salida001>
 {
