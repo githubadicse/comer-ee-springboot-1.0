@@ -6,9 +6,6 @@ import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import com.adicse.comercial.shared.SqlTimeDeserializer;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -55,8 +52,8 @@ public class Com001 implements Serializable {
 	@Column(name="id_usuario_modifica")
 	private Integer idUsuarioModifica;
 
-	@Column(name="idusuario_crea")
-	private Integer idusuarioCrea;
+	@Column(name="id_usuario_crea")
+	private Integer idUsuarioCrea;
 
 	@Column(name="importe_bruto")
 	private double importeBruto;
@@ -187,12 +184,12 @@ public class Com001 implements Serializable {
 		this.idUsuarioModifica = idUsuarioModifica;
 	}
 
-	public Integer getIdusuarioCrea() {
-		return this.idusuarioCrea;
+	public Integer getIdUsuarioCrea() {
+		return this.idUsuarioCrea;
 	}
 
-	public void setIdusuarioCrea(Integer idusuarioCrea) {
-		this.idusuarioCrea = idusuarioCrea;
+	public void setIdUsuarioCrea(Integer idUsuarioCrea) {
+		this.idUsuarioCrea = idUsuarioCrea;
 	}
 
 	public double getImporteBruto() {
