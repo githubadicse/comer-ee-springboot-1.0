@@ -19,6 +19,7 @@ public class AgregarJsonFormatTimeStamp {
 		String[][] entitys = {				
 				{"Ing001"},
 				{"Com001"},
+				{"Ven001"},
 				{"Usuario"},
 				{"Salida001"},
 				{"GuiaRemision001"},

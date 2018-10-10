@@ -2,6 +2,7 @@ package com.adicse.comercial.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -62,6 +63,12 @@ public class Com002 implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="idproducto")
 	private Producto producto;
+
+
+	//bi-directional many-to-one association to Ing001Com002Relacion
+	@OneToMany(mappedBy="com002", cascade={CascadeType.ALL})
+	private List<Ing001Com002Relacion> ing001Com002Relacions;
+
 
 	public Com002() {
 	}
@@ -176,6 +183,29 @@ public class Com002 implements Serializable {
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
+	}
+
+
+	public List<Ing001Com002Relacion> getIng001Com002Relacions() {
+		return this.ing001Com002Relacions;
+	}
+
+	public void setIng001Com002Relacions(List<Ing001Com002Relacion> ing001Com002Relacions) {
+		this.ing001Com002Relacions = ing001Com002Relacions;
+	}
+
+	public Ing001Com002Relacion addIng001Com002Relacion(Ing001Com002Relacion ing001Com002Relacion) {
+		getIng001Com002Relacions().add(ing001Com002Relacion);
+		ing001Com002Relacion.setCom002(this);
+
+		return ing001Com002Relacion;
+	}
+
+	public Ing001Com002Relacion removeIng001Com002Relacion(Ing001Com002Relacion ing001Com002Relacion) {
+		getIng001Com002Relacions().remove(ing001Com002Relacion);
+		ing001Com002Relacion.setCom002(null);
+
+		return ing001Com002Relacion;
 	}
 
 }
