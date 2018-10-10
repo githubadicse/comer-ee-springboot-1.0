@@ -126,17 +126,19 @@ public class Ing001Controller {
 		}
 				
 		ing001Service.grabar(ing001);
-		
-//		ing001_grabar.setIng002s(null);
-		
-//		for (Ing002 rowDt: ing001_grabar.getIng002s()) {
-//			rowDt.setIng001(null);			
-//			rowDt.getProducto().setIng002s(null);
-//			rowDt.setProducto(null);
-//			
-//		}
 
-//		return ing001_grabar;
+	}
+	
+	@RequestMapping(value="/updateCom001", produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public void updateCom001(@RequestBody Ing001 ing001) {		
+								
+		for(Ing002 row:ing001.getIng002s()) {
+			row.setIng001(null);			
+		}
+				
+		ing001Service.grabar(ing001);
+
 	}
 	
 	@RequestMapping("/delete/{id}")
@@ -154,7 +156,7 @@ public class Ing001Controller {
 	public Map<String, Object> findById(@RequestParam("id") Integer id){
 		Map<String, Object> response = new HashMap<>();
 		
-		Ing001 ing001 = ing001Service.findbyid(id).get() ;
+		Ing001 ing001 = ing001Service.findbyid(id).get();
 						
 		for (Ing002 rowDt: ing001.getIng002s()) {
 			rowDt.setIng001(null);

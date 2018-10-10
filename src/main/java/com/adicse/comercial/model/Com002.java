@@ -8,6 +8,11 @@ import java.util.List;
 /**
  * The persistent class for the com002 database table.
  * 
+
+
+/**
+ * The persistent class for the com002 database table.
+ * 
  */
 @Entity
 @NamedQuery(name="Com002.findAll", query="SELECT c FROM Com002 c")
@@ -59,9 +64,11 @@ public class Com002 implements Serializable {
 	@JoinColumn(name="idproducto")
 	private Producto producto;
 
+
 	//bi-directional many-to-one association to Ing001Com002Relacion
 	@OneToMany(mappedBy="com002", cascade={CascadeType.ALL})
 	private List<Ing001Com002Relacion> ing001Com002Relacions;
+
 
 	public Com002() {
 	}
@@ -177,6 +184,7 @@ public class Com002 implements Serializable {
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
+
 
 	public List<Ing001Com002Relacion> getIng001Com002Relacions() {
 		return this.ing001Com002Relacions;
