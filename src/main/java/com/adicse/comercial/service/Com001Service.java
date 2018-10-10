@@ -69,7 +69,18 @@ public class Com001Service implements IAdicseService<Com001, Long> {
 	@Override
 	public Com001 grabar(Com001 entidad) {
 		// TODO Auto-generated method stub
-		return null;
+		if (entidad.getIdcom001() == 0) {
+			Integer next = iCom001Dao.getMax();
+			
+			next = next == null ? 1 : next + 1; 
+						
+			Long l = Long.valueOf(next); 
+			
+			entidad.setIdcom001(l);
+		}
+				
+		
+		return iCom001Dao.save(entidad);
 	}
 
 	@Override
@@ -81,6 +92,7 @@ public class Com001Service implements IAdicseService<Com001, Long> {
 	@Override
 	public void deletebyid(Long id) {
 		// TODO Auto-generated method stub
+		iCom001Dao.deleteById(id);
 		
 	}
 
@@ -93,7 +105,7 @@ public class Com001Service implements IAdicseService<Com001, Long> {
 	@Override
 	public Optional<Com001> findbyid(Long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return iCom001Dao.findById(id);
 	}
 
 	@Override
