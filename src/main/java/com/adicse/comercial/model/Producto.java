@@ -85,6 +85,10 @@ public class Producto implements Serializable {
 	@OneToMany(mappedBy="producto", cascade={CascadeType.ALL})
 	private List<Codigobarra> codigobarras;
 
+	//bi-directional many-to-one association to Com002
+	@OneToMany(mappedBy="producto")
+	private List<Com002> com002s;
+
 	//bi-directional many-to-one association to Ing002
 	@OneToMany(mappedBy="producto")
 	private List<Ing002> ing002s;
@@ -373,6 +377,28 @@ public class Producto implements Serializable {
 		codigobarra.setProducto(null);
 
 		return codigobarra;
+	}
+
+	public List<Com002> getCom002s() {
+		return this.com002s;
+	}
+
+	public void setCom002s(List<Com002> com002s) {
+		this.com002s = com002s;
+	}
+
+	public Com002 addCom002(Com002 com002) {
+		getCom002s().add(com002);
+		com002.setProducto(this);
+
+		return com002;
+	}
+
+	public Com002 removeCom002(Com002 com002) {
+		getCom002s().remove(com002);
+		com002.setProducto(null);
+
+		return com002;
 	}
 
 	public List<Ing002> getIng002s() {

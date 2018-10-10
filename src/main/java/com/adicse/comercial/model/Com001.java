@@ -1,11 +1,20 @@
 package com.adicse.comercial.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -49,11 +58,11 @@ public class Com001 implements Serializable {
 	@Column(name="flag_genera_from_nota_ingreso")
 	private Boolean flagGeneraFromNotaIngreso;
 
-	@Column(name="id_usuario_modifica")
-	private Integer idUsuarioModifica;
-
 	@Column(name="id_usuario_crea")
 	private Integer idUsuarioCrea;
+
+	@Column(name="id_usuario_modifica")
+	private Integer idUsuarioModifica;
 
 	@Column(name="importe_bruto")
 	private double importeBruto;
@@ -176,20 +185,20 @@ public class Com001 implements Serializable {
 		this.flagGeneraFromNotaIngreso = flagGeneraFromNotaIngreso;
 	}
 
-	public Integer getIdUsuarioModifica() {
-		return this.idUsuarioModifica;
-	}
-
-	public void setIdUsuarioModifica(Integer idUsuarioModifica) {
-		this.idUsuarioModifica = idUsuarioModifica;
-	}
-
 	public Integer getIdUsuarioCrea() {
 		return this.idUsuarioCrea;
 	}
 
 	public void setIdUsuarioCrea(Integer idUsuarioCrea) {
 		this.idUsuarioCrea = idUsuarioCrea;
+	}
+
+	public Integer getIdUsuarioModifica() {
+		return this.idUsuarioModifica;
+	}
+
+	public void setIdUsuarioModifica(Integer idUsuarioModifica) {
+		this.idUsuarioModifica = idUsuarioModifica;
 	}
 
 	public double getImporteBruto() {
