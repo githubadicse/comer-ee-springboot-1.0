@@ -22,7 +22,7 @@ import com.adicse.comercial.service.UnidadMedidaTrabajoService;
 
 
 @RestController
-@RequestMapping("/unidadmedidatrabajo")
+@RequestMapping("/res/unidadmedidatrabajo")
 public class UnidadMedidaTrabajoController {
 	
 	@Autowired

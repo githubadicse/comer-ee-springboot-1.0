@@ -22,7 +22,7 @@ import com.adicse.comercial.service.EnvaseService;
 
 
 @RestController
-@RequestMapping("/envase")
+@RequestMapping("/res/envase")
 public class EnvaseController {
 	
 	@Autowired
