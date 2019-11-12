@@ -1,16 +1,22 @@
 package com.adicse.comercial.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import com.adicse.comercial.shared.SqlTimeDeserializer;
 
 
 /**
@@ -23,55 +29,75 @@ public class Com001 implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer idcom001;
+	private Long idcom001;
 
-	@JsonDeserialize(using=SqlTimeDeserializer.class)
-	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
-	private Timestamp fecha;
+	@Column(name="documento_numero")
+	private String documentoNumero;
+
+	@Column(name="documento_serie")
+	private String documentoSerie;
+
+	@JsonFormat (pattern ="dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_emision")
+	private Date fechaEmision;
 
 	@Column(name="fecha_registro_systema")
-	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaRegistroSystema;
 
 	@Column(name="fecha_registro_systema_modifica")
-	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaRegistroSystemaModifica;
 
-	@JsonDeserialize(using=SqlTimeDeserializer.class)
-	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
-	private Timestamp fechasys;
+	@JsonFormat (pattern ="dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_vencimiento")
+	private Date fechaVencimiento;
 
-	@JsonDeserialize(using=SqlTimeDeserializer.class)
-	private Time hora;
+	@Column(name="flag_genera_from_nota_ingreso")
+	private Boolean flagGeneraFromNotaIngreso;
+
+	@Column(name="id_usuario_crea")
+	private Integer idUsuarioCrea;
 
 	@Column(name="id_usuario_modifica")
 	private Integer idUsuarioModifica;
 
-	@Column(name="idusuario_crea")
-	private Integer idusuarioCrea;
+	@Column(name="importe_bruto")
+	private double importeBruto;
 
-	private double igvimporte;
+	@Column(name="importe_compra")
+	private double importeCompra;
 
-	private double igvporcentaje;
+	@Column(name="importe_igv")
+	private double importeIgv;
 
-	private double importe;
+	@Column(name="importe_igv_porcentaje")
+	private double importeIgvPorcentaje;
 
-	private double saldo;
+	@Column(name="importe_isc")
+	private double importeIsc;
 
-	private double tipocambio;
+	@Column(name="importe_pagos")
+	private double importePagos;
 
-	private double totpago;
+	@Column(name="tipo_cambio")
+	private double tipoCambio;
 
 	//bi-directional many-to-one association to Almacen
 	@ManyToOne
 	@JoinColumn(name="idalmacen")
 	private Almacen almacen;
 
+	//bi-directional many-to-one association to ModalidadCompraVenta
+	@ManyToOne
+	@JoinColumn(name="id_modalidad_compra_venta")
+	private ModalidadCompraVenta modalidadCompraVenta;
+
 	//bi-directional many-to-one association to Moneda
 	@ManyToOne
-	@JoinColumn(name="idmoneda")
+	@JoinColumn(name="id_moneda")
 	private Moneda moneda;
 
 	//bi-directional many-to-one association to Proveedorcliente
@@ -79,8 +105,13 @@ public class Com001 implements Serializable {
 	@JoinColumn(name="idproveedorcliente")
 	private Proveedorcliente proveedorcliente;
 
+	//bi-directional many-to-one association to Tipodocumento
+	@ManyToOne
+	@JoinColumn(name="id_tipo_documento")
+	private Tipodocumento tipodocumento;
+
 	//bi-directional many-to-one association to Com002
-	@OneToMany(mappedBy="com001")
+	@OneToMany(mappedBy="com001", cascade={CascadeType.ALL})
 	private List<Com002> com002s;
 
 	//bi-directional many-to-one association to Ing001
@@ -90,20 +121,36 @@ public class Com001 implements Serializable {
 	public Com001() {
 	}
 
-	public Integer getIdcom001() {
+	public Long getIdcom001() {
 		return this.idcom001;
 	}
 
-	public void setIdcom001(Integer idcom001) {
+	public void setIdcom001(Long idcom001) {
 		this.idcom001 = idcom001;
 	}
 
-	public Timestamp getFecha() {
-		return this.fecha;
+	public String getDocumentoNumero() {
+		return this.documentoNumero;
 	}
 
-	public void setFecha(Timestamp fecha) {
-		this.fecha = fecha;
+	public void setDocumentoNumero(String documentoNumero) {
+		this.documentoNumero = documentoNumero;
+	}
+
+	public String getDocumentoSerie() {
+		return this.documentoSerie;
+	}
+
+	public void setDocumentoSerie(String documentoSerie) {
+		this.documentoSerie = documentoSerie;
+	}
+
+	public Date getFechaEmision() {
+		return this.fechaEmision;
+	}
+
+	public void setFechaEmision(Date fechaEmision) {
+		this.fechaEmision = fechaEmision;
 	}
 
 	public Timestamp getFechaRegistroSystema() {
@@ -122,20 +169,28 @@ public class Com001 implements Serializable {
 		this.fechaRegistroSystemaModifica = fechaRegistroSystemaModifica;
 	}
 
-	public Timestamp getFechasys() {
-		return this.fechasys;
+	public Date getFechaVencimiento() {
+		return this.fechaVencimiento;
 	}
 
-	public void setFechasys(Timestamp fechasys) {
-		this.fechasys = fechasys;
+	public void setFechaVencimiento(Date fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
 	}
 
-	public Time getHora() {
-		return this.hora;
+	public Boolean getFlagGeneraFromNotaIngreso() {
+		return this.flagGeneraFromNotaIngreso;
 	}
 
-	public void setHora(Time hora) {
-		this.hora = hora;
+	public void setFlagGeneraFromNotaIngreso(Boolean flagGeneraFromNotaIngreso) {
+		this.flagGeneraFromNotaIngreso = flagGeneraFromNotaIngreso;
+	}
+
+	public Integer getIdUsuarioCrea() {
+		return this.idUsuarioCrea;
+	}
+
+	public void setIdUsuarioCrea(Integer idUsuarioCrea) {
+		this.idUsuarioCrea = idUsuarioCrea;
 	}
 
 	public Integer getIdUsuarioModifica() {
@@ -146,60 +201,60 @@ public class Com001 implements Serializable {
 		this.idUsuarioModifica = idUsuarioModifica;
 	}
 
-	public Integer getIdusuarioCrea() {
-		return this.idusuarioCrea;
+	public double getImporteBruto() {
+		return this.importeBruto;
 	}
 
-	public void setIdusuarioCrea(Integer idusuarioCrea) {
-		this.idusuarioCrea = idusuarioCrea;
+	public void setImporteBruto(double importeBruto) {
+		this.importeBruto = importeBruto;
 	}
 
-	public double getIgvimporte() {
-		return this.igvimporte;
+	public double getImporteCompra() {
+		return this.importeCompra;
 	}
 
-	public void setIgvimporte(double igvimporte) {
-		this.igvimporte = igvimporte;
+	public void setImporteCompra(double importeCompra) {
+		this.importeCompra = importeCompra;
 	}
 
-	public double getIgvporcentaje() {
-		return this.igvporcentaje;
+	public double getImporteIgv() {
+		return this.importeIgv;
 	}
 
-	public void setIgvporcentaje(double igvporcentaje) {
-		this.igvporcentaje = igvporcentaje;
+	public void setImporteIgv(double importeIgv) {
+		this.importeIgv = importeIgv;
 	}
 
-	public double getImporte() {
-		return this.importe;
+	public double getImporteIgvPorcentaje() {
+		return this.importeIgvPorcentaje;
 	}
 
-	public void setImporte(double importe) {
-		this.importe = importe;
+	public void setImporteIgvPorcentaje(double importeIgvPorcentaje) {
+		this.importeIgvPorcentaje = importeIgvPorcentaje;
 	}
 
-	public double getSaldo() {
-		return this.saldo;
+	public double getImporteIsc() {
+		return this.importeIsc;
 	}
 
-	public void setSaldo(double saldo) {
-		this.saldo = saldo;
+	public void setImporteIsc(double importeIsc) {
+		this.importeIsc = importeIsc;
 	}
 
-	public double getTipocambio() {
-		return this.tipocambio;
+	public double getImportePagos() {
+		return this.importePagos;
 	}
 
-	public void setTipocambio(double tipocambio) {
-		this.tipocambio = tipocambio;
+	public void setImportePagos(double importePagos) {
+		this.importePagos = importePagos;
 	}
 
-	public double getTotpago() {
-		return this.totpago;
+	public double getTipoCambio() {
+		return this.tipoCambio;
 	}
 
-	public void setTotpago(double totpago) {
-		this.totpago = totpago;
+	public void setTipoCambio(double tipoCambio) {
+		this.tipoCambio = tipoCambio;
 	}
 
 	public Almacen getAlmacen() {
@@ -208,6 +263,14 @@ public class Com001 implements Serializable {
 
 	public void setAlmacen(Almacen almacen) {
 		this.almacen = almacen;
+	}
+
+	public ModalidadCompraVenta getModalidadCompraVenta() {
+		return this.modalidadCompraVenta;
+	}
+
+	public void setModalidadCompraVenta(ModalidadCompraVenta modalidadCompraVenta) {
+		this.modalidadCompraVenta = modalidadCompraVenta;
 	}
 
 	public Moneda getMoneda() {
@@ -224,6 +287,14 @@ public class Com001 implements Serializable {
 
 	public void setProveedorcliente(Proveedorcliente proveedorcliente) {
 		this.proveedorcliente = proveedorcliente;
+	}
+
+	public Tipodocumento getTipodocumento() {
+		return this.tipodocumento;
+	}
+
+	public void setTipodocumento(Tipodocumento tipodocumento) {
+		this.tipodocumento = tipodocumento;
 	}
 
 	public List<Com002> getCom002s() {

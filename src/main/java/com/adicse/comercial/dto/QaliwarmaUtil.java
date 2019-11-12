@@ -227,7 +227,7 @@ public class QaliwarmaUtil {
 						regionAlimentaria.setDscRegionAlimentaria(cell.getStringCellValue());
 					}
 
-					String sHorarioAlimentarion = row.getCell(12).getStringCellValue().toUpperCase().trim();
+					String sHorarioAlimentarion = row.getCell(13).getStringCellValue().toUpperCase().trim();
 					Integer idHorarioAlimentacion = 0;
 					switch (sHorarioAlimentarion) {
 					case "DESAYUNO":
@@ -306,8 +306,9 @@ public class QaliwarmaUtil {
 					idubigeo = cell.getStringCellValue();
 					ubigeo = new Ubigeo();
 					ubigeo.setIdubigeo(idubigeo);
-					ubigeo.setNombreProvincia(row.getCell(0).getStringCellValue());
-					ubigeo.setNombreDistrito(row.getCell(1).getStringCellValue());
+					ubigeo.setNombreDepartamento(row.getCell(0).getStringCellValue());
+					ubigeo.setNombreProvincia(row.getCell(1).getStringCellValue());
+					ubigeo.setNombreDistrito(row.getCell(2).getStringCellValue());
 
 					ubigeoService.grabar(ubigeo);
 
@@ -343,9 +344,9 @@ public class QaliwarmaUtil {
 					codigomodularIinstitucionEducativa = new CodigomodularIinstitucionEducativa();
 					codigomodularIinstitucionEducativa.setCodigoModular(idcodigomodular);
 					codigomodularIinstitucionEducativa
-							.setNombreInstitucionEducativa(row.getCell(7).getStringCellValue());
+							.setNombreInstitucionEducativa(row.getCell(9).getStringCellValue());
 					codigomodularIinstitucionEducativa
-							.setDireccionInstitucionEducativa(row.getCell(8).getStringCellValue());
+							.setDireccionInstitucionEducativa(row.getCell(10).getStringCellValue());
 
 					codigoModularInstitucionEducativaService.grabar(codigomodularIinstitucionEducativa);
 
@@ -368,11 +369,10 @@ public class QaliwarmaUtil {
 		Row row;
 		Cell cell;
 		String item = sheet.getRow(7).getCell(4).getStringCellValue().trim();
-		// String regionAlimentaria =
-		// sheet.getRow(7).getCell(9).getStringCellValue().trim();
+
 		RequerimientoVolumen001 requerimientoVolumen001;
 
-		// ItemEntrega itemEntrega = itemEntregaService.findbyid(item).get();
+
 		EntregaPorItem entregaPorItem = entregaPorItemService.getEntregaPorItemByAnno(anno, item, numeroEntregas);
 
 		List<RequerimientoVolumen001> lstRequerimientoVolumen = new ArrayList<>();
@@ -388,19 +388,21 @@ public class QaliwarmaUtil {
 
 					requerimientoVolumen001 = new RequerimientoVolumen001();
 
-					String idubigeo = row.getCell(2).getStringCellValue();
+					String idubigeo = row.getCell(3).getStringCellValue();
 					Ubigeo ubigeo = ubigeoService.findbyid(idubigeo).get();
 					requerimientoVolumen001.setUbigeo(ubigeo);
 
-					String centroPoblado = row.getCell(3).getStringCellValue();
+					String centroPoblado = row.getCell(5).getStringCellValue();
 					requerimientoVolumen001.setCentroPoblado(centroPoblado);
 
-					String codigoModular = row.getCell(5).getStringCellValue();
+					String codigoModular = row.getCell(7).getStringCellValue();
 					CodigomodularIinstitucionEducativa cm = codigoModularInstitucionEducativaService
 							.findbyid(codigoModular).get();
+					
 					requerimientoVolumen001.setCodigomodularIinstitucionEducativa(cm);
 
-					String sNivelEducacion = row.getCell(9).getStringCellValue().trim().toUpperCase();
+					String sNivelEducacion = row.getCell(11).getStringCellValue().trim().toUpperCase();
+					
 					Integer idNivelEducacion = 0;
 					switch (sNivelEducacion) {
 					case "INICIAL":
@@ -424,15 +426,17 @@ public class QaliwarmaUtil {
 					requerimientoVolumen001.setNivelEducacion(nivelEducacion);
 
 					// Nro de usuarios
-					Integer numeroUsuarios = Integer.parseInt(row.getCell(10).getStringCellValue());
+					Integer numeroUsuarios = Integer.parseInt(row.getCell(12).getStringCellValue());
 
 					requerimientoVolumen001.setNumeroUsuarios(numeroUsuarios);
 
 					// Region alimentaria
-					String idRegionAlimentaria = row.getCell(4).getStringCellValue().trim().toUpperCase();
+					String idRegionAlimentaria = row.getCell(6).getStringCellValue().trim().toUpperCase();
 
-					// modalidad de entrega
-					String sModalidad = row.getCell(11).getStringCellValue().trim().toUpperCase();
+					// modalidad de entrega -- si es productos
+					// esta columna se suprimio en el excel del qaliwarma para el periodo 2019 por defecto lo dejamos en PRODUCTOS
+					//String sModalidad = row.getCell(11).getStringCellValue().trim().toUpperCase();
+					String sModalidad = "PRODUCTOS";
 					Integer idModalidadEntrega = 0;
 					switch (sModalidad) {
 					case "PRODUCTOS":
@@ -448,8 +452,8 @@ public class QaliwarmaUtil {
 
 					requerimientoVolumen001.setModalidadEntregaAlimento(modalidadEntregaAlimento);
 
-					// Horario de alimentacion
-					String sHorarioAlimentarion = row.getCell(12).getStringCellValue().toUpperCase().trim();
+					// Horario de alimentacion DESAYUNO / DESAYUNO + ALMUERZO
+					String sHorarioAlimentarion = row.getCell(13).getStringCellValue().toUpperCase().trim();
 					Integer idHorarioAlimentacion = 0;
 					switch (sHorarioAlimentarion) {
 					case "DESAYUNO":
@@ -498,8 +502,6 @@ public class QaliwarmaUtil {
 
 		String item = sheet.getRow(7).getCell(4).getStringCellValue().trim();
 
-		// List<RequerimientoVolumen001> lst =
-		// requerimientoVolumen001Service.getReqVol001ByAnnoItem(anno, item);
 
 		Row row;
 		RequerimientoVolumen001 requerimientoVolumen001 = null;
@@ -516,13 +518,12 @@ public class QaliwarmaUtil {
 			row = sheet.getRow(i);
 
 			if (row != null) {
-				String xUbigeo = row.getCell(2).getStringCellValue().toUpperCase().trim();
-				String xCodigoModular = row.getCell(5).getStringCellValue().toUpperCase().trim();
+				String xUbigeo = row.getCell(3).getStringCellValue().toUpperCase().trim();
+				String xCodigoModular = row.getCell(7).getStringCellValue().toUpperCase().trim();
 
-				String idRegionAlimentaria = row.getCell(4).getStringCellValue().trim().toUpperCase();
+				String idRegionAlimentaria = row.getCell(6).getStringCellValue().trim().toUpperCase();
 
-				// entregaPorItem = entregaPorItemService.getEntregaPorItemByAnno(anno, item,
-				// nroEntregas);
+
 				String id_req_ven001 = xUbigeo + "-" + xCodigoModular + "-" + anno + "-" + nroEntregas + "-" + item
 						+ "-" + idRegionAlimentaria;// +"-"+entregaPorItem.getIdEntregaPorItem().trim();
 
@@ -534,13 +535,13 @@ public class QaliwarmaUtil {
 				RequerimientoVolumen002 requerimientoVolumen002 = null;
 
 				List<RequerimientoVolumen002> lstRequerimientoVolumen002 = new ArrayList<>();
-				// List<RequerimientoVolumen002Producto> lstRequerimientoVolumen002Producto= new
-				// ArrayList<>();
-				for (int j = nroEntregas; j <= nroEntregas; j++) {
+				Integer numeroEntregaExcel = (int) row.getCell(16).getNumericCellValue();
 
-					String producto = row.getCell(13).getStringCellValue().toUpperCase().trim();
+				if(nroEntregas.equals(numeroEntregaExcel)) {
 
-					String sHorario = row.getCell(12).getStringCellValue().trim().toUpperCase();
+					String producto = row.getCell(14).getStringCellValue().toUpperCase().trim();
+
+					String sHorario = row.getCell(13).getStringCellValue().trim().toUpperCase();
 					Integer idHorario = 0;
 					switch (sHorario) {
 					case "DESAYUNO":
@@ -553,7 +554,7 @@ public class QaliwarmaUtil {
 						break;
 					}
 
-					String idProductoPorNumeroEntrega = producto + "-" + anno + "-" + j + "-" + item + "-" + anno;
+					String idProductoPorNumeroEntrega = producto + "-" + anno + "-" + nroEntregas + "-" + item + "-" + anno;
 					productoPorNumeroEntrega = new ProductoPorNumeroEntrega();
 
 					if (!productoPorNumeroEntregaService.findbyid(idProductoPorNumeroEntrega).isPresent()) {
@@ -563,18 +564,21 @@ public class QaliwarmaUtil {
 								.get();
 					}
 
-					Float volumen = (float) row.getCell(14 + j).getNumericCellValue();
+					//Obtenemos el volumen
+					Float volumen = (float) row.getCell(17).getNumericCellValue();
 
 					requerimientoVolumen002 = new RequerimientoVolumen002();
 
 					requerimientoVolumen002
 							.setIdRequerimientoVolumen002(requerimientoVolumen001.getIdRequerimientoVolumen001() + "-"
-									+ j + "-" + item + "-" + xUbigeo + "-" + xCodigoModular + "-" + cntCustom);
+									+ nroEntregas + "-" + item + "-" + xUbigeo + "-" + xCodigoModular + "-" + cntCustom);
 
 					requerimientoVolumen002.setRequerimientoVolumen001(requerimientoVolumen001);
 					requerimientoVolumen002
 							.setNumeroEntrega(productoPorNumeroEntrega.getEntregaPorItem().getNumeroEntrega());
-					Integer nUsuarios = Integer.parseInt(row.getCell(10).getStringCellValue());
+					
+					Integer nUsuarios = Integer.parseInt(row.getCell(12).getStringCellValue());
+					
 					requerimientoVolumen002.setNumeroUsuarios(nUsuarios);
 
 					// grabar se cambia por add a list
@@ -614,7 +618,7 @@ public class QaliwarmaUtil {
 
 					requerimientoVolumen002Producto
 							.setIdRequerimientoVolumen002Producto(requerimientoVolumen001.getIdRequerimientoVolumen001()
-									+ "-" + requerimientoVolumen002.getIdRequerimientoVolumen002() + "-" + j + "-"
+									+ "-" + requerimientoVolumen002.getIdRequerimientoVolumen002() + "-" + nroEntregas + "-"
 									+ productoPorNumeroEntrega.getIdProductoPorNumeroEntrega());
 
 					requerimientoVolumen002Producto.setRequerimientoVolumen002(requerimientoVolumen002);
@@ -818,11 +822,17 @@ public class QaliwarmaUtil {
 				break;
 			}
 
+			//nombre del producto
 			producto = sheet.getRow(i).getCell(1).getStringCellValue().toUpperCase().trim() + "-" + anno;
 
 			if (catalogoProductoQaliwarmaService.getCatalogoProductoById(producto) != null) {
 
-				presentacionMinima = sheet.getRow(i).getCell(2).getNumericCellValue();
+				//la variable presentacionMinima, ya no es evaluada por qaliwarma para el periodo 2019
+				//el archivo de excel de volumnes ya no trae la columna de presentacion minima.
+				//por ese motivo la variable presentacionMinima se setea a cero
+				//presentacionMinima = sheet.getRow(i).getCell(2).getNumericCellValue(); -- old
+				presentacionMinima = 0;
+				
 				for (int j = nroEntregas; j <= nroEntregas; j++) {
 					productoPorNumeroEntrega = new ProductoPorNumeroEntrega();
 
@@ -831,6 +841,7 @@ public class QaliwarmaUtil {
 
 					CatalogoProductoQaliwarma catalogoProductoQaliwarma = catalogoProductoQaliwarmaService
 							.findbyid(producto).get();
+					
 					productoPorNumeroEntrega.setCatalogoProductoQaliwarma(catalogoProductoQaliwarma);
 					productoPorNumeroEntrega.setPresentacionMinima(new BigDecimal(presentacionMinima));
 					// NumeroEntrega numeroEntrega = numeroEntregaService.findbyid(j).get();
@@ -839,12 +850,6 @@ public class QaliwarmaUtil {
 
 					productoPorNumeroEntrega.setEntregaPorItem(entregaPorItem);
 
-					// if(entregaPorItem.getItemEntrega().getItem().equals("AWAJUN")) {
-					// System.out.println("AWAJUN");
-					// }
-					// productoPorNumeroEntrega.setItemEntrega(itemEntrega);
-
-					// productoPorNumeroEntregaService.grabar(productoPorNumeroEntrega);
 					lstProductoPorNumeroEntrega.add(productoPorNumeroEntrega);
 
 				}

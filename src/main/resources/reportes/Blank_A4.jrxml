@@ -31,7 +31,7 @@
 	<field name="id" class="java.lang.Integer"/>
 	<field name="pesoDouble" class="java.lang.Double"/>
 	<field name="numeroOrden" class="java.lang.String"/>
-	<variable name="Variable_peso" class="java.lang.Double" resetType="Group" resetGroup="Group1" calculation="Sum">
+	<variable name="Variable_peso" class="java.lang.Double" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[$F{pesoDouble}]]></variableExpression>
 	</variable>
 	<group name="Group1" isStartNewPage="true" footerPosition="CollateAtBottom" keepTogether="true">
@@ -130,7 +130,7 @@
 					<text><![CDATA[Nivel:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="520" y="103" width="60" height="20" uuid="327e5280-856b-41e5-9873-1c5abd97558d"/>
+					<reportElement x="496" y="90" width="60" height="20" uuid="327e5280-856b-41e5-9873-1c5abd97558d"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{numeroOrden}]]></textFieldExpression>
 				</textField>
@@ -141,10 +141,10 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="12" splitType="Stretch">
+		<band height="10" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="ContainerHeight" x="70" y="0" width="240" height="12" uuid="6c0e7435-20da-48f6-97f7-2b2b22629c8e">
+				<reportElement stretchType="ContainerHeight" x="70" y="0" width="240" height="10" uuid="6c0e7435-20da-48f6-97f7-2b2b22629c8e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c88e67c3-b1a7-4352-b08a-1eb5a7661a68"/>
 				</reportElement>
 				<textElement>
@@ -161,77 +161,98 @@
 			<textField>
 				<reportElement x="353" y="1" width="50" height="9" uuid="de414fee-37d7-4864-8ee7-e36faba9951a"/>
 				<textElement>
-					<font fontName="Times-Roman" size="6" pdfFontName="Times-Roman"/>
+					<font fontName="Times-Roman" size="7" pdfFontName="Times-Roman"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="404" y="1" width="76" height="9" uuid="a3cd302e-a0b3-407a-92b7-0cb6d6a7faa1"/>
 				<textElement>
-					<font fontName="Times-Roman" size="6" pdfFontName="Times-Roman"/>
+					<font fontName="Times-Roman" size="7" pdfFontName="Times-Roman"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sPresentacion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="513" y="0" width="60" height="10" uuid="07678def-2b6b-42cb-be3f-c948ab83ae05"/>
 				<textElement>
-					<font fontName="Times-Roman" size="6" pdfFontName="Times-Roman"/>
+					<font fontName="Times-Roman" size="7" pdfFontName="Times-Roman"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{peso}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="134">
+		<band height="198">
 			<textField>
-				<reportElement x="128" y="50" width="266" height="12" uuid="5f3b1447-40c5-4b04-90a4-787db06a833d"/>
+				<reportElement x="141" y="30" width="266" height="12" uuid="5f3b1447-40c5-4b04-90a4-787db06a833d"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{transportista}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="128" y="66" width="266" height="12" uuid="751ac392-3ebc-4e6b-ab4a-a10d0a0fcfae"/>
+				<reportElement x="141" y="46" width="266" height="12" uuid="751ac392-3ebc-4e6b-ab4a-a10d0a0fcfae"/>
 				<textElement>
 					<font fontName="Times-Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{domicilio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="128" y="80" width="256" height="12" uuid="fa7edd9a-49e8-4076-820d-1754b3cf0636"/>
+				<reportElement x="141" y="60" width="256" height="12" uuid="fa7edd9a-49e8-4076-820d-1754b3cf0636"/>
 				<textElement>
 					<font fontName="Times-Roman" size="8" pdfFontName="Times-Roman" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{chofer}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="49" width="100" height="12" uuid="640fd882-dfd8-4bea-b057-c8b74014869e"/>
+				<reportElement x="482" y="29" width="100" height="12" uuid="640fd882-dfd8-4bea-b057-c8b74014869e"/>
 				<textElement>
 					<font fontName="Times-Roman" size="8" pdfFontName="Times-Roman" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rucTransportista}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="64" width="100" height="12" uuid="0e2041ce-0cd4-48de-818a-3f813922f3cd"/>
+				<reportElement x="482" y="44" width="100" height="12" uuid="0e2041ce-0cd4-48de-818a-3f813922f3cd"/>
 				<textElement>
 					<font fontName="Times-Roman" size="8" pdfFontName="Times-Roman" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{placa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="80" width="100" height="12" uuid="8746fa0a-56ad-45f4-9315-42c622a53538"/>
+				<reportElement x="482" y="60" width="100" height="12" uuid="8746fa0a-56ad-45f4-9315-42c622a53538"/>
 				<textElement>
 					<font fontName="Times-Roman" size="8" pdfFontName="Times-Roman" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{brevete}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="477" y="96" width="100" height="12" uuid="d600eaac-0cb8-4c8b-9593-b3cd7bccb087"/>
+				<reportElement x="482" y="76" width="100" height="12" uuid="d600eaac-0cb8-4c8b-9593-b3cd7bccb087"/>
 				<textElement>
 					<font fontName="Times-Roman" size="8" pdfFontName="Times-Roman" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{marcaVehiculo}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="465" y="-54" width="42" height="9" uuid="6cef8a2f-db87-4267-8a0a-362d410b82fa"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Total Peso:]]></text>
+			</staticText>
+			<textField pattern="#,##0.000">
+				<reportElement x="507" y="-54" width="37" height="9" uuid="2394cd94-7640-4862-adfc-9104d4bdfc0d"/>
+				<textElement>
+					<font fontName="Times-Roman" size="7" pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Variable_peso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="545" y="-54" width="21" height="9" uuid="1bff7b37-4bc3-4949-9089-70f54bac8d3f"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Kg]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 </jasperReport>

@@ -5,11 +5,11 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import com.adicse.comercial.shared.SqlTimeDeserializer;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 /**

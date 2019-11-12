@@ -20,7 +20,13 @@ public class AgregarRelaciones {
 
 				{ "Ing001", "@OneToMany(mappedBy=\"ing001\")", "private List<Ing002> ing002s;",
 						"\t@OneToMany(mappedBy=\"ing001\", cascade={CascadeType.ALL})" },
+				
+				{ "Com002", "@OneToMany(mappedBy=\"com002\")", "private List<Ing001Com002Relacion> ing001Com002Relacions;",
+				"\t@OneToMany(mappedBy=\"com002\", cascade={CascadeType.ALL})" },				
 
+				{ "Com001", "@OneToMany(mappedBy=\"com001\")", "private List<Com002> com002s;",
+					"\t@OneToMany(mappedBy=\"com001\", cascade={CascadeType.ALL})" },				
+				
 				{ "Salida001", "@OneToMany(mappedBy=\"salida001\")", "private List<Salida002> salida002s;",
 						"\t@OneToMany(mappedBy=\"salida001\", cascade={CascadeType.ALL})" },
 

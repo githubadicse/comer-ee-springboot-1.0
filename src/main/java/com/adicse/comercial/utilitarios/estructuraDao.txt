@@ -1,0 +1,18 @@
+package package.dao;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import package.model.Entidad;
+
+public interface IEntidadDao extends CrudRepository<Entidad, Type>,JpaRepository<Entidad,Type>, 
+PagingAndSortingRepository<Entidad, Type>, 
+JpaSpecificationExecutor<Entidad> {
+	
+	@Query("SELECT max(p.idEntidad) FROM Entidad p")
+	Integer getMax();
+
+}

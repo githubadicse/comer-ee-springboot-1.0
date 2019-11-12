@@ -1,6 +1,7 @@
 package com.adicse.comercial.controller;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -113,6 +114,14 @@ public class EmpleadoController {
 	@ResponseBody
 	public Empleado putUdate(@RequestBody Empleado empleado) {
 		
+		Calendar calendario = Calendar.getInstance();
+		int hora, minutos, segundos;
+		
+		hora =calendario.get(Calendar.HOUR_OF_DAY);
+		minutos = calendario.get(Calendar.MINUTE);
+		segundos = calendario.get(Calendar.SECOND);
+		
+		System.out.println(hora + ":" + minutos + ":" + segundos);
 		
 		Empleado update = empleadoService.findbyid(empleado.getIdempleado()).get();
 		

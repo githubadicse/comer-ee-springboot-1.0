@@ -7,12 +7,11 @@ import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import com.adicse.comercial.shared.SqlTimeDeserializer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 /**
@@ -43,7 +42,6 @@ public class Ing001 implements Serializable {
 
 	private String glosa;
 
-	
 	@JsonDeserialize(using=SqlTimeDeserializer.class)
 	private Time hora;
 
@@ -102,6 +100,10 @@ public class Ing001 implements Serializable {
 	//bi-directional many-to-one association to Ing002
 	@OneToMany(mappedBy="ing001", cascade={CascadeType.ALL})
 	private List<Ing002> ing002s;
+
+	//bi-directional many-to-one association to Ing001Com002Relacion
+	@OneToMany(mappedBy="ing001")
+	private List<Ing001Com002Relacion> ing001Com002Relacions;
 
 	public Ing001() {
 	}
@@ -286,6 +288,28 @@ public class Ing001 implements Serializable {
 		ing002.setIng001(null);
 
 		return ing002;
+	}
+
+	public List<Ing001Com002Relacion> getIng001Com002Relacions() {
+		return this.ing001Com002Relacions;
+	}
+
+	public void setIng001Com002Relacions(List<Ing001Com002Relacion> ing001Com002Relacions) {
+		this.ing001Com002Relacions = ing001Com002Relacions;
+	}
+
+	public Ing001Com002Relacion addIng001Com002Relacion(Ing001Com002Relacion ing001Com002Relacion) {
+		getIng001Com002Relacions().add(ing001Com002Relacion);
+		ing001Com002Relacion.setIng001(this);
+
+		return ing001Com002Relacion;
+	}
+
+	public Ing001Com002Relacion removeIng001Com002Relacion(Ing001Com002Relacion ing001Com002Relacion) {
+		getIng001Com002Relacions().remove(ing001Com002Relacion);
+		ing001Com002Relacion.setIng001(null);
+
+		return ing001Com002Relacion;
 	}
 
 }

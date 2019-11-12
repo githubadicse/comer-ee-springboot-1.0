@@ -6,6 +6,12 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import com.adicse.comercial.shared.SqlTimeDeserializer;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 /**
  * The persistent class for the ven001 database table.
@@ -23,6 +29,7 @@ public class Ven001 implements Serializable {
 	private BigDecimal descuentosGlobales;
 
 	@Column(name="fecha_emision")
+	@JsonFormat (pattern ="dd/MM/yyyy hh:mm:ss")
 	private Timestamp fechaEmision;
 
 	@Column(name="importe_total_venta")
@@ -67,10 +74,10 @@ public class Ven001 implements Serializable {
 	@JoinColumn(name="idaperturapuntoventa")
 	private Aperturapuntoventa aperturapuntoventa;
 
-	//bi-directional many-to-one association to ModalidadVenta
+	//bi-directional many-to-one association to ModalidadCompraVenta
 	@ManyToOne
-	@JoinColumn(name="id_modalidad_venta")
-	private ModalidadVenta modalidadVenta;
+	@JoinColumn(name="id_modalidad_compra_venta")
+	private ModalidadCompraVenta modalidadCompraVenta;
 
 	//bi-directional many-to-one association to Moneda
 	@ManyToOne
@@ -241,12 +248,12 @@ public class Ven001 implements Serializable {
 		this.aperturapuntoventa = aperturapuntoventa;
 	}
 
-	public ModalidadVenta getModalidadVenta() {
-		return this.modalidadVenta;
+	public ModalidadCompraVenta getModalidadCompraVenta() {
+		return this.modalidadCompraVenta;
 	}
 
-	public void setModalidadVenta(ModalidadVenta modalidadVenta) {
-		this.modalidadVenta = modalidadVenta;
+	public void setModalidadCompraVenta(ModalidadCompraVenta modalidadCompraVenta) {
+		this.modalidadCompraVenta = modalidadCompraVenta;
 	}
 
 	public Moneda getMoneda() {

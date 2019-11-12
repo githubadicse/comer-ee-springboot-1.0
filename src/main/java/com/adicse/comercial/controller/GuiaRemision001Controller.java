@@ -549,6 +549,7 @@ public class GuiaRemision001Controller {
 		// Se comporta como una clase,,,, propiedad y valor
 		Map<String, Object> item = new HashMap<>();
 		
+		lstGuiaRemision.sort(   (GuiaRemision001 g1, GuiaRemision001 g2)-> g1.getOrdenPorItem().compareTo(g2.getOrdenPorItem()) ); 
 		
 		for(GuiaRemision001 guiaRemision:lstGuiaRemision) {
 			

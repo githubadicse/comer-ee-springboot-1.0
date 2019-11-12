@@ -136,7 +136,7 @@ public class QaliwarmaController {
 		// Integer numeroEntregas = 1; //solo se trabaja con la
 		@SuppressWarnings("unused")
 		Integer desdeLaEntrega = 1;
-		Integer fila = 10;
+		Integer fila = 11;
 
 		try {
 
@@ -159,45 +159,51 @@ public class QaliwarmaController {
 			ProgressDetails taskProgress = new ProgressDetails();
 			ProgressDetails.taskProgressHash.put(taskIdentity, taskProgress);
 			boolean flagRun = false;
-			for (int i = 1; i < 9; i++) {
+			
+			//el for siguiente es para evaluar lo item para el periodo.
+			// para el caso del periodo 2018 son 8 item ganados.
+			// para el caso del periodo 2019 son 6 item ganados
+			int numeroItemsGanados = 6;
+			for (int i = 1; i < numeroItemsGanados + 1; i++) {
 				ProgressDetails.taskProgressHash.get(taskIdentity).setTotalProcessed(i);
 
 				switch (i) {
 				case 1:
-					archivo = "D:\\archivos\\qaliwarma\\AWAJUN_SANMARTIN1_SANMARTIN_P1.xlsx";
+					archivo = "D:\\archivos\\qaliwarma\\2019\\JEPELACIO_SANMARTIN1_SANMARTIN_P1.xlsx";
 
 					flagRun = true;
 					break;
 				case 2:
-					archivo = "D:\\archivos\\qaliwarma\\ELIASSOPLINVARGAS1_SANMARTIN1_SANMARTIN_P1.xlsx";
+					archivo = "D:\\archivos\\qaliwarma\\2019\\MOYOBAMBA1_SANMARTIN1_SANMARTIN_P1.xlsx";
 					flagRun = true;
 					break;
 				case 3:
-					archivo = "D:\\archivos\\qaliwarma\\JEPELACIO_SANMARTIN1_SANMARTIN_P1.xlsx";
+					archivo = "D:\\archivos\\qaliwarma\\2019\\NUEVACAJAMARCA_SANMARTIN1_SANMARTIN_P1.xlsx";
 					flagRun = true;
 					break;
 				case 4:
-					archivo = "D:\\archivos\\qaliwarma\\MORALES_SANMARTIN2_SANMARTIN_P1.xlsx";
+					archivo = "D:\\archivos\\qaliwarma\\2019\\SORITOR_SANMARTIN1_SANMARTIN_P1.xlsx";
 					flagRun = true;
 					break;
 				case 5:
-					archivo = "D:\\archivos\\qaliwarma\\MOYOBAMBA1_SANMARTIN1_SANMARTIN_P1.xlsx";
+					archivo = "D:\\archivos\\qaliwarma\\2019\\TARAPOTO1_SANMARTIN2_SANMARTIN_P1.xlsx";
 					flagRun = true;
 					break;
 				case 6:
-					archivo = "D:\\archivos\\qaliwarma\\NUEVACAJAMARCA_SANMARTIN1_SANMARTIN_P1.xlsx";
+					archivo = "D:\\archivos\\qaliwarma\\2019\\TARAPOTO2_SANMARTIN2_SANMARTIN_P1.xlsx";
 					flagRun = true;
 					break;
 				case 7:
-					archivo = "D:\\archivos\\qaliwarma\\PARDOMIGUEL_SANMARTIN1_SANMARTIN_P1.xlsx";
+					archivo = "";
 					flagRun = true;
 					break;
 				case 8:
-					archivo = "D:\\archivos\\qaliwarma\\SORITOR_SANMARTIN1_SANMARTIN_P1.xlsx";
+					archivo = "";
 					flagRun = true;
 					break;
 
 				}
+				
 				ProgressDetails.taskProgressHash.get(taskIdentity).setMsgExtra(archivo);
 				if (flagRun) {
 					System.out.println("Escribir productos por entrega");
@@ -209,17 +215,20 @@ public class QaliwarmaController {
 
 					System.out.println("Leer Datos de Ubigeo");
 					file = qaliwarmaUtil.cargarArchivoStream(archivo);
-					qaliwarmaUtil.leerUbigeo(file, "Detalle", fila, 2);
+					
+					int columnaUbigeo = 3;
+					qaliwarmaUtil.leerUbigeo(file, "Detalle", fila, columnaUbigeo);
 					file.close();
 
 					System.out.println("Leer Region Alimentaria");
 					file = qaliwarmaUtil.cargarArchivoStream(archivo);
-					qaliwarmaUtil.leerRegionAlimentaria(file, "Detalle", fila, 4, anno, numeroEntregas);
+					int columnaRegionAlimentaria = 6;
+					qaliwarmaUtil.leerRegionAlimentaria(file, "Detalle", fila, columnaRegionAlimentaria, anno, numeroEntregas);
 					file.close();
 
 					System.out.println("Leer Datos de Institucion");
 					file = qaliwarmaUtil.cargarArchivoStream(archivo);
-					qaliwarmaUtil.leerDatosIntitucion(file, "Detalle", fila, 5);
+					qaliwarmaUtil.leerDatosIntitucion(file, "Detalle", fila, 7);
 
 					System.out.println("Leer Requerimiento 001");
 					file = qaliwarmaUtil.cargarArchivoStream(archivo);
